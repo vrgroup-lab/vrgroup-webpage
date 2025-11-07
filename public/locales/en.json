@@ -1,0 +1,34 @@
+{
+  "common": {
+    "nav": {
+      "home": "Home",
+      "services": "Services",
+      "portfolio": "Portfolio",
+      "blog": "Blog",
+      "about": "About Us",
+      "contact": "Contact",
+      "careers": "Careers"
+    },
+    "cta": {
+      "contact": "Contact Us",
+      "learn_more": "Learn More",
+      "get_started": "Get Started"
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "We drive digital transformation",
+      "subtitle": "We are a boutique consultancy specialized in process automation, software development, management, and operations."
+    },
+    "services": {
+      "title": "Our solutions for your business",
+      "appian": "Digital Process Automation with Appian",
+      "ia": "Applied Artificial Intelligence",
+      "transformation": "Digital Transformation & Digital Experience"
+    }
+  },
+  "about": {
+    "title": "We are trustworthy partners",
+    "story": "VR Group was born from the need to offer world-class consulting with a boutique and personalized approach."
+  }
+}

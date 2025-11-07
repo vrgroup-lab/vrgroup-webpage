@@ -1,0 +1,34 @@
+{
+  "common": {
+    "nav": {
+      "home": "Inicio",
+      "services": "Servicios",
+      "portfolio": "Portafolio",
+      "blog": "Blog",
+      "about": "Nosotros",
+      "contact": "Contacto",
+      "careers": "Trabaja con nosotros"
+    },
+    "cta": {
+      "contact": "Contáctanos",
+      "learn_more": "Aprender más",
+      "get_started": "Comenzar"
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "Impulsamos la transformación digital",
+      "subtitle": "Somos una consultora boutique experta en automatización de procesos, desarrollo de software, gestión y operaciones."
+    },
+    "services": {
+      "title": "Nuestras soluciones para tu negocio",
+      "appian": "Automatización Digital con Appian",
+      "ia": "Inteligencia Artificial Aplicada",
+      "transformation": "Transformación Digital & Experiencia Digital"
+    }
+  },
+  "about": {
+    "title": "Somos de confianza",
+    "story": "VR Group nació de la necesidad de ofrecer consultoría de clase mundial con un enfoque boutique y personalizado."
+  }
+}
