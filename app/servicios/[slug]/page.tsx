@@ -6,142 +6,175 @@ import Link from "next/link"
 import { Check, ArrowRight } from "lucide-react"
 
 interface ServiceDetailPageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 const serviceContent: Record<string, any> = {
-  appian: {
-    title: "Automatización Digital de Procesos con Appian",
+  "transformacion-digital-desarrollo": {
+    title: "Transformación Digital & Desarrollo Tecnológico",
     intro:
-      "Combinamos negocio, low-code e integración para transformar operaciones con velocidad y control. Somos expertos en la implementación de soluciones Appian que generan valor inmediato.",
+      "Diseñamos y desarrollamos experiencias digitales web/mobile con equipos ágiles, UX/UI centrado en negocio y performance medible para escalar productos tecnológicos.",
     benefits: [
-      "Automatización de procesos complejos en semanas",
-      "Reducción de costos operativos hasta 40%",
-      "Mayor velocidad en la toma de decisiones",
-      "Escalabilidad sin límites tecnológicos",
+      "Experiencias digitales orientadas a conversión",
+      "Células ágiles con entregas continuas",
+      "Arquitecturas escalables y observables",
+      "UX/UI con foco en resultados de negocio",
     ],
     services: [
-      {
-        title: "Estrategia de Automatización",
-        description: "Identificamos oportunidades de automatización alineadas con tus objetivos.",
-      },
-      {
-        title: "Implementación iBPMS/RPA",
-        description: "Desarrollamos soluciones robustas usando las mejores prácticas de Appian.",
-      },
-      { title: "Integraciones", description: "Conectamos Appian con tus sistemas existentes sin disrupciones." },
-      { title: "Servicios Gestionados", description: "Mantenemos y optimizamos tus soluciones de forma continua." },
+      { title: "Discovery & Roadmap Digital", description: "Priorización y hoja de ruta de producto." },
+      { title: "UX/UI y Diseño de Producto", description: "Research, wireframes y prototipos de alto nivel." },
+      { title: "Desarrollo Web & Mobile", description: "Entrega ágil de front/back con quality gates." },
+      { title: "Performance & SEO", description: "Optimización continua para velocidad y conversión." },
     ],
     process: [
-      { step: "01", title: "Discovery", description: "Análisis profundo de procesos y oportunidades" },
-      { step: "02", title: "Diseño", description: "Arquitectura de solución personalizada" },
-      { step: "03", title: "Desarrollo", description: "Implementación ágil con entregas incrementales" },
-      { step: "04", title: "Capacitación", description: "Training para tu equipo" },
-      { step: "05", title: "Soporte", description: "Acompañamiento post-implementación" },
+      { step: "01", title: "Discovery", description: "Entendimiento de negocio y definición de objetivos" },
+      { step: "02", title: "Diseño", description: "UX/UI, arquitectura y backlog priorizado" },
+      { step: "03", title: "Build", description: "Sprints con entregas incrementales" },
+      { step: "04", title: "Lanzamiento", description: "Release seguro con monitoreo" },
+      { step: "05", title: "Evolución", description: "Mejora continua guiada por datos" },
     ],
   },
-  ia: {
-    title: "Inteligencia Artificial Aplicada",
-    intro:
-      "Implementamos soluciones de IA para optimizar operaciones y potenciar la toma de decisiones. Desde copilots inteligentes hasta análisis predictivo.",
-    benefits: [
-      "Automatización de tareas repetitivas",
-      "Análisis predictivo y preventivo",
-      "Mejora en experiencia de cliente",
-      "Decisiones basadas en datos",
-    ],
-    services: [
-      { title: "Copilots IA", description: "Asistentes inteligentes para tus equipos" },
-      { title: "Análisis Predictivo", description: "Predicciones precisas basadas en datos históricos" },
-      { title: "Automatización Inteligente", description: "Procesos que aprenden y mejoran con el tiempo" },
-      { title: "Training & Adopción", description: "Capacitación para máximo aprovechamiento" },
-    ],
-    process: [
-      { step: "01", title: "Evaluación", description: "Análisis de aplicabilidad de IA en tu negocio" },
-      { step: "02", title: "Prueba de Concepto", description: "Demostración del valor potencial" },
-      { step: "03", title: "Implementación", description: "Despliegue de solución en producción" },
-      { step: "04", title: "Optimización", description: "Mejora continua del modelo" },
-      { step: "05", title: "Escalado", description: "Expansión a otras áreas del negocio" },
-    ],
-  },
-  transformacion: {
-    title: "Transformación Digital & Experiencia Digital",
-    intro:
-      "Diseñamos y ejecutamos estrategias integrales que transforman digitalmente tu organización mejorando la experiencia de clientes y colaboradores.",
-    benefits: [
-      "Transformación cultural y digital",
-      "Mejora en experiencia de cliente",
-      "Eficiencia operacional",
-      "Competitividad en mercado digital",
-    ],
-    services: [
-      { title: "Estrategia Digital", description: "Plan integral de transformación digital" },
-      { title: "Diseño UX/UI", description: "Experiencias digitales de clase mundial" },
-      { title: "Implementación", description: "Ejecución ágil de proyectos" },
-      { title: "Change Management", description: "Gestión del cambio organizacional" },
-    ],
-    process: [
-      { step: "01", title: "Diagnóstico", description: "Evaluación del estado actual digital" },
-      { step: "02", title: "Estrategia", description: "Definición de roadmap de transformación" },
-      { step: "03", title: "Diseño", description: "Creación de nuevas experiencias" },
-      { step: "04", title: "Construcción", description: "Desarrollo de soluciones digitales" },
-      { step: "05", title: "Transformación", description: "Implementación y adopción" },
-    ],
-  },
-  "soluciones-ti": {
+  "soluciones-ti-proyectos": {
     title: "Soluciones Tecnológicas & Proyectos TI",
     intro:
-      "Desarrollamos soluciones tecnológicas personalizadas que se alinean con tus objetivos de negocio y escalables con tu crecimiento.",
+      "Desarrollo a medida, integración de sistemas, servicios gestionados, PMO y staffing TI para ejecutar proyectos tecnológicos con calidad y velocidad.",
     benefits: [
-      "Soluciones personalizadas",
-      "Arquitectura moderna y escalable",
-      "Ciclos de desarrollo rápidos",
-      "Soporte y mantenimiento continuo",
+      "Integraciones sin fricción y APIs gobernadas",
+      "PMO y gobierno para entregas on-time",
+      "Soporte y servicios gestionados con SLAs",
+      "Equipos extendidos listos para escalar",
     ],
     services: [
-      { title: "Desarrollo de Software", description: "Aplicaciones custom de alto rendimiento" },
-      { title: "Integración de Sistemas", description: "Conexión de aplicaciones empresariales" },
-      { title: "Cloud & DevOps", description: "Infraestructura moderna en la nube" },
-      { title: "Consultoría Técnica", description: "Asesoramiento en arquitectura y tecnología" },
+      { title: "Desarrollo a Medida", description: "Aplicaciones empresariales robustas." },
+      { title: "Integraciones & APIs", description: "Conectividad segura con sistemas clave." },
+      { title: "Cloud & DevOps", description: "Infraestructura y pipelines automatizados." },
+      { title: "PMO & Control", description: "Gobernanza de proyectos y reporting ejecutivo." },
+      { title: "Servicios Gestionados", description: "Operación continua y soporte especializado." },
     ],
     process: [
-      { step: "01", title: "Análisis", description: "Requerimientos y especificaciones técnicas" },
-      { step: "02", title: "Arquitectura", description: "Diseño de solución técnica" },
-      { step: "03", title: "Desarrollo", description: "Construcción iterativa" },
-      { step: "04", title: "Testing", description: "Garantía de calidad" },
-      { step: "05", title: "Deployment", description: "Puesta en producción" },
+      { step: "01", title: "Descubrimiento", description: "Alcance, riesgos y roadmap" },
+      { step: "02", title: "Arquitectura", description: "Diseño técnico y estándares" },
+      { step: "03", title: "Implementación", description: "Build con control de calidad" },
+      { step: "04", title: "Habilitación", description: "UAT, documentación y training" },
+      { step: "05", title: "Operación", description: "Soporte, SLAs y optimización" },
     ],
   },
-  "gestion-riesgo": {
-    title: "Gestión, Operaciones, Riesgo y Cumplimiento",
+  "automatizacion-procesos": {
+    title: "Automatización Digital de Procesos (ADP / Appian / RPA)",
     intro:
-      "Fortalecemos la gestión operativa de tu organización y garantizamos el cumplimiento de normativas regulatorias.",
+      "Discovery, roadmap, laboratorio de automatización, implementaciones Appian, RPA e iBPMS para automatizar end-to-end con enfoque low-code y gobierno claro.",
     benefits: [
-      "Control integral de operaciones",
-      "Cumplimiento normativo garantizado",
-      "Gestión proactiva de riesgos",
-      "Optimización de procesos",
+      "Time-to-market acelerado con low-code",
+      "Reducción de TAT y costos operativos",
+      "Trazabilidad y cumplimiento integrado",
+      "Orquestación de humanos y bots",
     ],
     services: [
-      { title: "Auditoría y Control", description: "Evaluación de controles internos" },
-      { title: "Gestión de Riesgos", description: "Identificación y mitigación de riesgos" },
-      { title: "Cumplimiento Normativo", description: "Adaptación a regulaciones" },
-      { title: "Optimización Operacional", description: "Mejora de procesos y eficiencia" },
+      { title: "Discovery & Pipeline", description: "Identificación y priorización de casos." },
+      { title: "Laboratorio de Automatización", description: "Prototipos rápidos y validaciones." },
+      { title: "Implementaciones Appian / iBPMS", description: "Diseño, desarrollo y QA especializado." },
+      { title: "RPA & Orquestación", description: "Bots, APIs y humanos en un solo flujo." },
+      { title: "Servicios Gestionados", description: "Soporte, mejoras y operación continua." },
     ],
     process: [
-      { step: "01", title: "Diagnóstico", description: "Evaluación del estado actual" },
-      { step: "02", title: "Diseño", description: "Plan de mejora integral" },
-      { step: "03", title: "Implementación", description: "Ejecución de cambios" },
-      { step: "04", title: "Monitoreo", description: "Seguimiento y control" },
-      { step: "05", title: "Mejora Continua", description: "Optimización permanente" },
+      { step: "01", title: "Discovery", description: "Assessment y selección de procesos" },
+      { step: "02", title: "Diseño", description: "Arquitectura y blueprint de automatización" },
+      { step: "03", title: "Build", description: "Configuración, desarrollo y QA" },
+      { step: "04", title: "Hypercare", description: "Acompañamiento post go-live" },
+      { step: "05", title: "Optimización", description: "Monitoreo y mejora continua" },
+    ],
+  },
+  "gestion-operaciones-riesgo": {
+    title: "Gestión, Operaciones, Riesgo & Cumplimiento",
+    intro:
+      "Modelos de gestión, mejora de procesos BPM, control de gestión, riesgos, cumplimiento normativo, auditoría y PMO para operar con eficiencia y control.",
+    benefits: [
+      "Modelos operativos alineados a la estrategia",
+      "Control y mitigación de riesgos clave",
+      "Cumplimiento normativo con evidencias",
+      "Dashboards de gestión y reporting ejecutivo",
+    ],
+    services: [
+      { title: "Modelos de Gestión y BPM", description: "Rediseño y optimización de procesos." },
+      { title: "Risk & Compliance", description: "Matriz de riesgos, controles y monitoreo." },
+      { title: "Auditoría y Control Interno", description: "Revisión de controles y SOX-ready." },
+      { title: "PMO & Gobierno", description: "Oficina de proyectos y seguimiento integral." },
+    ],
+    process: [
+      { step: "01", title: "Diagnóstico", description: "Assessment de madurez y brechas" },
+      { step: "02", title: "Roadmap", description: "Plan de acción y quick wins" },
+      { step: "03", title: "Implementación", description: "Ejecución y adopción en equipos" },
+      { step: "04", title: "Control", description: "KPIs, riesgos y cumplimiento" },
+      { step: "05", title: "Optimización", description: "Ciclos de mejora y auditoría" },
+    ],
+  },
+  "ia-agentes-inteligentes": {
+    title: "IA Aplicada a Procesos & Agentes Inteligentes",
+    intro:
+      "Diseño e integración de agentes inteligentes y copilots conectados a sistemas core, con seguridad, guardrails y automatización cognitiva en workflows empresariales.",
+    benefits: [
+      "Agentes integrados a sistemas y datos empresariales",
+      "Automatización cognitiva de tareas repetitivas",
+      "Governance, seguridad y trazabilidad de prompts",
+      "Mejora de experiencia para clientes y equipos",
+    ],
+    services: [
+      { title: "Diseño de Agentes & Copilots", description: "Discovery, casos de uso y UX conversacional." },
+      { title: "Chatbots Corporativos", description: "Bots multicanal con contexto de negocio." },
+      { title: "Integración en Workflows", description: "Orquestación con procesos y sistemas core." },
+      { title: "Evaluación y Monitoreo", description: "Guardrails, métricas y mejora de modelos." },
+      { title: "Adopción & Training", description: "Capacitación y change management." },
+    ],
+    process: [
+      { step: "01", title: "Discovery", description: "Identificación de casos y viabilidad" },
+      { step: "02", title: "Prototipo", description: "MVP funcional y validación rápida" },
+      { step: "03", title: "Integración", description: "Conexión a datos y sistemas" },
+      { step: "04", title: "Validación", description: "Seguridad, compliance y guardrails" },
+      { step: "05", title: "Escalado", description: "Despliegue y monitoreo continuo" },
+    ],
+  },
+  "analitica-ml": {
+    title: "Analítica Avanzada & Machine Learning Aplicado",
+    intro:
+      "Modelos predictivos, dashboards inteligentes, RAG corporativo, análisis avanzado y machine learning aplicado a problemas reales de negocio.",
+    benefits: [
+      "Decisiones basadas en datos y modelos",
+      "Dashboards accionables con métricas clave",
+      "Arquitecturas de datos modernas y seguras",
+      "ML aplicado a casos de negocio reales",
+    ],
+    services: [
+      { title: "Modelos Predictivos & Forecasting", description: "Demanda, churn, scoring y más." },
+      { title: "RAG & Search Empresarial", description: "Recuperación aumentada para conocimiento interno." },
+      { title: "Dashboards & Data Viz", description: "Insights accionables para equipos de negocio." },
+      { title: "Data Pipelines & MLOps", description: "Gobierno, despliegue y monitoreo de modelos." },
+      { title: "Use Cases por Industria", description: "Retail, finanzas, logística, servicios." },
+    ],
+    process: [
+      { step: "01", title: "Data Discovery", description: "Calidad y disponibilidad de datos" },
+      { step: "02", title: "Diseño de Casos", description: "Hipótesis, KPIs y viabilidad" },
+      { step: "03", title: "Construcción", description: "Modelado, dashboards y APIs" },
+      { step: "04", title: "Deploy", description: "Despliegue seguro y monitoreo" },
+      { step: "05", title: "Mejora Continua", description: "Re-entrenos y optimización" },
     ],
   },
 }
 
-export default function ServiceDetailPage({ params }: ServiceDetailPageProps) {
-  const content = serviceContent[params.slug]
+// Aliases para slugs antiguos que puedan seguir enlazados en la UI
+const slugAliases: Record<string, string> = {
+  appian: "automatizacion-procesos",
+  ia: "ia-agentes-inteligentes",
+  transformacion: "transformacion-digital-desarrollo",
+  "soluciones-ti": "soluciones-ti-proyectos",
+  "gestion-riesgo": "gestion-operaciones-riesgo",
+}
+
+export default async function ServiceDetailPage({ params }: ServiceDetailPageProps) {
+  const { slug } = await params
+  const normalizedSlug = slugAliases[slug] || slug
+  const content = serviceContent[normalizedSlug]
 
   if (!content) {
     return (

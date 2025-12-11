@@ -1,5 +1,6 @@
 import Link from "next/link"
-import { Mail, Phone, MapPin } from "lucide-react"
+import Image from "next/image"
+import { Mail, Phone, MapPin, Linkedin } from "lucide-react"
 
 export function Footer() {
   return (
@@ -8,9 +9,16 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Company Info */}
           <div>
-            <div className="flex items-center gap-2 font-display font-bold text-lg mb-4">
-              <div className="w-8 h-8 bg-coral rounded flex items-center justify-center font-bold">VR</div>
-              <span>Group</span>
+            <div className="flex items-center gap-3 font-display font-bold text-lg mb-4">
+              <div className="relative h-12 w-36">
+                <Image
+                  src="/logos/brand/logo-vr-group_rectangulo.png"
+                  alt="VR Group"
+                  fill
+                  className="object-contain"
+                  sizes="144px"
+                />
+              </div>
             </div>
             <p className="text-gray-300 text-sm">
               Consultora boutique experta en automatización, desarrollo de software y transformación digital.
@@ -97,15 +105,14 @@ export function Footer() {
         <div className="border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">&copy; 2025 VR Group. Todos los derechos reservados.</p>
           <div className="flex gap-6 mt-4 md:mt-0">
-            <a href="#" className="text-gray-400 hover:text-coral transition-colors" aria-label="LinkedIn">
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M16.338 16.338H13.67V12.16c0-.995-.017-2.292-1.194-2.292-1.195 0-1.38.932-1.38 1.893v3.577H8.265V9.359h2.47v.94h.04c.348-.62 1.191-1.575 2.457-1.575 2.631 0 3.12 1.73 3.12 3.98v4.634zM4.997 8.684c-.611 0-1.12-.49-1.12-1.12 0-.63.51-1.12 1.12-1.12.61 0 1.119.49 1.119 1.12 0 .63-.51 1.12-1.12 1.12zm.9 7.654h-1.8V9.359h1.8v6.979zM17.668 1H2.331C1.593 1 1 1.581 1 2.298v15.404C1 18.418 1.593 19 2.331 19h15.338c.738 0 1.331-.582 1.331-1.298V2.298C19 1.581 18.406 1 17.668 1z" />
-              </svg>
-            </a>
-            <a href="#" className="text-gray-400 hover:text-coral transition-colors" aria-label="Twitter">
-              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M6.29 18.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0020 3.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.073 4.073 0 01.8 7.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 010 16.407a11.616 11.616 0 006.29 1.84" />
-              </svg>
+            <a
+              href="https://cl.linkedin.com/company/vr-group-chile"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-coral transition-colors"
+              aria-label="LinkedIn"
+            >
+              <Linkedin className="w-5 h-5" />
             </a>
           </div>
         </div>
