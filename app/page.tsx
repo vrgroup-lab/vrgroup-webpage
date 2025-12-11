@@ -3,7 +3,6 @@ import { Footer } from "@/components/layout/footer"
 import { Hero } from "@/components/ui/hero"
 import { Section } from "@/components/ui/section"
 import Link from "next/link"
-import { ArrowRight, Zap, Users, TrendingUp } from "lucide-react"
 
 export default function Home() {
   const services = [
@@ -11,19 +10,19 @@ export default function Home() {
       id: "appian",
       title: "Automatización Digital con Appian",
       description: "Transformamos procesos complejos en soluciones automatizadas de alto impacto.",
-      icon: Zap,
+      icon: "⚡",
     },
     {
       id: "ia",
       title: "Inteligencia Artificial Aplicada",
       description: "Implementamos soluciones de IA para optimizar operaciones y decisiones.",
-      icon: TrendingUp,
+      icon: "📈",
     },
     {
       id: "transformacion",
       title: "Transformación Digital",
       description: "Diseñamos y ejecutamos estrategias de transformación integral.",
-      icon: Users,
+      icon: "👥",
     },
   ]
 
@@ -58,7 +57,7 @@ export default function Home() {
             className="px-6 py-3 bg-white text-coral rounded-lg font-display font-semibold hover:bg-gray-100 transition-colors inline-flex items-center justify-center gap-2"
           >
             Hablemos de tu proyecto
-            <ArrowRight size={20} />
+            <span>→</span>
           </Link>
           <Link
             href="/servicios"
@@ -84,26 +83,23 @@ export default function Home() {
       {/* Services Section */}
       <Section title="Nuestras soluciones para tu negocio" className="bg-gray-50">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {services.map((service) => {
-            const Icon = service.icon
-            return (
-              <Link
-                key={service.id}
-                href={`/servicios/${service.id}`}
-                className="group bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all hover:-translate-y-1"
-              >
-                <div className="w-12 h-12 bg-coral rounded-lg flex items-center justify-center mb-4 group-hover:bg-coral-dark transition-colors">
-                  <Icon size={24} className="text-white" />
-                </div>
-                <h3 className="font-display font-bold text-xl mb-3 text-blue-dark">{service.title}</h3>
-                <p className="text-gray-600 mb-4">{service.description}</p>
-                <div className="flex items-center gap-2 text-coral font-semibold group-hover:gap-3 transition-all">
-                  Ver detalle
-                  <ArrowRight size={20} />
-                </div>
-              </Link>
-            )
-          })}
+          {services.map((service) => (
+            <Link
+              key={service.id}
+              href={`/servicios/${service.id}`}
+              className="group bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all hover:-translate-y-1"
+            >
+              <div className="w-12 h-12 bg-coral rounded-lg flex items-center justify-center mb-4 group-hover:bg-coral-dark transition-colors text-xl">
+                {service.icon}
+              </div>
+              <h3 className="font-display font-bold text-xl mb-3 text-blue-dark">{service.title}</h3>
+              <p className="text-gray-600 mb-4">{service.description}</p>
+              <div className="flex items-center gap-2 text-coral font-semibold group-hover:gap-3 transition-all">
+                Ver detalle
+                <span>→</span>
+              </div>
+            </Link>
+          ))}
         </div>
       </Section>
 
@@ -134,16 +130,20 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* CTA Section */}
-      <Section className="bg-gradient-to-r from-coral to-blue-dark text-white">
-        <div className="max-w-2xl mx-auto text-center">
-          <h2 className="font-display font-bold text-3xl sm:text-4xl mb-4">¿Listo para transformar tu negocio?</h2>
-          <p className="text-lg mb-8 opacity-90">
+      <Section className="bg-gradient-to-br from-coral via-coral-dark to-blue-dark relative overflow-hidden">
+        {/* Overlay for better text contrast */}
+        <div className="absolute inset-0 bg-black/15 pointer-events-none"></div>
+
+        <div className="relative z-10 max-w-2xl mx-auto text-center">
+          <h2 className="font-display font-bold text-3xl sm:text-5xl mb-6 text-white drop-shadow-xl">
+            ¿Listo para transformar tu negocio?
+          </h2>
+          <p className="text-lg sm:text-xl mb-8 text-white drop-shadow-lg opacity-95">
             Contáctanos hoy y descubre cómo podemos ayudarte a alcanzar tus objetivos digitales.
           </p>
           <Link
             href="/contacto"
-            className="inline-flex px-8 py-3 bg-white text-coral rounded-lg font-display font-semibold hover:bg-gray-100 transition-colors"
+            className="inline-flex px-8 py-4 bg-white text-coral rounded-lg font-display font-bold text-lg hover:bg-gray-50 hover:shadow-xl transition-all duration-300"
           >
             Solicita una reunión
           </Link>
