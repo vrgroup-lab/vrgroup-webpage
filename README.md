@@ -1,131 +1,84 @@
 # VR Group Website
 
-A modern, bilingual (ES/EN) website for VR Group, a boutique consultancy specializing in digital transformation, process automation, and AI solutions.
+Sitio ES/EN para VR Group, consultora boutique en transformación digital, automatización de procesos e IA aplicada.
 
 ## 🚀 Tech Stack
 
-- **Framework**: Next.js 14 with App Router
-- **Language**: TypeScript
+- **Framework**: Next.js 14 (App Router) · TypeScript
 - **Styling**: Tailwind CSS v4
-- **Fonts**: Poppins (headings), Inter (body)
+- **Fonts**: Poppins (headings) · Inter (body)
 - **Icons**: Lucide React
-- **Analytics**: Vercel Analytics
-- **Deployment**: Vercel
+- **Analytics/Deploy**: Vercel
 
-## 📁 Project Structure
+## 📁 Estructura
 
-\`\`\`
-src/
-├── app/
-│   ├── page.tsx                 # Home page
-│   ├── layout.tsx               # Root layout
-│   ├── globals.css              # Global styles & design tokens
-│   ├── servicios/
-│   │   ├── page.tsx             # Services overview
-│   │   └── [slug]/page.tsx      # Service detail pages
-│   ├── nosotros/page.tsx        # About us
-│   ├── trabaja-con-nosotros/    # Careers
-│   ├── contacto/page.tsx        # Contact
-│   ├── portafolio/page.tsx      # Portfolio
-│   ├── blog/page.tsx            # Blog listing
-│   └── api/
-│       ├── contact/route.ts     # Contact form API
-│       └── jobs/route.ts        # Job application API
-├── components/
-│   ├── layout/
-│   │   ├── navbar.tsx           # Navigation bar
-│   │   └── footer.tsx           # Footer
-│   ├── ui/
-│   │   ├── hero.tsx             # Hero section
-│   │   └── section.tsx          # Section wrapper
-│   └── forms/
-│       ├── contact-form.tsx     # Contact form
-│       └── job-application-form.tsx
-├── lib/
-│   └── i18n.ts                  # Internationalization utilities
-└── public/
-    ├── locales/
-    │   ├── es.json              # Spanish translations
-    │   └── en.json              # English translations
-    └── images/                  # Asset images
-\`\`\`
+```
+app/
+  layout.tsx                  # Root layout + metadata/icon
+  page.tsx                    # Home
+  servicios/page.tsx          # Grid de servicios
+  servicios/[slug]/page.tsx   # Detalle por servicio
+  nosotros/page.tsx           # Sobre VR Group (hero rotatorio, historia, principios, equipo)
+  contacto/page.tsx           # Form glass, industria select, CTA
+  portafolio/page.tsx         # Portafolio
+  blog/page.tsx               # Blog
+  equipo/[slug]/page.tsx      # Perfil individual de cada miembro
+  api/contact/route.ts        # Mock contacto
+  api/jobs/route.ts           # Mock jobs
+components/
+  layout/ (navbar con dropdown de servicios, footer)
+  ui/ (hero, hero-rotator, section, highlights Appian/IA)
+  forms/ (job application)
+lib/
+  logos.ts         # Lee logos en /public/logos/*
+  hero-images.ts   # Lee imágenes para héroes rotatorios
+  team.ts          # Datos de equipo y slugs
+public/
+  logos/brand|clients|partners|services|ai-providers/
+  images/hero/nosotros/*      # Imágenes hero rotatorio “Nosotros”
+  images/appian/*             # Gifs/imágenes Appian
+  locales/es.json, en.json
+```
 
 ## 🎨 Design System
 
-### Colors
-- **Coral**: `#FF5A5F` (Primary)
-- **Coral Dark**: `#FF3C48` (Accent)
-- **Blue Dark**: `#0B1B33` (Secondary)
-- **Neutral Light**: `#F8F9FA` (Background)
-- **Neutral Dark**: `#1C1F26` (Text)
-- **Gray Medium**: `#D0D3D8` (Borders)
+- **Colores**: Coral `#FF5A5F`, Coral Dark `#FF3C48`, Blue Dark `#0B1B33`, Neutral Light `#F8F9FA`, Neutral Dark `#1C1F26`, Gray Medium `#D0D3D8`.
+- **Tipografía**: Poppins (500/600/700) para headings; Inter (400/500/600) para body.
+- **Espaciado**: escala Tailwind (4px, 8px, 12px, 16px, 24px, 32px…).
 
-### Typography
-- **Headings**: Poppins (weights: 500, 600, 700)
-- **Body**: Inter (weights: 400, 500, 600)
+## 📄 Páginas clave
 
-### Spacing
-Uses Tailwind's default spacing scale: 4px, 8px, 12px, 16px, 24px, 32px, etc.
+- **Home**: hero con rotador de imágenes (carpeta `public/images/hero/nosotros`), highlights Appian/IA, métricas, carrusel de clientes.
+- **Servicios**: grid y dropdown con títulos cortos; detalle por slug:
+  - Transformación Digital: bloques de “Qué ofrecemos”, “¿Qué incluye?”, “Tecnologías”, “Capacidades técnicas”, “Casos de uso” + CTA al portafolio.
+  - Automatización/Appian, IA & Agentes, Soluciones TI, Gestión y Riesgo, Analítica & ML con variantes en el mismo template.
+- **Nosotros**: hero rotatorio + stats, historia, principios, especializaciones, equipo (cards) y páginas individuales en `/equipo/[slug]`.
+- **Contacto**: formulario estilo glass con campos ampliados (empresa, industria select, teléfono), pasos y chips de contacto directo.
+- **Portafolio**, **Blog**, **Careers**: listos para contenido.
 
-## 📄 Pages
+## 🔧 Configuración
 
-1. **Home** (`/`)
-   - Hero section with CTA
-   - Service overview
-   - Statistics
-   - Client logos
-   - Call-to-action
+- `.env.local`: `NEXT_PUBLIC_SITE_URL`, IDs de analytics si aplica.
+- Favicon/Apple: `public/logos/brand/logo_vrgroup_cuadrado.png` definido en `app/layout.tsx`.
+- Hero rotatorio: colocar imágenes en `public/images/hero/nosotros/` (se detectan automáticamente).
 
-2. **Services** (`/servicios`)
-   - Service overview grid
-   - Service detail pages for:
-     - Appian automation
-     - AI & ML
-     - Digital transformation
-     - Tech solutions
-     - Risk & compliance
+## 📧 Formularios
 
-3. **About** (`/nosotros`)
-   - Company story
-   - Core values
-   - Team members
-   - Key metrics
+- `/api/contact` y `/api/jobs` son mocks; integrar SendGrid/Resend/EmailJS añadiendo credenciales y lógica.
+- Form de contacto: empresa, industria (select), email corporativo, teléfono/WhatsApp, asunto, mensaje; feedback de envío.
 
-4. **Careers** (`/trabaja-con-nosotros`)
-   - Benefits overview
-   - Open positions
-   - Application form
+## 🌍 Internacionalización
 
-5. **Contact** (`/contacto`)
-   - Contact information
-   - Contact form with validation
-   - Office details
+- Locales en `public/locales/es.json` y `en.json`. Para i18n avanzado, considerar `next-intl` o `next-i18next`.
 
-6. **Portfolio** (`/portafolio`)
-   - Project showcase
-   - Project cards with details
+## 📱 Responsive & Accesibilidad
 
-7. **Blog** (`/blog`)
-   - Article listing
-   - Category filters
-   - Featured content
+- Mobile-first (320px+), tablet (768px+), desktop (1024px+).
+- Semántica, contrastes y focus visibles; usa componentes controlados y ARIA donde corresponde.
 
-## 🚀 Getting Started
+## ▶️ Scripts
 
-### Prerequisites
-- Node.js 16+ 
-- npm or yarn
-
-### Installation
-
-1. Clone the repository
-\`\`\`bash
-git clone https://github.com/yourusername/vrgroup-website.git
-cd vrgroup-website
-\`\`\`
-
-2. Install dependencies
-\`\`\`bash
+```bash
 npm install
 \`\`\`
 
@@ -282,3 +235,4 @@ For issues or questions, contact: contacto@vrgroup.cl
 ---
 
 Built with ❤️ by VR Group
+```

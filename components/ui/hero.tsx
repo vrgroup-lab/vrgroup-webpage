@@ -1,31 +1,45 @@
 import type { ReactNode } from "react"
+import type { CSSProperties } from "react"
 
 interface HeroProps {
-  title: string
-  subtitle?: string
+  title: ReactNode
+  subtitle?: ReactNode
   children?: ReactNode
   backgroundImage?: string
   alignment?: "left" | "center"
+  minHeight?: string
+  backgroundSize?: string
+  style?: CSSProperties
 }
 
-export function Hero({ title, subtitle, children, backgroundImage, alignment = "center" }: HeroProps) {
+export function Hero({
+  title,
+  subtitle,
+  children,
+  backgroundImage,
+  alignment = "center",
+  minHeight,
+  backgroundSize = "cover",
+  style,
+}: HeroProps) {
+  const minH = minHeight ?? "700px"
   return (
     <section
-      className="relative min-h-[500px] md:min-h-[600px] flex items-center justify-center overflow-hidden"
+      className="relative flex items-center justify-center overflow-hidden"
       style={
         backgroundImage
-          ? { backgroundImage: `url(${backgroundImage})`, backgroundSize: "cover", backgroundPosition: "center" }
-          : {}
+          ? {
+              backgroundImage: `url(${backgroundImage})`,
+              backgroundSize,
+              backgroundPosition: "center",
+              minHeight: minH,
+              ...style,
+            }
+          : { minHeight: minH, ...style }
       }
     >
-      {/* Dark base overlay for contrast */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-transparent"></div>
-
-      {/* Vibrant coral to blue gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-[#FF5A5F] via-[#FF5A5F]/70 to-[#0B1B33] opacity-85"></div>
-
-      {/* Radial accent in top right for depth */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-radial from-[#FF7A7F]/30 to-transparent rounded-full blur-3xl opacity-60"></div>
+      {/* Overlay azul suave para contraste sin opacar la foto */}
+      <div className="absolute inset-0 bg-[#01042d]/55"></div>
 
       {/* Content */}
       <div
