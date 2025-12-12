@@ -18,16 +18,116 @@ const serviceContent: Record<string, any> = {
     intro:
       "Diseñamos y desarrollamos experiencias digitales web/mobile con equipos ágiles, UX/UI centrado en negocio y performance medible para escalar productos tecnológicos.",
     benefits: [
-      "Experiencias digitales orientadas a conversión",
-      "Células ágiles con entregas continuas",
-      "Arquitecturas escalables y observables",
-      "UX/UI con foco en resultados de negocio",
+      "Time-to-market acelerado con células ágiles",
+      "Arquitecturas escalables y preparadas para crecer",
+      "Experiencias digitales que convierten y retienen",
+      "Integraciones robustas que reducen fricción operativa",
+      "Calidad y menor retrabajo con QA estructurado",
+      "Hosting y operación eficientes en cloud",
+      "Visibilidad con analítica y monitoreo continuo",
+      "Soluciones alineadas a métricas reales de negocio",
     ],
     services: [
-      { title: "Discovery & Roadmap Digital", description: "Priorización y hoja de ruta de producto." },
-      { title: "UX/UI y Diseño de Producto", description: "Research, wireframes y prototipos de alto nivel." },
-      { title: "Desarrollo Web & Mobile", description: "Entrega ágil de front/back con quality gates." },
+      { title: "Discovery & Roadmap", description: "Priorización y hoja de ruta de producto." },
+      { title: "UX/UI de Producto", description: "Research, wireframes y prototipos validados." },
+      { title: "Web & Mobile Delivery", description: "Front/back ágil con quality gates." },
       { title: "Performance & SEO", description: "Optimización continua para velocidad y conversión." },
+    ],
+    offering: [
+      {
+        title: "Diseño y Desarrollo Web",
+        items: [
+          "Sitios corporativos, públicos e intranets",
+          "E-commerce y landings promocionales",
+          "Portales privados y plataformas responsive",
+          "WebApps escalables con Next.js / React",
+        ],
+      },
+      {
+        title: "Desarrollo Mobile & Multiplataforma",
+        items: [
+          "Apps iOS y Android con React Native",
+          "Apps híbridas con Ionic",
+          "Experiencia móvil y publicación en stores",
+        ],
+      },
+      {
+        title: "Progressive Web Apps (PWA)",
+        items: ["Modo offline, push y experiencia nativa", "Instalable y de alto rendimiento", "Compatibilidad multiplataforma"],
+      },
+      {
+        title: "Backend & Lógica de Negocio",
+        items: [
+          "Arquitectura escalable y modular",
+          "Servicios REST y GraphQL",
+          "Microservicios y manejo de datos SQL/NoSQL",
+        ],
+      },
+      {
+        title: "APIs e Integraciones",
+        items: ["Diseño de APIs empresariales", "Gateways y servicios interoperables", "Integración con ERP, CRM, BPM, Appian, etc."],
+      },
+      {
+        title: "UX/UI & Diseño de Producto",
+        items: ["Research e insights", "Wireframes y prototipos", "Sistemas de diseño escalables"],
+      },
+      {
+        title: "Performance Digital",
+        items: ["SEO, analítica y Tag Manager", "Observabilidad y monitoreo", "Mejora de Core Web Vitals"],
+      },
+      {
+        title: "Células Ágiles & Staffing TI",
+        items: ["Equipos permanentes y multidisciplinares", "Staffing para roles TI", "Gestión end-to-end con PO, QA, UX"],
+      },
+    ],
+    specializations: [
+      "Experiencia Digital y Desarrollo de Proyectos",
+      "Transformación Digital y estrategia",
+      "Diseño y Desarrollo Mobile",
+      "Diseño y Desarrollo Web",
+      "Performance Digital (SEO/Analítica)",
+      "Células y Staffing",
+    ],
+    technical: [
+      {
+        title: "Infraestructura & Cloud",
+        items: ["AWS, Azure, GCP", "CI/CD y despliegues automatizados", "Contenedores y microservicios", "Observabilidad y gestión de ambientes"],
+      },
+      {
+        title: "QA & Calidad de Software",
+        items: ["QA manual y automatizado", "Pruebas funcionales, regresión y performance", "Pipelines de testing continuo", "Quality Gates"],
+      },
+      {
+        title: "DevOps",
+        items: ["Automatización de flujos de desarrollo", "Monitoreo, seguridad y versionamiento", "Despliegues confiables"],
+      },
+    ],
+    includes: [
+      "Análisis de requerimientos y arquitectura técnica",
+      "UX/UI centrado en negocio y conversión",
+      "Desarrollo web y mobile escalable",
+      "Integración con APIs y sistemas core",
+      "Cloud, DevOps y observabilidad",
+      "QA, performance y seguridad continua",
+    ],
+    technologies: [
+      "React/Next.js",
+      "Node.js",
+      "TypeScript",
+      "Python",
+      "Java Spring",
+      "AWS/Azure",
+      "Docker/Kubernetes",
+      "GraphQL/REST",
+      "CI/CD",
+    ],
+    useCases: [
+      { title: "E-commerce y funnels", desc: "Sitios y checkout optimizados para conversión y performance." },
+      { title: "Portales self-service", desc: "Experiencias para clientes y partners con integraciones core." },
+      { title: "Apps móviles B2C/B2B", desc: "Aplicaciones seguras con analítica y eventos en tiempo real." },
+      { title: "Backoffice digital", desc: "Operaciones, workflows y reporting para equipos internos." },
+      { title: "Onboarding digital", desc: "Flujos de registro, KYC y activación con gobierno y métricas." },
+      { title: "Data & dashboards", desc: "Visualizaciones ejecutivas y monitoreo de KPIs clave." },
     ],
     process: [
       { step: "01", title: "Discovery", description: "Entendimiento de negocio y definición de objetivos" },
@@ -178,6 +278,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
   const content = serviceContent[normalizedSlug]
   const isAppian = normalizedSlug === "automatizacion-procesos"
   const isIAService = normalizedSlug === "ia-agentes-inteligentes"
+  const isTransformacion = normalizedSlug === "transformacion-digital-desarrollo"
   const heroBackground = isAppian ? "/images/appian/process-automation-animation.gif" : undefined
   const providerLogos = isIAService ? getLogosFromFolder("ai-providers") : []
   const iaProvidersFallback = ["OpenAI", "Anthropic", "Google Gemini", "Azure OpenAI", "AWS Bedrock", "DeepSeek", "Cohere", "Meta Llama"]
@@ -241,6 +342,108 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
           ))}
         </div>
       </Section>
+
+      {isTransformacion && (
+        <>
+          <Section title="¿Qué incluye el servicio?" className="bg-white" variant="light">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {content.includes.map((item: string, idx: number) => (
+                <div
+                  key={idx}
+                  className="flex items-start gap-3 bg-gray-50 border border-gray-200 rounded-2xl px-4 py-3 shadow-sm"
+                >
+                  <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mt-0.5">
+                    <Check size={16} />
+                  </div>
+                  <p className="text-gray-800">{item}</p>
+                </div>
+              ))}
+            </div>
+          </Section>
+
+          <Section title="Qué ofrecemos" className="bg-gray-50" variant="light">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {content.offering.map((block: any, idx: number) => (
+                <div key={idx} className="rounded-2xl bg-white border border-gray-200 p-4 shadow-sm">
+                  <h4 className="font-display font-semibold text-blue-dark mb-2">{block.title}</h4>
+                  <ul className="space-y-1 text-gray-700 text-sm">
+                    {block.items.map((it: string) => (
+                      <li key={it} className="flex gap-2">
+                        <Check size={14} className="text-emerald-500 mt-1" />
+                        <span>{it}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </Section>
+
+          <Section title="Áreas de especialización" className="bg-white" variant="light">
+            <div className="flex flex-wrap gap-3">
+              {content.specializations.map((item: string) => (
+                <span
+                  key={item}
+                  className="px-4 py-2 rounded-full bg-gray-100 text-blue-dark font-semibold text-sm border border-gray-200"
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          </Section>
+
+          <Section title="Tecnologías que dominamos" className="bg-gray-50" variant="light">
+            <div className="flex flex-wrap gap-3 justify-center">
+              {content.technologies.map((tech: string) => (
+                <span
+                  key={tech}
+                  className="px-4 py-2 rounded-full bg-white border border-gray-200 text-sm font-semibold text-blue-dark shadow-sm"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </Section>
+
+          <Section title="Capacidades técnicas" className="bg-white" variant="light">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {content.technical.map((block: any, idx: number) => (
+                <div key={idx} className="rounded-2xl bg-gray-50 border border-gray-200 p-4 shadow-sm">
+                  <h4 className="font-display font-semibold text-blue-dark mb-2">{block.title}</h4>
+                  <ul className="space-y-1 text-gray-700 text-sm">
+                    {block.items.map((it: string) => (
+                      <li key={it} className="flex gap-2">
+                        <Check size={14} className="text-emerald-500 mt-1" />
+                        <span>{it}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </Section>
+
+          <Section title="Casos de uso típicos" className="bg-white" variant="light">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {content.useCases.map((item: any, idx: number) => (
+                <div key={idx} className="rounded-2xl border border-gray-200 bg-gray-50 p-4 shadow-sm">
+                  <h4 className="font-display font-semibold text-blue-dark mb-2">{item.title}</h4>
+                  <p className="text-gray-600 text-sm leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+            <div className="text-center mt-8">
+              <Link
+                href="/portafolio?servicio=transformacion-digital"
+                className="inline-flex items-center gap-2 text-coral font-semibold hover:text-blue-dark transition-colors"
+              >
+                Ver casos del portafolio
+                <ArrowRight size={16} />
+              </Link>
+            </div>
+          </Section>
+        </>
+      )}
 
       {isIAService && (
         <Section title="Partners IA" subtitle="Trabajamos con múltiples modelos y plataformas" className="bg-white" variant="light">

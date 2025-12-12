@@ -10,6 +10,15 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [servicesOpen, setServicesOpen] = useState(false)
 
+  const shortTitles: Record<string, string> = {
+    "transformacion-digital-desarrollo": "Transformación Digital",
+    "soluciones-ti-proyectos": "Soluciones TI",
+    "automatizacion-procesos": "Automatización de Procesos",
+    "gestion-operaciones-riesgo": "Gestión y Riesgo",
+    "ia-agentes-inteligentes": "IA & Agentes",
+    "analitica-ml": "Analítica & ML",
+  }
+
   const navItems = [
     { label: "Inicio", href: "/" },
     { label: "Servicios", href: "/servicios", hasSub: true },
@@ -25,7 +34,7 @@ export function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
-            <Link href="/" className="flex items-center font-display text-white -ml-1 sm:-ml-2">
+            <Link href="/" className="flex items-center font-display text-white -ml-2 sm:-ml-3">
               <div className="relative h-12 w-36">
                 <Image
                   src="/logos/brand/logo-vr-group_rectangulo.png"
@@ -52,28 +61,43 @@ export function Navbar() {
                       {item.label}
                       <ChevronDown size={14} className={`${servicesOpen ? "rotate-180" : ""} transition-transform`} />
                     </button>
-                    {servicesOpen && (
-                      <div className="absolute left-0 mt-3 w-72 bg-white text-blue-dark rounded-xl shadow-xl border border-gray-100 py-2">
-                        <Link
-                          href={item.href}
-                          className="block px-4 py-2 text-sm font-semibold hover:bg-gray-50"
-                        >
-                          Ver todos los servicios
-                        </Link>
-                        <div className="border-t border-gray-100 my-2" />
-                        <div className="max-h-80 overflow-y-auto">
-                          {servicesData.map((service) => (
+                    <div
+                      onMouseEnter={() => setServicesOpen(true)}
+                      onMouseLeave={() => setServicesOpen(false)}
+                      className={`absolute left-0 top-full pt-2 w-[420px] bg-white text-blue-dark rounded-2xl shadow-2xl border border-gray-100 py-3 transition-all duration-150 ${
+                        servicesOpen ? "opacity-100 pointer-events-auto translate-y-0" : "opacity-0 pointer-events-none -translate-y-1"
+                      }`}
+                    >
+                      <div className="px-4 pb-2">
+                        <h4 className="text-sm font-semibold text-blue-dark">Lo que hacemos</h4>
+                        <p className="text-xs text-gray-500">Explora nuestros servicios clave</p>
+                      </div>
+                      <div className="max-h-96 overflow-y-auto divide-y divide-gray-100">
+                        {servicesData.map((service) => {
+                          const shortTitle = shortTitles[service.slug] ?? service.title
+                          return (
                             <Link
                               key={service.slug}
                               href={`/servicios/${service.slug}`}
-                              className="block px-4 py-2 text-sm hover:bg-gray-50"
+                              className="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
                             >
-                              {service.title}
+                              <div className="w-8 h-8 rounded-lg bg-[#FF5A5F]/10 text-[#FF5A5F] flex items-center justify-center text-sm font-bold">
+                                {service.title.charAt(0)}
+                              </div>
+                              <div>
+                                <p className="text-sm font-semibold text-blue-dark">{shortTitle}</p>
+                                <p className="text-xs text-gray-500 line-clamp-2">{service.description}</p>
+                              </div>
                             </Link>
-                          ))}
-                        </div>
+                          )
+                        })}
                       </div>
-                    )}
+                      <div className="border-t border-gray-100 mt-2 pt-2 px-4">
+                        <Link href={item.href} className="block text-sm font-semibold text-[#FF5A5F] hover:text-[#d94852]">
+                          Ver todos los servicios →
+                        </Link>
+                      </div>
+                    </div>
                   </div>
                 ) : (
                   <Link
