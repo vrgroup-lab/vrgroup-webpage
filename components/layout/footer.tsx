@@ -9,7 +9,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
           {/* Company Info */}
           <div>
-            <div className="flex items-center gap-3 font-display font-bold text-lg mb-4">
+            <div className="flex items-center gap-3 font-display font-bold text-lg mb-4 -ml-1 sm:-ml-2">
               <div className="relative h-12 w-36">
                 <Image
                   src="/logos/brand/logo-vr-group_rectangulo.png"
@@ -97,6 +97,17 @@ export function Footer() {
                   contacto@vrgroup.cl
                 </a>
               </li>
+              <li className="flex items-center gap-3">
+                <Linkedin size={18} className="text-coral flex-shrink-0" />
+                <a
+                  href="https://cl.linkedin.com/company/vr-group-chile"
+                  className="hover:text-coral transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  LinkedIn · VR Group Chile
+                </a>
+              </li>
             </ul>
           </div>
         </div>
@@ -109,10 +120,11 @@ export function Footer() {
               href="https://cl.linkedin.com/company/vr-group-chile"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-coral transition-colors"
+              className="inline-flex items-center gap-2 text-gray-200 hover:text-coral transition-colors px-3 py-1 rounded-full border border-white/10"
               aria-label="LinkedIn"
             >
-              <Linkedin className="w-5 h-5" />
+              <Linkedin className="w-4 h-4" />
+              <span className="text-sm">VR Group Chile</span>
             </a>
           </div>
         </div>

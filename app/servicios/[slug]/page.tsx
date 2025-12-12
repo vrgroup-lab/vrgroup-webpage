@@ -2,6 +2,7 @@ import { Navbar } from "@/components/layout/navbar"
 import { Footer } from "@/components/layout/footer"
 import { Hero } from "@/components/ui/hero"
 import { Section } from "@/components/ui/section"
+import { getLogosFromFolder } from "@/lib/logos"
 import Link from "next/link"
 import { Check, ArrowRight } from "lucide-react"
 
@@ -175,6 +176,11 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
   const { slug } = await params
   const normalizedSlug = slugAliases[slug] || slug
   const content = serviceContent[normalizedSlug]
+  const isAppian = normalizedSlug === "automatizacion-procesos"
+  const isIAService = normalizedSlug === "ia-agentes-inteligentes"
+  const heroBackground = isAppian ? "/images/appian/process-automation-animation.gif" : undefined
+  const providerLogos = isIAService ? getLogosFromFolder("ai-providers") : []
+  const iaProvidersFallback = ["OpenAI", "Anthropic", "Google Gemini", "Azure OpenAI", "AWS Bedrock", "DeepSeek", "Cohere", "Meta Llama"]
 
   if (!content) {
     return (
@@ -197,39 +203,82 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
     <div className="min-h-screen flex flex-col">
       <Navbar />
 
-      <Hero title={content.title} subtitle={content.intro} />
+      <Hero title={content.title} subtitle={content.intro} backgroundImage={heroBackground} />
 
       {/* Benefits Section */}
-      <Section title="Beneficios principales" className="bg-white">
+      <Section
+        title="Beneficios principales"
+        className={isAppian ? "bg-[linear-gradient(130deg,#10244e,#1f3d8f,#12a0c6)]" : "bg-white"}
+        variant={isAppian ? "dark" : "light"}
+      >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {content.benefits.map((benefit: string, idx: number) => (
             <div key={idx} className="flex gap-3 items-start">
-              <div className="w-6 h-6 bg-coral rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                <Check size={16} className="text-white" />
+              <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1 ${isAppian ? "bg-white/20" : "bg-coral"}`}>
+                <Check size={16} className={`${isAppian ? "text-white" : "text-white"}`} />
               </div>
-              <p className="text-gray-700">{benefit}</p>
+              <p className={`${isAppian ? "text-white/90" : "text-gray-700"}`}>{benefit}</p>
             </div>
           ))}
         </div>
       </Section>
 
       {/* Services Offered */}
-      <Section title="¿Qué ofrecemos?" className="bg-gray-50">
+      <Section
+        title="¿Qué ofrecemos?"
+        className={isAppian ? "bg-[#0e2049]" : "bg-gray-50"}
+        variant={isAppian ? "dark" : "light"}
+      >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {content.services.map((service: any, idx: number) => (
-            <div key={idx} className="bg-white rounded-xl p-6 border border-gray-200">
-              <h3 className="font-display font-bold text-lg mb-2 text-blue-dark">{service.title}</h3>
-              <p className="text-gray-600">{service.description}</p>
+            <div
+              key={idx}
+              className={`rounded-xl p-6 border ${isAppian ? "bg-white/5 border-white/15 text-white" : "bg-white border-gray-200"}`}
+            >
+              <h3 className="font-display font-bold text-lg mb-2">{service.title}</h3>
+              <p className={`${isAppian ? "text-white/80" : "text-gray-600"}`}>{service.description}</p>
             </div>
           ))}
         </div>
       </Section>
 
+      {isIAService && (
+        <Section title="Partners IA" subtitle="Trabajamos con múltiples modelos y plataformas" className="bg-white" variant="light">
+          {providerLogos.length > 0 ? (
+            <div className="relative overflow-hidden h-14">
+              <div className="flex items-center gap-6 animate-[marquee_18s_linear_infinite]" style={{ width: "max-content" }}>
+                {[...providerLogos, ...providerLogos].map((logo, idx) => (
+                  <div key={`${logo}-${idx}`} className="h-10 flex items-center justify-center">
+                    <img src={logo} alt={logo} className="h-8 w-auto object-contain" />
+                  </div>
+                ))}
+              </div>
+              <div className="pointer-events-none absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-white to-transparent" />
+              <div className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-white to-transparent" />
+            </div>
+          ) : (
+            <div className="flex flex-wrap gap-2">
+              {iaProvidersFallback.map((p) => (
+                <span key={p} className="px-3 py-2 rounded-full border border-gray-200 bg-gray-50 text-sm text-gray-700">
+                  {p}
+                </span>
+              ))}
+            </div>
+          )}
+        </Section>
+      )}
+
       {/* Process Timeline */}
-      <Section title="Nuestro proceso" className="bg-white">
+      <Section
+        title="Nuestro proceso"
+        className={isAppian ? "bg-[linear-gradient(130deg,#10244e,#1f3d8f,#12a0c6)]" : "bg-white"}
+        variant={isAppian ? "dark" : "light"}
+      >
         <div className="relative">
           {/* Timeline line */}
-          <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-coral transform -translate-x-1/2"></div>
+          <div
+            className={`hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 ${isAppian ? "bg-white/30" : "bg-coral"} transform -translate-x-1/2`}
+          ></div>
 
           <div className="space-y-12">
             {content.process.map((item: any, idx: number) => (
@@ -239,13 +288,13 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
               >
                 <div className="hidden md:block flex-1"></div>
                 <div className="flex-shrink-0 relative z-10">
-                  <div className="w-12 h-12 bg-coral rounded-full flex items-center justify-center">
+                  <div className={`w-12 h-12 ${isAppian ? "bg-white/15" : "bg-coral"} rounded-full flex items-center justify-center`}>
                     <span className="text-white font-display font-bold">{item.step}</span>
                   </div>
                 </div>
                 <div className="flex-1 md:py-2">
-                  <h3 className="font-display font-bold text-lg mb-1 text-blue-dark">{item.title}</h3>
-                  <p className="text-gray-600">{item.description}</p>
+                  <h3 className={`font-display font-bold text-lg mb-1 ${isAppian ? "text-white" : "text-blue-dark"}`}>{item.title}</h3>
+                  <p className={`${isAppian ? "text-white/80" : "text-gray-600"}`}>{item.description}</p>
                 </div>
               </div>
             ))}

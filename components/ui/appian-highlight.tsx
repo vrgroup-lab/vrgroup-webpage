@@ -37,7 +37,7 @@ export function AppianHighlight() {
   const activeCap = capabilities.find((cap) => cap.key === active)
 
   return (
-    <Section className="bg-[linear-gradient(130deg,#10244e,#1f3d8f,#12a0c6)]" variant="dark">
+    <Section className="bg-[linear-gradient(130deg,#10244e,#1f3d8f,#12a0c6)] py-12 sm:py-14 lg:py-16" variant="dark">
       <div className="relative overflow-hidden rounded-3xl px-2 py-2">
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-[0.07]">
           <Image
@@ -52,12 +52,12 @@ export function AppianHighlight() {
 
         <div className="relative z-10 space-y-8 px-4 pb-6 pt-10 lg:pt-6 max-w-6xl mx-auto">
           <div className="relative flex flex-col items-center text-center gap-3 lg:flex-row lg:items-center lg:justify-center">
-            <div className="relative h-24 w-24 overflow-hidden rounded-2xl bg-white/18 backdrop-blur border border-white/25 shadow-[0_20px_50px_rgba(0,0,0,0.35)] lg:absolute lg:left-4 lg:top-2">
+            <div className="relative h-32 w-32 overflow-hidden rounded-2xl bg-white/18 backdrop-blur border border-white/25 shadow-[0_20px_50px_rgba(0,0,0,0.35)] lg:absolute lg:left-4 lg:top-2">
               <Image
                 src="/logos/partners/logo_appian.png"
                 alt="Appian logo"
                 fill
-                sizes="112px"
+                sizes="128px"
                 className="object-contain"
               />
             </div>
@@ -74,9 +74,9 @@ export function AppianHighlight() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-10 items-start lg:items-start">
-            <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/15 mt-2 lg:mt-10">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-10 items-stretch">
+            <div className="space-y-4 h-full flex flex-col min-h-[520px]">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/15 mt-6 lg:mt-14">
                 <span className="text-sm text-white/85">Pioneros</span>
                 <span className="relative h-5 w-16 inline-block align-middle ml-1">
                   <Image src="/logos/partners/letter_appian.png" alt="Appian" fill sizes="64px" className="object-contain" />
@@ -84,7 +84,7 @@ export function AppianHighlight() {
                 <span className="text-sm text-white/85 ml-1">en Chile 🇨🇱</span>
               </div>
 
-              <div className="rounded-2xl bg-white/5 border border-white/10 divide-y divide-white/10 overflow-hidden">
+              <div className="rounded-2xl bg-white/5 border border-white/10 divide-y divide-white/10 overflow-hidden flex-1">
                 {capabilities.map((card) => (
                   <button
                     key={card.key}
@@ -102,7 +102,7 @@ export function AppianHighlight() {
               </div>
             </div>
 
-            <div className="relative rounded-2xl border border-white/10 bg-white/5 overflow-hidden min-h-[460px] lg:min-h-[520px] flex items-center justify-center lg:-mr-28 lg:mt-10">
+            <div className="relative rounded-2xl border border-white/10 bg-white/5 overflow-hidden min-h-[520px] h-full flex items-center justify-center lg:-mr-28 lg:mt-0">
               {activeCap ? (
                 <>
                   <Image
@@ -124,13 +124,13 @@ export function AppianHighlight() {
           <div className="flex flex-col sm:flex-row gap-3 relative z-10">
             <Link
               href="/servicios/automatizacion-procesos"
-              className="px-5 py-3 rounded-lg bg-white text-coral font-semibold text-center hover:bg-gray-100 transition-colors"
+              className="px-6 py-3 rounded-lg font-semibold text-center text-white bg-[linear-gradient(120deg,#1f3d8f,#0f7fb2)] shadow-[0_10px_24px_rgba(15,127,178,0.25)] hover:shadow-[0_12px_30px_rgba(15,127,178,0.35)] transition-all"
             >
               Ver servicio de Automatización
             </Link>
             <Link
               href="/contacto"
-              className="px-5 py-3 rounded-lg border border-white/30 text-white text-center hover:bg-white/10 transition-colors"
+              className="px-6 py-3 rounded-lg border border-white/30 text-white text-center hover:bg-white/10 transition-all bg-white/5"
             >
               Agenda una demo Appian
             </Link>

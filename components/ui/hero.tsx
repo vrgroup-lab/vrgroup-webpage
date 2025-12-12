@@ -1,21 +1,41 @@
 import type { ReactNode } from "react"
+import type { CSSProperties } from "react"
 
 interface HeroProps {
-  title: string
-  subtitle?: string
+  title: ReactNode
+  subtitle?: ReactNode
   children?: ReactNode
   backgroundImage?: string
   alignment?: "left" | "center"
+  minHeight?: string
+  backgroundSize?: string
+  style?: CSSProperties
 }
 
-export function Hero({ title, subtitle, children, backgroundImage, alignment = "center" }: HeroProps) {
+export function Hero({
+  title,
+  subtitle,
+  children,
+  backgroundImage,
+  alignment = "center",
+  minHeight,
+  backgroundSize = "cover",
+  style,
+}: HeroProps) {
+  const minH = minHeight ?? "700px"
   return (
     <section
-      className="relative min-h-[620px] md:min-h-[720px] flex items-center justify-center overflow-hidden"
+      className="relative flex items-center justify-center overflow-hidden"
       style={
         backgroundImage
-          ? { backgroundImage: `url(${backgroundImage})`, backgroundSize: "cover", backgroundPosition: "center" }
-          : {}
+          ? {
+              backgroundImage: `url(${backgroundImage})`,
+              backgroundSize,
+              backgroundPosition: "center",
+              minHeight: minH,
+              ...style,
+            }
+          : { minHeight: minH, ...style }
       }
     >
       {/* Overlay azul suave para contraste sin opacar la foto */}

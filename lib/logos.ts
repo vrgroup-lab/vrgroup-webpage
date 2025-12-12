@@ -1,7 +1,9 @@
+// This helper is for server-side usage to list static assets in /public/logos.
+// Do not import in client components.
 import fs from "fs"
 import path from "path"
 
-type LogoFolder = "brand" | "clients" | "partners" | "services"
+type LogoFolder = "brand" | "clients" | "partners" | "services" | "ai-providers"
 
 const allowedExtensions = [".png", ".jpg", ".jpeg", ".svg", ".webp"]
 

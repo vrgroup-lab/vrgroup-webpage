@@ -5,52 +5,16 @@ import { Section } from "@/components/ui/section"
 import { LogoCarousel } from "@/components/ui/logo-carousel"
 import { MetricCounter } from "@/components/ui/metric-counter"
 import { AppianHighlight } from "@/components/ui/appian-highlight"
+import { IAHighlight } from "@/components/ui/ia-highlight"
+import { ServicesSection } from "@/components/ui/services-section"
 import { getLogosFromFolder } from "@/lib/logos"
 import Link from "next/link"
 import { Check, Brain, Workflow, Sparkles } from "lucide-react"
 
 export default function Home() {
   const clientLogos = getLogosFromFolder("clients")
+  const providerLogos = getLogosFromFolder("ai-providers")
   const heroImage = "/images/hero/banner_1.png"
-
-  const services = [
-    {
-      id: "transformacion-digital-desarrollo",
-      title: "Transformación Digital & Desarrollo Tecnológico",
-      description: "Experiencias web/mobile, UX/UI y células ágiles para escalar productos digitales.",
-      icon: "✨",
-    },
-    {
-      id: "soluciones-ti-proyectos",
-      title: "Soluciones Tecnológicas & Proyectos TI",
-      description: "Desarrollo a medida, integraciones, PMO y servicios gestionados.",
-      icon: "🛠️",
-    },
-    {
-      id: "automatizacion-procesos",
-      title: "Automatización Digital de Procesos",
-      description: "Appian, RPA e iBPMS para automatizar end-to-end con rapidez.",
-      icon: "⚡",
-    },
-    {
-      id: "gestion-operaciones-riesgo",
-      title: "Gestión, Operaciones, Riesgo & Cumplimiento",
-      description: "Modelos de gestión, BPM, control y cumplimiento normativo.",
-      icon: "🛡️",
-    },
-    {
-      id: "ia-agentes-inteligentes",
-      title: "IA Aplicada & Agentes Inteligentes",
-      description: "Copilots, chatbots corporativos e integración de IA en workflows.",
-      icon: "🤖",
-    },
-    {
-      id: "analitica-ml",
-      title: "Analítica Avanzada & ML Aplicado",
-      description: "Modelos predictivos, dashboards y RAG corporativo.",
-      icon: "📊",
-    },
-  ]
 
   const stats = [
     { value: 8, suffix: "+", label: "Años de trayectoria" },
@@ -138,61 +102,14 @@ export default function Home() {
       <AppianHighlight />
 
       {/* IA Highlight */}
-      <Section
-        title="IA aplicada a procesos y agentes inteligentes"
-        subtitle="Copilots, bots y RAG corporativo conectados a tus datos y sistemas, con seguridad y guardrails."
-        className="bg-[#f3f5fa]"
-        variant="light"
-      >
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {["Chatbots corporativos con contexto de negocio", "Agentes que orquestan flujos con personas y sistemas", "RAG y búsqueda empresarial con seguridad"].map((point, idx) => (
-            <div
-              key={idx}
-              className="rounded-2xl bg-white border border-gray-200 p-6 shadow-sm hover:shadow-md transition-all"
-            >
-              <h4 className="font-display font-semibold text-lg text-blue-dark mb-2">{point}</h4>
-              <p className="text-gray-600 text-sm">Implementación con gobierno, métricas y adopción.</p>
-            </div>
-          ))}
-        </div>
-        <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
-          <Link
-            href="/servicios/ia-agentes-inteligentes"
-            className="px-5 py-3 rounded-lg bg-coral text-white font-semibold text-center hover:bg-coral-dark transition-colors"
-          >
-            Ver IA aplicada
-          </Link>
-          <Link
-            href="/contacto"
-            className="px-5 py-3 rounded-lg border border-coral text-coral font-semibold text-center hover:bg-coral/10 transition-colors"
-          >
-            Hablemos de tu caso
-          </Link>
-        </div>
-      </Section>
+      <IAHighlight providerLogos={providerLogos} />
 
       {/* Services Section */}
-      <Section title="Nuestras soluciones para tu negocio" className="bg-gray-50">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {services.map((service) => (
-            <Link
-              key={service.id}
-              href={`/servicios/${service.id}`}
-              className="group bg-white rounded-2xl p-8 shadow-md hover:shadow-xl transition-all hover:-translate-y-1"
-            >
-              <div className="w-12 h-12 bg-coral rounded-lg flex items-center justify-center mb-4 group-hover:bg-coral-dark transition-colors text-xl">
-                {service.icon}
-              </div>
-              <h3 className="font-display font-bold text-xl mb-3 text-blue-dark">{service.title}</h3>
-              <p className="text-gray-600 mb-4">{service.description}</p>
-              <div className="flex items-center gap-2 text-coral font-semibold group-hover:gap-3 transition-all">
-                Ver detalle
-                <span>→</span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </Section>
+      <ServicesSection
+        heading="Nuestras soluciones para tu negocio"
+        subheading="Portafolio completo de VR Group: automatización, IA aplicada, analítica, desarrollo y gobierno operativo."
+        variant="dark"
+      />
 
       {/* Testimonial / Case Highlight */}
       <Section
