@@ -14,7 +14,6 @@ import { Check, Brain, Workflow, Sparkles } from "lucide-react"
 export default function Home() {
   const clientLogos = getLogosFromFolder("clients")
   const providerLogos = getLogosFromFolder("ai-providers")
-  const heroImage = "/images/hero/banner_1.png"
 
   const stats = [
     { value: 8, suffix: "+", label: "Años de trayectoria" },
@@ -45,30 +44,74 @@ export default function Home() {
     },
   ]
 
+  const ctaBase =
+    "w-full sm:w-[280px] h-[56px] rounded-full font-display font-semibold transition-all inline-flex items-center justify-center gap-2 whitespace-nowrap"
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
 
       {/* Hero Section */}
       <Hero
-        title="Automatizamos, construimos y operamos tus productos digitales"
-        subtitle="Consultora boutique con foco en low-code, IA aplicada y delivery ágil. Aceleramos tu time-to-value con soluciones listas para producción."
-        backgroundImage={heroImage}
+        eyebrow="Consultoría digital de alta complejidad"
+        title={
+          <>
+            Diseñamos, construimos y operamos soluciones digitales{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF7A7F] via-[#FF5A5F] to-[#FF3C48]">
+              que escalan en tu core
+            </span>
+          </>
+        }
+        subtitle={
+          <>
+            Arquitectura sólida, seguridad y gobierno claro para banca, retail y corporativos. Equipos senior end-to-end
+            que combinan estrategia, diseño, ingeniería, datos e IA aplicada para llevar tu operación a producción con
+            excelencia.
+          </>
+        }
+        alignment="center"
+        minHeight="780px"
       >
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
-            href="/contacto"
-            className="px-6 py-3 rounded-lg font-display font-semibold transition-all inline-flex items-center justify-center gap-2 text-white bg-gradient-to-r from-[#FF5A5F] to-[#FF7A7F] shadow-[0_14px_40px_rgba(255,90,95,0.4)] hover:shadow-[0_18px_50px_rgba(255,90,95,0.45)]"
-          >
-            Agenda una reunión
-            <span>→</span>
-          </Link>
-          <Link
-            href="/servicios"
-            className="px-6 py-3 border-2 border-white text-white rounded-lg font-display font-semibold hover:bg-white hover:text-coral transition-colors inline-flex items-center justify-center"
-          >
-            Explora nuestros servicios
-          </Link>
+        <div className="flex flex-col items-center gap-4">
+          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-white/70">
+            Atención ejecutiva
+          </span>
+          <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+            <Link
+              href="/contacto"
+              className={`${ctaBase} px-8 border-2 border-transparent text-white bg-gradient-to-r from-[#FF5A5F] via-[#FF7A7F] to-[#FF3C48] shadow-[0_18px_55px_rgba(255,90,95,0.35)] hover:shadow-[0_22px_65px_rgba(255,90,95,0.5)] hover:scale-[1.05] active:scale-[0.99]`}
+            >
+              Agenda una reunión
+              <span>→</span>
+            </Link>
+            <Link
+              href="/servicios"
+              className={`${ctaBase} px-8 border-2 border-white/70 text-white backdrop-blur hover:border-white hover:scale-[1.05] active:scale-[0.99]`}
+            >
+              Explora nuestros servicios
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full sm:w-auto text-left sm:text-center">
+            {[
+              { label: "+150 proyectos en producción misión crítica", icon: Check },
+              { label: "Gobierno, seguridad y continuidad operativa", icon: Sparkles },
+              { label: "Arquitectura, datos e IA aplicada a negocio", icon: Brain },
+            ].map((item, idx) => {
+              const Icon = item.icon
+              return (
+                <div
+                  key={idx}
+                  className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white/85 backdrop-blur"
+                >
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-coral">
+                    <Icon size={18} />
+                  </div>
+                  <span className="text-sm font-semibold leading-snug">{item.label}</span>
+                </div>
+              )
+            })}
+          </div>
         </div>
       </Hero>
 
