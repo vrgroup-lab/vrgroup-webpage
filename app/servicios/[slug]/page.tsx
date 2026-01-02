@@ -2,6 +2,7 @@ import { Navbar } from "@/components/layout/navbar"
 import { Footer } from "@/components/layout/footer"
 import { Hero } from "@/components/ui/hero"
 import { Section } from "@/components/ui/section"
+import { InteractiveCardCarousel } from "@/components/ui/interactive-card-carousel"
 import { getLogosFromFolder } from "@/lib/logos"
 import Link from "next/link"
 import { Check, ArrowRight } from "lucide-react"
@@ -14,127 +15,131 @@ interface ServiceDetailPageProps {
 
 const serviceContent: Record<string, any> = {
   "transformacion-digital-desarrollo": {
-    title: "Transformación Digital & Desarrollo Tecnológico",
+    title: "Experiencia Digital: UX/UI, Web & Mobile",
     intro:
-      "Diseñamos y desarrollamos experiencias digitales web/mobile con equipos ágiles, UX/UI centrado en negocio y performance medible para escalar productos tecnológicos.",
-    benefits: [
-      "Time-to-market acelerado con células ágiles",
-      "Arquitecturas escalables y preparadas para crecer",
-      "Experiencias digitales que convierten y retienen",
-      "Integraciones robustas que reducen fricción operativa",
-      "Calidad y menor retrabajo con QA estructurado",
-      "Hosting y operación eficientes en cloud",
-      "Visibilidad con analítica y monitoreo continuo",
-      "Soluciones alineadas a métricas reales de negocio",
-    ],
-    services: [
-      { title: "Discovery & Roadmap", description: "Priorización y hoja de ruta de producto." },
-      { title: "UX/UI de Producto", description: "Research, wireframes y prototipos validados." },
-      { title: "Web & Mobile Delivery", description: "Front/back ágil con quality gates." },
-      { title: "Performance & SEO", description: "Optimización continua para velocidad y conversión." },
-    ],
-    offering: [
+      "Diseñamos y construimos canales y productos digitales (web y mobile) para que sean fáciles de usar, rápidos y medibles en su adopción.",
+    offeringsIntro:
+      "Combinamos research, UX/UI, desarrollo web/mobile y performance digital para entregar canales que se lanzan rápido, se usan sin fricción y evolucionan con datos.",
+    showcase: [
+      {
+        title: "UX/UI y Research",
+        description: "Journeys, prototipos navegables y validación con usuarios para reducir riesgo y acelerar adopción.",
+        tags: ["Research", "Wireframes", "Prototipos", "Testing"],
+      },
       {
         title: "Diseño y Desarrollo Web",
-        items: [
-          "Sitios corporativos, públicos e intranets",
-          "E-commerce y landings promocionales",
-          "Portales privados y plataformas responsive",
-          "WebApps escalables con Next.js / React",
-        ],
+        description: "Sitios públicos, portales privados e intranets rápidos, accesibles y listos para medir conversión.",
+        tags: ["Next.js", "React", "SEO técnico", "Core Web Vitals"],
       },
       {
-        title: "Desarrollo Mobile & Multiplataforma",
-        items: [
-          "Apps iOS y Android con React Native",
-          "Apps híbridas con Ionic",
-          "Experiencia móvil y publicación en stores",
-        ],
+        title: "Diseño y Desarrollo Mobile",
+        description: "Apps iOS/Android con React Native o Ionic, publicación en stores y monitoreo in-app.",
+        tags: ["React Native", "Ionic", "UX mobile", "App Stores"],
       },
       {
-        title: "Progressive Web Apps (PWA)",
-        items: ["Modo offline, push y experiencia nativa", "Instalable y de alto rendimiento", "Compatibilidad multiplataforma"],
+        title: "Performance Digital & Analítica",
+        description: "SEO, tagging, dashboards y experimentación continua para mejorar velocidad y conversión.",
+        tags: ["GA4", "GTM", "SEO", "A/B testing"],
       },
       {
-        title: "Backend & Lógica de Negocio",
-        items: [
-          "Arquitectura escalable y modular",
-          "Servicios REST y GraphQL",
-          "Microservicios y manejo de datos SQL/NoSQL",
-        ],
+        title: "Células ágiles & staffing digital",
+        description: "Equipos multidisciplinarios que mantienen y evolucionan el canal con releases frecuentes.",
+        tags: ["PO/UX/FE/QA", "Backlog", "Soporte evolutivo", "Sprints"],
       },
+    ],
+    benefits: [
+      "Experiencias intuitivas y consistentes en cada canal.",
+      "Performance web/mobile optimizada para velocidad y estabilidad.",
+      "Time-to-market con design systems y componentes reutilizables.",
+      "Decisiones guiadas por métricas de uso, adopción y conversión.",
+      "Evolución continua con backlog priorizado y releases frecuentes.",
+      "Implementaciones alineadas a negocio con UX validado.",
+      "QA, accesibilidad y seguridad considerados desde el diseño.",
+      "SEO y analítica configurados desde el lanzamiento.",
+    ],
+    services: [
       {
-        title: "APIs e Integraciones",
-        items: ["Diseño de APIs empresariales", "Gateways y servicios interoperables", "Integración con ERP, CRM, BPM, Appian, etc."],
+        title: "Diseño UX/UI y experiencia",
+        description: "Flujos, pantallas, contenido y research con usuarios para validar la propuesta digital.",
       },
+      { title: "Desarrollo Web & Frontend", description: "Sitios públicos/privados, intranets, landings y ecommerce con React/Next.js." },
+      { title: "Desarrollo Mobile", description: "Apps iOS/Android con React Native o Ionic; experiencia móvil y publicación en stores." },
       {
-        title: "UX/UI & Diseño de Producto",
-        items: ["Research e insights", "Wireframes y prototipos", "Sistemas de diseño escalables"],
-      },
-      {
-        title: "Performance Digital",
-        items: ["SEO, analítica y Tag Manager", "Observabilidad y monitoreo", "Mejora de Core Web Vitals"],
-      },
-      {
-        title: "Células Ágiles & Staffing TI",
-        items: ["Equipos permanentes y multidisciplinares", "Staffing para roles TI", "Gestión end-to-end con PO, QA, UX"],
+        title: "Evolución, Performance & Calidad",
+        description: "Nuevas funcionalidades, optimización de velocidad, estabilidad, accesibilidad y SEO.",
       },
     ],
     specializations: [
-      "Experiencia Digital y Desarrollo de Proyectos",
-      "Transformación Digital y estrategia",
-      "Diseño y Desarrollo Mobile",
-      "Diseño y Desarrollo Web",
-      "Performance Digital (SEO/Analítica)",
-      "Células y Staffing",
+      "Experiencia digital y desarrollo de proyectos",
+      "Diseño y desarrollo web",
+      "Diseño y desarrollo mobile",
+      "Evolución y optimización de canal digital",
+      "Performance digital (SEO/Analítica)",
+      "Células ágiles y staffing",
     ],
-    technical: [
+    includesPillars: [
       {
-        title: "Infraestructura & Cloud",
-        items: ["AWS, Azure, GCP", "CI/CD y despliegues automatizados", "Contenedores y microservicios", "Observabilidad y gestión de ambientes"],
+        title: "Discovery & Diseño",
+        items: [
+          "Research, entrevistas y validación con usuarios",
+          "Journeys, user flows y prototipos navegables",
+          "Design system y librería de componentes",
+          "Backlog priorizado con foco en adopción",
+        ],
       },
       {
-        title: "QA & Calidad de Software",
-        items: ["QA manual y automatizado", "Pruebas funcionales, regresión y performance", "Pipelines de testing continuo", "Quality Gates"],
+        title: "Desarrollo & Implementación",
+        items: [
+          "Web y mobile sobre APIs existentes",
+          "QA funcional/visual y accesibilidad",
+          "Performance y estabilidad desde el build",
+          "Integraciones y handoff con equipos internos",
+        ],
       },
       {
-        title: "DevOps",
-        items: ["Automatización de flujos de desarrollo", "Monitoreo, seguridad y versionamiento", "Despliegues confiables"],
+        title: "Lanzamiento & Adopción",
+        items: ["SEO técnico y on-page", "Seteo de GA4 y Tag Manager", "UAT y gestión de release", "Plan de comunicación y soporte"],
+      },
+      {
+        title: "Evolución & Performance",
+        items: [
+          "Monitoreo de métricas de uso y conversión",
+          "A/B testing y experimentos",
+          "Mejoras continuas de UX y performance",
+          "Roadmap de releases iterativos",
+        ],
       },
     ],
-    includes: [
-      "Análisis de requerimientos y arquitectura técnica",
-      "UX/UI centrado en negocio y conversión",
-      "Desarrollo web y mobile escalable",
-      "Integración con APIs y sistemas core",
-      "Cloud, DevOps y observabilidad",
-      "QA, performance y seguridad continua",
-    ],
-    technologies: [
-      "React/Next.js",
-      "Node.js",
-      "TypeScript",
-      "Python",
-      "Java Spring",
-      "AWS/Azure",
-      "Docker/Kubernetes",
-      "GraphQL/REST",
-      "CI/CD",
+    technologiesCards: [
+      { name: "Figma", hint: "Design systems y prototipos", logo: "/logos/technologies/figma_logo.png" },
+      { name: "Next.js", hint: "Web apps SSR/SSG", logo: "/logos/technologies/next_logo.png" },
+      { name: "React", hint: "Interfaces dinámicas", logo: "/logos/technologies/react_logo.png" },
+      { name: "React Native", hint: "Apps iOS/Android" },
+      { name: "Ionic", hint: "Apps híbridas" },
+      { name: "TypeScript", hint: "Tipado y robustness", logo: "/logos/technologies/typescripts_logo.png" },
+      { name: "Node.js", hint: "Integraciones y APIs" },
+      { name: "GraphQL", hint: "APIs eficientes" },
+      { name: "REST", hint: "Integración con sistemas" },
+      { name: "Headless CMS", hint: "Contenido desacoplado" },
+      { name: "WordPress", hint: "Sitios corporativos", logo: "/logos/technologies/wordpress_logo.png" },
+      { name: "Shopify", hint: "Ecommerce", logo: "/logos/technologies/shopify_logo.png" },
+      { name: "GA4 / Tag Manager", hint: "Métricas y tagging" },
+      { name: "Core Web Vitals", hint: "Performance web" },
     ],
     useCases: [
-      { title: "E-commerce y funnels", desc: "Sitios y checkout optimizados para conversión y performance." },
-      { title: "Portales self-service", desc: "Experiencias para clientes y partners con integraciones core." },
-      { title: "Apps móviles B2C/B2B", desc: "Aplicaciones seguras con analítica y eventos en tiempo real." },
-      { title: "Backoffice digital", desc: "Operaciones, workflows y reporting para equipos internos." },
-      { title: "Onboarding digital", desc: "Flujos de registro, KYC y activación con gobierno y métricas." },
-      { title: "Data & dashboards", desc: "Visualizaciones ejecutivas y monitoreo de KPIs clave." },
+      { title: "Portal transaccional", desc: "Evolución con foco en performance, conversión y estabilidad." },
+      { title: "App mobile de atención/operación", desc: "Experiencia móvil con adopción y métricas in-app." },
+      { title: "Intranets y portales privados", desc: "Canales internos con identidad, seguridad y analítica de uso." },
+      { title: "Landings y funnels", desc: "Campañas y captación con pruebas A/B y SEO técnico." },
+      { title: "Ecommerce y catálogos", desc: "Checkout optimizado y medición completa del funnel." },
+      { title: "Replatforming web / PWA", desc: "Migración a stack moderno con rendimiento y offline cuando aplica." },
     ],
     process: [
-      { step: "01", title: "Discovery", description: "Entendimiento de negocio y definición de objetivos" },
-      { step: "02", title: "Diseño", description: "UX/UI, arquitectura y backlog priorizado" },
-      { step: "03", title: "Build", description: "Sprints con entregas incrementales" },
-      { step: "04", title: "Lanzamiento", description: "Release seguro con monitoreo" },
-      { step: "05", title: "Evolución", description: "Mejora continua guiada por datos" },
+      { step: "01", title: "Discovery & Research", description: "Objetivos, usuarios y definición de experiencia" },
+      { step: "02", title: "UX/UI & Prototipo", description: "Wireframes, prototipos y validación con usuarios" },
+      { step: "03", title: "Build Web/Mobile", description: "Implementación frontend/mobile consumiendo APIs existentes" },
+      { step: "04", title: "Lanzamiento & Medición", description: "Go-live con SEO, analítica y performance instrumentada" },
+      { step: "05", title: "Evolución Continua", description: "Backlog, releases y optimización guiada por métricas" },
     ],
   },
   "soluciones-ti-proyectos": {
@@ -295,6 +300,194 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
             </Link>
           </div>
         </div>
+        <Footer />
+      </div>
+    )
+  }
+
+  if (isTransformacion) {
+    const technologies = content.technologiesCards ?? content.technologies?.map((name: string) => ({ name }))
+
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+
+        <Hero title={content.title} subtitle={content.intro} />
+
+        <Section
+          title="¿Qué ofrecemos?"
+          subtitle={content.offeringsIntro}
+          className="relative bg-gradient-to-br from-white via-[#f6f8fc] to-[#e8edfa] overflow-hidden"
+          variant="light"
+        >
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute -left-32 -top-32 w-80 h-80 rounded-full bg-coral/10 blur-3xl"></div>
+            <div className="absolute -right-24 -bottom-24 w-72 h-72 rounded-full bg-[#0B1B33]/10 blur-3xl"></div>
+          </div>
+          <div className="relative">
+            <InteractiveCardCarousel items={content.showcase} accent="#FF5A5F" />
+          </div>
+        </Section>
+
+        <Section
+          title="¿Qué incluye el servicio?"
+          subtitle="Desde research y prototipos hasta lanzamiento medible y evolución continua del canal."
+          className="bg-gray-50"
+          variant="light"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {content.includesPillars.map((block: any) => (
+              <div key={block.title} className="rounded-2xl bg-white border border-gray-200 p-5 shadow-sm">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="h-10 w-10 rounded-xl bg-[#FF5A5F]/10 text-[#FF5A5F] flex items-center justify-center font-display font-semibold">
+                    {block.title.slice(0, 2).toUpperCase()}
+                  </div>
+                  <h3 className="font-display font-semibold text-lg text-blue-dark">{block.title}</h3>
+                </div>
+                <ul className="space-y-2 text-sm text-gray-700">
+                  {block.items.map((item: string) => (
+                    <li key={item} className="flex gap-2">
+                      <Check size={16} className="text-emerald-500 mt-0.5 flex-shrink-0" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        <Section title="Beneficios principales" className="bg-white" variant="light">
+          <details className="group rounded-2xl border border-gray-200 bg-gray-50 p-5 shadow-sm">
+            <summary className="flex items-center justify-between cursor-pointer list-none">
+              <span className="font-display font-semibold text-blue-dark">Ver beneficios</span>
+              <span className="text-sm text-coral group-open:rotate-90 transition-transform">→</span>
+            </summary>
+            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
+              {content.benefits.map((benefit: string) => (
+                <div
+                  key={benefit}
+                  className="flex gap-3 items-start rounded-xl bg-white border border-gray-200 px-4 py-3 shadow-sm"
+                >
+                  <div className="w-8 h-8 rounded-full bg-[#FF5A5F]/10 text-[#FF5A5F] flex items-center justify-center mt-1">
+                    <Check size={16} />
+                  </div>
+                  <p className="text-gray-700">{benefit}</p>
+                </div>
+              ))}
+            </div>
+          </details>
+        </Section>
+
+        <Section title="Áreas de especialización" className="bg-white" variant="light">
+          <div className="flex flex-wrap gap-3 justify-center">
+            {content.specializations.map((item: string) => (
+              <span
+                key={item}
+                className="px-4 py-2 rounded-full bg-gray-100 text-blue-dark font-semibold text-sm border border-gray-200 shadow-sm"
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+        </Section>
+
+        <Section title="Tecnologías que dominamos" className="bg-gray-50" variant="light">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            {technologies?.map((tech: any) => {
+              const name = tech.name ?? tech
+              const hint = tech.hint ?? ""
+              const initials = name.slice(0, 2).toUpperCase()
+              const logo = tech.logo as string | undefined
+              return (
+                <div key={name} className="rounded-2xl bg-white border border-gray-200 p-4 shadow-sm flex items-center gap-3">
+                  {logo ? (
+                    <div className="h-12 w-12 rounded-full border border-gray-200 bg-white flex items-center justify-center overflow-hidden">
+                      <img src={logo} alt={name} className="h-9 w-9 object-contain" />
+                    </div>
+                  ) : (
+                    <div className="h-12 w-12 rounded-full bg-gradient-to-br from-[#0B1B33] to-[#FF5A5F] text-white flex items-center justify-center font-bold text-sm">
+                      {initials}
+                    </div>
+                  )}
+                  <div>
+                    <p className="font-display font-semibold text-blue-dark leading-tight">{name}</p>
+                    {hint && <p className="text-xs text-gray-500">{hint}</p>}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </Section>
+
+        <Section
+          title="Casos de uso típicos"
+          subtitle="Ejemplos de cómo llevamos canal y experiencia a producción con métricas."
+          className="bg-gradient-to-br from-[#0B1B33] via-[#0D1933] to-[#0B1B33]"
+          variant="dark"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {content.useCases.map((item: any) => (
+              <div key={item.title} className="rounded-2xl border border-white/10 bg-white/5 p-4 shadow-lg backdrop-blur">
+                <h4 className="font-display font-semibold text-lg text-white mb-2">{item.title}</h4>
+                <p className="text-gray-200 text-sm leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-8">
+            <Link
+              href="/portafolio?servicio=transformacion-digital"
+              className="inline-flex items-center gap-2 text-white font-semibold hover:text-coral transition-colors"
+            >
+              Ver casos del portafolio
+              <ArrowRight size={16} />
+            </Link>
+          </div>
+        </Section>
+
+        <Section title="Nuestro proceso" className="bg-gray-50" variant="light">
+          <div className="relative">
+            <div className="pointer-events-none hidden md:block absolute left-1/2 top-6 bottom-6 w-px bg-coral/60 transform -translate-x-1/2"></div>
+            <div className="pointer-events-none md:hidden absolute left-6 top-6 bottom-6 w-px bg-coral/60"></div>
+            <div className="space-y-12">
+              {content.process.map((item: any, idx: number) => (
+                <div key={item.title} className={`flex gap-6 items-start ${idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}>
+                  <div className="hidden md:block flex-1"></div>
+                  <div className="flex-shrink-0 relative z-10">
+                    <div className="w-12 h-12 bg-coral rounded-full flex items-center justify-center shadow-md">
+                      <span className="text-white font-display font-bold">{item.step}</span>
+                    </div>
+                  </div>
+                  <div className="flex-1 md:py-2">
+                    <h3 className="font-display font-bold text-lg mb-1 text-blue-dark">{item.title}</h3>
+                    <p className="text-gray-700">{item.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Section>
+
+        <Section className="relative overflow-hidden text-white bg-gradient-to-br from-[#0B1B33] via-[#10254d] to-[#FF5A5F]">
+          <div className="absolute -left-16 -top-16 w-64 h-64 bg-white/10 blur-3xl rounded-full pointer-events-none"></div>
+          <div className="absolute right-10 bottom-10 w-40 h-40 bg-coral/20 blur-3xl rounded-full pointer-events-none"></div>
+          <div className="relative max-w-3xl mx-auto text-center space-y-5">
+            <h2 className="font-display font-bold text-3xl sm:text-4xl leading-snug">
+              ¿Listo para lanzar o evolucionar tu canal digital? 🚀
+            </h2>
+            <p className="text-lg sm:text-xl opacity-90">
+              Conversemos tu caso y te compartimos un plan con próximos pasos, hitos y métricas accionables. 📈
+            </p>
+            <Link
+              href="/contacto"
+              className="inline-flex px-8 py-3 bg-white text-coral rounded-lg font-display font-semibold hover:bg-gray-100 transition-colors items-center gap-2 shadow-lg shadow-black/20"
+            >
+              Solicita una reunión
+              <ArrowRight size={20} />
+            </Link>
+          </div>
+        </Section>
+
         <Footer />
       </div>
     )

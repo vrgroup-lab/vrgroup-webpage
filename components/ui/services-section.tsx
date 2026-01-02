@@ -14,9 +14,9 @@ export interface ServiceItem {
 export const servicesData: ServiceItem[] = [
   {
     slug: "transformacion-digital-desarrollo",
-    title: "Transformación Digital & Desarrollo Tecnológico",
+    title: "Experiencia Digital: UX/UI, Web & Mobile",
     description:
-      "Diseño y desarrollo de soluciones digitales, experiencia web/mobile, UX/UI, performance digital y células de desarrollo para escalar productos tecnológicos.",
+      "Diseño UX/UI, desarrollo web y mobile, performance digital y evolución continua de canales medibles en adopción.",
     icon: Sparkles,
   },
   {

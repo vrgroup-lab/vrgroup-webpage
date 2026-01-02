@@ -11,7 +11,7 @@ export function Navbar() {
   const [servicesOpen, setServicesOpen] = useState(false)
 
   const shortTitles: Record<string, string> = {
-    "transformacion-digital-desarrollo": "Transformación Digital",
+    "transformacion-digital-desarrollo": "Experiencia Digital",
     "soluciones-ti-proyectos": "Soluciones TI",
     "automatizacion-procesos": "Automatización de Procesos",
     "gestion-operaciones-riesgo": "Gestión y Riesgo",

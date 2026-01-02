@@ -53,12 +53,12 @@ export default function Home() {
 
       {/* Hero Section */}
       <Hero
-        eyebrow="Consultoría digital de alta complejidad"
+        eyebrow="Consultoría Tecnologíca"
         title={
           <>
             Diseñamos, construimos y operamos soluciones digitales{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF7A7F] via-[#FF5A5F] to-[#FF3C48]">
-              que escalan en tu core
+              que escalan tu negocio
             </span>
           </>
         }
