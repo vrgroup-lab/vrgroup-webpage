@@ -16,8 +16,10 @@ export default function ContactPage() {
     telefono: "",
     industria: "",
     mensaje: "",
+    asunto: "",
   })
   const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -29,17 +31,41 @@ export default function ContactPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setError(null)
     setLoading(true)
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500))
+    try {
+      const form = new FormData()
+      form.append("nombre", formData.nombre)
+      form.append("empresa", formData.empresa)
+      form.append("email", formData.email)
+      form.append("telefono", formData.telefono)
+      form.append("industria", formData.industria)
+      form.append("asunto", formData.asunto)
+      form.append("mensaje", formData.mensaje)
 
-    setSubmitted(true)
-    setFormData({ nombre: "", empresa: "", email: "", telefono: "", industria: "", mensaje: "" })
-    setLoading(false)
+      const response = await fetch("https://formspree.io/f/xjgkwqao", {
+        method: "POST",
+        body: form,
+        headers: {
+          Accept: "application/json",
+        },
+      })
 
-    // Reset success message after 5 seconds
-    setTimeout(() => setSubmitted(false), 5000)
+      if (!response.ok) {
+        const data = await response.json().catch(() => null)
+        const message = data?.error || "No pudimos enviar tu mensaje. Intenta nuevamente."
+        throw new Error(message)
+      }
+
+      setSubmitted(true)
+      setFormData({ nombre: "", empresa: "", email: "", telefono: "", industria: "", mensaje: "", asunto: "" })
+      setTimeout(() => setSubmitted(false), 5000)
+    } catch (err: any) {
+      setError(err?.message || "Hubo un problema al enviar. Inténtalo otra vez.")
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -69,8 +95,15 @@ export default function ContactPage() {
             <h2 className="font-display font-bold text-2xl mb-6 text-white">Conversemos sobre tus desafíos</h2>
 
             {submitted && (
-              <div className="mb-6 p-4 bg-green-500/10 border border-green-500/40 rounded-lg text-green-100">
-                ✓ Mensaje enviado. Te contactaremos en menos de 24 horas.
+              <div className="mb-6 p-4 bg-emerald-500/10 border border-emerald-500/40 rounded-lg text-emerald-100 flex items-center gap-3">
+                <CheckCircle2 className="w-5 h-5" />
+                <span>Mensaje enviado. Te contactaremos en menos de 24 horas.</span>
+              </div>
+            )}
+
+            {error && (
+              <div className="mb-6 p-4 bg-red-500/10 border border-red-500/40 rounded-lg text-red-100">
+                {error}
               </div>
             )}
 
@@ -92,7 +125,7 @@ export default function ContactPage() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-white/80 mb-2">Compañía *</label>
+                  <label className="block text-sm font-semibold text-white/80 mb-2">Compañía</label>
                   <div className="relative">
                     <Building2 className="w-4 h-4 text-white/50 absolute left-3 top-3" />
                     <input
@@ -100,7 +133,6 @@ export default function ContactPage() {
                       name="empresa"
                       value={formData.empresa}
                       onChange={handleChange}
-                      required
                       className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-white/40 focus:outline-none focus:border-[#FF5A5F]"
                       placeholder="Tu empresa"
                     />
@@ -125,7 +157,7 @@ export default function ContactPage() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-white/80 mb-2">WhatsApp / Teléfono *</label>
+                  <label className="block text-sm font-semibold text-white/80 mb-2">WhatsApp / Teléfono</label>
                   <div className="relative">
                     <Phone className="w-4 h-4 text-white/50 absolute left-3 top-3" />
                     <input
@@ -133,7 +165,6 @@ export default function ContactPage() {
                       name="telefono"
                       value={formData.telefono}
                       onChange={handleChange}
-                      required
                       className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-white/40 focus:outline-none focus:border-[#FF5A5F]"
                       placeholder="+56 9 0000 0000"
                     />

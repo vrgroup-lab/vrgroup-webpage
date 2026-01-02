@@ -21,9 +21,9 @@ export const servicesData: ServiceItem[] = [
   },
   {
     slug: "soluciones-ti-proyectos",
-    title: "Soluciones Tecnológicas & Proyectos TI",
+    title: "Ingeniería de Software e Integración",
     description:
-      "Desarrollo a medida, integración de sistemas, servicios gestionados, PMO y staffing TI para ejecutar proyectos tecnológicos con calidad y velocidad.",
+      "Software Factory para backends, APIs e integraciones con estándares enterprise, CI/CD y equipos Build | Run | Enable.",
     icon: Layers,
   },
   {

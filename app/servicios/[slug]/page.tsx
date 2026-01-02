@@ -143,28 +143,56 @@ const serviceContent: Record<string, any> = {
     ],
   },
   "soluciones-ti-proyectos": {
-    title: "Soluciones Tecnológicas & Proyectos TI",
+    title: "Ingeniería de Software e Integración: Software Factory",
     intro:
-      "Desarrollo a medida, integración de sistemas, servicios gestionados, PMO y staffing TI para ejecutar proyectos tecnológicos con calidad y velocidad.",
-    benefits: [
-      "Integraciones sin fricción y APIs gobernadas",
-      "PMO y gobierno para entregas on-time",
-      "Soporte y servicios gestionados con SLAs",
-      "Equipos extendidos listos para escalar",
-    ],
+      "Construimos y evolucionamos soluciones full-stack (backends, APIs e integraciones) para operar con resiliencia enterprise y velocidad de entrega, con estándares de calidad y despliegue continuo.",
     services: [
-      { title: "Desarrollo a Medida", description: "Aplicaciones empresariales robustas." },
-      { title: "Integraciones & APIs", description: "Conectividad segura con sistemas clave." },
-      { title: "Cloud & DevOps", description: "Infraestructura y pipelines automatizados." },
-      { title: "PMO & Control", description: "Gobernanza de proyectos y reporting ejecutivo." },
-      { title: "Servicios Gestionados", description: "Operación continua y soporte especializado." },
+      { title: "Arquitectura & Diseño de Solución", description: "Decisiones técnicas, seguridad, escalabilidad y costos." },
+      { title: "Backends & APIs", description: "Lógica de negocio, microservicios cuando aplica y contratos claros." },
+      { title: "Integración de Sistemas", description: "APIs, middleware, eventos y resiliencia ante fallas." },
+      { title: "Modernización & Refactor", description: "Desacople, performance y reducción de deuda técnica." },
+      { title: "DevSecOps & QA continuo", description: "CI/CD, pruebas, seguridad y monitoreo." },
+      { title: "Equipos / Staffing TI", description: "Células para build | run | enable con roles clave." },
+    ],
+    benefits: [
+      "Soluciones productivas con resiliencia y seguridad enterprise.",
+      "Entregas frecuentes con CI/CD, pruebas y control de cambios.",
+      "Integraciones gobernadas con trazabilidad y manejo de errores.",
+      "Reducción de deuda técnica y mejora de performance.",
+      "Visibilidad con monitoreo de logs, métricas y alertas.",
+      "Equipos extendidos y servicio gestionado con SLAs.",
+    ],
+    includes: [
+      "Decisiones de arquitectura, disponibilidad, performance, seguridad y costos.",
+      "Modelos de datos, reglas de negocio y migraciones para consistencia.",
+      "APIs versionadas con autenticación, autorización y documentación.",
+      "Integración con legacy y terceros con reintentos, trazabilidad y manejo de errores.",
+      "Automatización CI/CD, QA automatizado y control de cambios.",
+      "Monitoreo técnico base: logs, métricas y alertas.",
+    ],
+    deliverables: [
+      "Documento de diseño de solución (arquitectura, decisiones, riesgos, plan).",
+      "APIs/servicios productivos con documentación y controles de seguridad.",
+      "Integraciones operativas con trazabilidad de fallas y métricas básicas.",
+      "Pipelines CI/CD y suite de pruebas (unitarias e integración) según criticidad.",
+    ],
+    useCases: [
+      { title: "Capa de integración", desc: "Conectar sistemas core con canales y plataformas (BPM/IA)." },
+      { title: "Backend transaccional", desc: "Modelo de datos, performance y controles de seguridad." },
+      { title: "Modernización y desacople", desc: "Refactor a servicios/APIs y mejora de performance." },
+      { title: "Data & eventos", desc: "Mensajería/event-driven con resiliencia y trazabilidad." },
+    ],
+    modalities: [
+      { title: "Build", desc: "Diseño y construcción end-to-end con handoff documentado." },
+      { title: "Run", desc: "Operación y soporte con SLAs, monitoreo y mejora continua." },
+      { title: "Enable", desc: "Acompañamiento y coaching a tu equipo para acelerar delivery." },
     ],
     process: [
-      { step: "01", title: "Descubrimiento", description: "Alcance, riesgos y roadmap" },
-      { step: "02", title: "Arquitectura", description: "Diseño técnico y estándares" },
-      { step: "03", title: "Implementación", description: "Build con control de calidad" },
-      { step: "04", title: "Habilitación", description: "UAT, documentación y training" },
-      { step: "05", title: "Operación", description: "Soporte, SLAs y optimización" },
+      { step: "01", title: "Discovery & Arquitectura", description: "Alcance, riesgos y decisiones técnicas clave" },
+      { step: "02", title: "Diseño Técnico", description: "Modelos de datos, APIs y estándares de desarrollo" },
+      { step: "03", title: "Build & QA", description: "Implementación con pruebas y quality gates" },
+      { step: "04", title: "Integración & UAT", description: "Conexión a sistemas, validación y hardening" },
+      { step: "05", title: "Operación & Mejora", description: "SLAs, observabilidad y optimización continua" },
     ],
   },
   "automatizacion-procesos": {
@@ -284,6 +312,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
   const isAppian = normalizedSlug === "automatizacion-procesos"
   const isIAService = normalizedSlug === "ia-agentes-inteligentes"
   const isTransformacion = normalizedSlug === "transformacion-digital-desarrollo"
+  const isSoftwareFactory = normalizedSlug === "soluciones-ti-proyectos"
   const heroBackground = isAppian ? "/images/appian/process-automation-animation.gif" : undefined
   const providerLogos = isIAService ? getLogosFromFolder("ai-providers") : []
   const iaProvidersFallback = ["OpenAI", "Anthropic", "Google Gemini", "Azure OpenAI", "AWS Bedrock", "DeepSeek", "Cohere", "Meta Llama"]
@@ -300,6 +329,146 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
             </Link>
           </div>
         </div>
+        <Footer />
+      </div>
+    )
+  }
+
+  if (isSoftwareFactory) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+
+        <Hero title={content.title} subtitle={content.intro} />
+
+        <Section
+          title="¿Qué ofrecemos?"
+          subtitle="Diseñamos, construimos y operamos backends, APIs e integraciones con estándares enterprise y entregas continuas."
+          className="bg-white"
+          variant="light"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {content.services.map((service: any) => (
+              <div key={service.title} className="rounded-2xl border border-gray-200 bg-gray-50 p-5 shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all">
+                <h3 className="font-display font-semibold text-lg text-blue-dark mb-2">{service.title}</h3>
+                <p className="text-gray-700 text-sm leading-relaxed">{service.description}</p>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        <Section
+          title="Beneficios principales"
+          className="bg-gray-50"
+          variant="light"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {content.benefits.map((benefit: string) => (
+              <div key={benefit} className="flex gap-3 items-start rounded-xl bg-white border border-gray-200 px-4 py-3 shadow-sm">
+                <div className="w-8 h-8 rounded-full bg-[#FF5A5F]/10 text-[#FF5A5F] flex items-center justify-center mt-1">
+                  <Check size={16} />
+                </div>
+                <p className="text-gray-700">{benefit}</p>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        <Section
+          title="Qué incluye normalmente"
+          className="bg-white"
+          variant="light"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {content.includes.map((item: string) => (
+              <div key={item} className="rounded-2xl bg-gray-50 border border-gray-200 p-4 shadow-sm flex gap-3 items-start">
+                <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mt-0.5">
+                  <Check size={16} />
+                </div>
+                <p className="text-gray-800 text-sm">{item}</p>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        <Section title="Entregables típicos" className="bg-gray-50" variant="light">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {content.deliverables.map((item: string) => (
+              <div key={item} className="rounded-2xl bg-white border border-gray-200 p-5 shadow-sm flex gap-3">
+                <div className="w-8 h-8 rounded-full bg-[#0B1B33]/10 text-[#0B1B33] flex items-center justify-center mt-0.5">
+                  <Check size={16} />
+                </div>
+                <p className="text-gray-800 text-sm leading-relaxed">{item}</p>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        <Section title="Modalidades de trabajo" className="bg-white" variant="light">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {content.modalities.map((item: any) => (
+              <div key={item.title} className="rounded-2xl border border-gray-200 bg-gradient-to-br from-white to-gray-50 p-5 shadow-sm">
+                <h3 className="font-display font-semibold text-lg text-blue-dark mb-2">{item.title}</h3>
+                <p className="text-gray-700 text-sm leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        <Section
+          title="Casos y ejemplos"
+          className="bg-gradient-to-br from-[#0B1B33] via-[#0D1933] to-[#0B1B33]"
+          variant="dark"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {content.useCases.map((item: any) => (
+              <div key={item.title} className="rounded-2xl border border-white/10 bg-white/5 p-4 shadow-lg backdrop-blur">
+                <h4 className="font-display font-semibold text-lg text-white mb-2">{item.title}</h4>
+                <p className="text-gray-200 text-sm leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        <Section title="Nuestro proceso" className="bg-gray-50" variant="light">
+          <div className="relative">
+            <div className="pointer-events-none hidden md:block absolute left-1/2 top-6 bottom-6 w-px bg-coral/60 transform -translate-x-1/2"></div>
+            <div className="pointer-events-none md:hidden absolute left-6 top-6 bottom-6 w-px bg-coral/60"></div>
+            <div className="space-y-12">
+              {content.process.map((item: any, idx: number) => (
+                <div key={item.title} className={`flex gap-6 items-start ${idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}>
+                  <div className="hidden md:block flex-1"></div>
+                  <div className="flex-shrink-0 relative z-10">
+                    <div className="w-12 h-12 bg-coral rounded-full flex items-center justify-center shadow-md">
+                      <span className="text-white font-display font-bold">{item.step}</span>
+                    </div>
+                  </div>
+                  <div className="flex-1 md:py-2">
+                    <h3 className="font-display font-bold text-lg mb-1 text-blue-dark">{item.title}</h3>
+                    <p className="text-gray-700">{item.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Section>
+
+        <Section className="bg-gradient-to-r from-coral to-blue-dark text-white">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="font-display font-bold text-3xl mb-4">¿Listo para escalar tu fábrica de software?</h2>
+            <p className="text-lg mb-8 opacity-90">
+              Conversemos tu roadmap y te proponemos un modelo Build | Run | Enable con hitos claros.
+            </p>
+            <Link
+              href="/contacto"
+              className="inline-flex px-8 py-3 bg-white text-coral rounded-lg font-display font-semibold hover:bg-gray-100 transition-colors items-center gap-2"
+            >
+              Solicita una reunión
+              <ArrowRight size={20} />
+            </Link>
+          </div>
+        </Section>
+
         <Footer />
       </div>
     )

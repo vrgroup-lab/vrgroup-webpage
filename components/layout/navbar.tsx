@@ -12,7 +12,7 @@ export function Navbar() {
 
   const shortTitles: Record<string, string> = {
     "transformacion-digital-desarrollo": "Experiencia Digital",
-    "soluciones-ti-proyectos": "Soluciones TI",
+    "soluciones-ti-proyectos": "Software Factory",
     "automatizacion-procesos": "Automatización de Procesos",
     "gestion-operaciones-riesgo": "Gestión y Riesgo",
     "ia-agentes-inteligentes": "IA & Agentes",
