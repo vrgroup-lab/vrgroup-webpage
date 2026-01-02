@@ -25,6 +25,7 @@ export function Navbar() {
     { label: "Portafolio", href: "/portafolio" },
     { label: "Blog", href: "/blog" },
     { label: "Nosotros", href: "/nosotros" },
+    { label: "Acceso", href: "/admin/login", iconOnly: true },
   ]
 
   return (
@@ -99,6 +100,18 @@ export function Navbar() {
                       </div>
                     </div>
                   </div>
+                ) : item.iconOnly ? (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="text-gray-300 hover:text-white transition-colors font-medium text-sm flex items-center gap-2"
+                    title="Acceso"
+                  >
+                    <span className="hidden lg:inline">Acceso</span>
+                    <div className="h-8 w-8 rounded-full border border-white/20 flex items-center justify-center bg-white/5">
+                      <span className="text-xs font-bold">↗</span>
+                    </div>
+                  </Link>
                 ) : (
                   <Link
                     key={item.href}
@@ -133,16 +146,16 @@ export function Navbar() {
             </button>
           </div>
 
-          {/* Mobile Navigation */}
-          {isOpen && (
-            <div className="md:hidden pb-4 space-y-4 text-white">
-              {navItems.map((item) =>
-                item.hasSub ? (
-                  <div key={item.href} className="space-y-2">
-                    <Link
-                      href={item.href}
-                      className="block text-gray-200 hover:text-[#FF7A7F] transition-colors font-medium"
-                      onClick={() => setIsOpen(false)}
+            {/* Mobile Navigation */}
+            {isOpen && (
+              <div className="md:hidden pb-4 space-y-4 text-white">
+                {navItems.map((item) =>
+                  item.hasSub ? (
+                    <div key={item.href} className="space-y-2">
+                      <Link
+                        href={item.href}
+                        className="block text-gray-200 hover:text-[#FF7A7F] transition-colors font-medium"
+                        onClick={() => setIsOpen(false)}
                     >
                       {item.label}
                     </Link>
@@ -159,6 +172,15 @@ export function Navbar() {
                       ))}
                     </div>
                   </div>
+                ) : item.iconOnly ? (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="block text-gray-200 hover:text-[#FF7A7F] transition-colors font-medium"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Acceso
+                  </Link>
                 ) : (
                   <Link
                     key={item.href}

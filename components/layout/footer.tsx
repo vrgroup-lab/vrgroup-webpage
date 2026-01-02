@@ -49,6 +49,11 @@ export function Footer() {
                   Nosotros
                 </Link>
               </li>
+              <li>
+                <Link href="/admin/login" className="hover:text-coral transition-colors">
+                  Acceso admin
+                </Link>
+              </li>
             </ul>
           </div>
 
