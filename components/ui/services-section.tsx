@@ -14,16 +14,16 @@ export interface ServiceItem {
 export const servicesData: ServiceItem[] = [
   {
     slug: "transformacion-digital-desarrollo",
-    title: "Transformación Digital & Desarrollo Tecnológico",
+    title: "Experiencia Digital: UX/UI, Web & Mobile",
     description:
-      "Diseño y desarrollo de soluciones digitales, experiencia web/mobile, UX/UI, performance digital y células de desarrollo para escalar productos tecnológicos.",
+      "Diseño UX/UI, desarrollo web y mobile, performance digital y evolución continua de canales medibles en adopción.",
     icon: Sparkles,
   },
   {
     slug: "soluciones-ti-proyectos",
-    title: "Soluciones Tecnológicas & Proyectos TI",
+    title: "Ingeniería de Software e Integración",
     description:
-      "Desarrollo a medida, integración de sistemas, servicios gestionados, PMO y staffing TI para ejecutar proyectos tecnológicos con calidad y velocidad.",
+      "Software Factory para backends, APIs e integraciones con estándares enterprise, CI/CD y equipos Build | Run | Enable.",
     icon: Layers,
   },
   {
