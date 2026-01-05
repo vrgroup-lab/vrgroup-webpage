@@ -2,13 +2,30 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Menu, X, ChevronDown } from "lucide-react"
 import { servicesData } from "@/components/ui/services-section"
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [servicesOpen, setServicesOpen] = useState(false)
+  const closeTimeout = useRef<NodeJS.Timeout | null>(null)
+
+  const openServices = () => {
+    if (closeTimeout.current) clearTimeout(closeTimeout.current)
+    setServicesOpen(true)
+  }
+
+  const delayedCloseServices = () => {
+    if (closeTimeout.current) clearTimeout(closeTimeout.current)
+    closeTimeout.current = setTimeout(() => setServicesOpen(false), 140)
+  }
+
+  useEffect(() => {
+    return () => {
+      if (closeTimeout.current) clearTimeout(closeTimeout.current)
+    }
+  }, [])
 
   const shortTitles: Record<string, string> = {
     "transformacion-digital-desarrollo": "Experiencia Digital",
@@ -20,142 +37,123 @@ export function Navbar() {
   }
 
   const navItems = [
-    { label: "Inicio", href: "/" },
     { label: "Servicios", href: "/servicios", hasSub: true },
+    { label: "Equipo", href: "/nosotros" },
     { label: "Portafolio", href: "/portafolio" },
-    { label: "Blog", href: "/blog" },
-    { label: "Nosotros", href: "/nosotros" },
-    { label: "Acceso", href: "/admin/login", iconOnly: true },
   ]
 
   return (
     <nav className="sticky top-0 z-50">
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#FF5A5F] to-transparent opacity-80" />
-      <div className="backdrop-blur bg-[#0B1B33]/95 border-b border-white/5">
+      <div className="backdrop-blur bg-[#0a1530]/95 border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="grid grid-cols-[auto_1fr_auto] items-center h-16 gap-4">
             {/* Logo */}
-            <Link href="/" className="flex items-center font-display text-white -ml-2 sm:-ml-3">
-              <div className="relative h-12 w-36">
+            <Link href="/" className="flex items-center font-display text-white -ml-1 sm:-ml-2">
+              <div className="relative h-9 w-28 sm:h-10 sm:w-32">
                 <Image
                   src="/logos/brand/logo-vr-group_rectangulo.png"
                   alt="VR Group"
                   fill
                   priority
-                  sizes="144px"
-                  className="object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.35)]"
+                  sizes="128px"
+                  className="object-contain"
                 />
               </div>
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden md:flex items-center justify-center gap-6 text-sm font-medium">
               {navItems.map((item) =>
                 item.hasSub ? (
                   <div
                     key={item.href}
                     className="relative"
-                    onMouseEnter={() => setServicesOpen(true)}
-                    onMouseLeave={() => setServicesOpen(false)}
+                    onMouseEnter={openServices}
+                    onMouseLeave={delayedCloseServices}
                   >
-                    <button className="flex items-center gap-1 text-gray-200 hover:text-[#FF7A7F] transition-colors font-medium text-sm">
+                    <button className="flex items-center gap-1 text-white hover:text-white transition-colors">
                       {item.label}
                       <ChevronDown size={14} className={`${servicesOpen ? "rotate-180" : ""} transition-transform`} />
                     </button>
                     <div
-                      onMouseEnter={() => setServicesOpen(true)}
-                      onMouseLeave={() => setServicesOpen(false)}
-                      className={`absolute left-0 top-full pt-2 w-[420px] bg-white text-blue-dark rounded-2xl shadow-2xl border border-gray-100 py-3 transition-all duration-150 ${
+                      onMouseEnter={openServices}
+                      onMouseLeave={delayedCloseServices}
+                      className={`fixed inset-x-0 top-[64px] w-full px-0 pt-0 z-40 transition-all duration-150 ${
                         servicesOpen ? "opacity-100 pointer-events-auto translate-y-0" : "opacity-0 pointer-events-none -translate-y-1"
                       }`}
                     >
-                      <div className="px-4 pb-2">
-                        <h4 className="text-sm font-semibold text-blue-dark">Lo que hacemos</h4>
-                        <p className="text-xs text-gray-500">Explora nuestros servicios clave</p>
-                      </div>
-                      <div className="max-h-96 overflow-y-auto divide-y divide-gray-100">
-                        {servicesData.map((service) => {
-                          const shortTitle = shortTitles[service.slug] ?? service.title
-                          return (
-                            <Link
-                              key={service.slug}
-                              href={`/servicios/${service.slug}`}
-                              className="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
-                            >
-                              <div className="w-8 h-8 rounded-lg bg-[#FF5A5F]/10 text-[#FF5A5F] flex items-center justify-center text-sm font-bold">
-                                {service.title.charAt(0)}
-                              </div>
-                              <div>
-                                <p className="text-sm font-semibold text-blue-dark">{shortTitle}</p>
-                                <p className="text-xs text-gray-500 line-clamp-2">{service.description}</p>
-                              </div>
-                            </Link>
-                          )
-                        })}
-                      </div>
-                      <div className="border-t border-gray-100 mt-2 pt-2 px-4">
-                        <Link href={item.href} className="block text-sm font-semibold text-[#FF5A5F] hover:text-[#d94852]">
-                          Ver todos los servicios →
-                        </Link>
+                      <div className="border-t border-white/10 bg-[#0b1428] shadow-[0_20px_70px_rgba(0,0,0,0.35)]">
+                        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 px-6 pb-6 pt-6">
+                          {servicesData.map((service) => {
+                            const shortTitle = shortTitles[service.slug] ?? service.title
+                            const Icon = service.icon
+                            return (
+                              <Link
+                                key={service.slug}
+                                href={`/servicios/${service.slug}`}
+                                className="flex gap-3 p-4 rounded-2xl hover:bg-white/10 transition-colors h-full border border-transparent hover:border-white/20"
+                              >
+                                <div className="mt-1 flex h-10 w-10 items-center justify-center rounded-xl bg-white/15 text-white">
+                                  <Icon size={18} />
+                                </div>
+                                <div>
+                                  <p className="text-sm font-semibold text-white leading-snug">{shortTitle}</p>
+                                  <p className="text-xs text-white/80 leading-relaxed">{service.description}</p>
+                                </div>
+                              </Link>
+                            )
+                          })}
+                        </div>
+                        <div className="border-t border-white/10 px-6 py-3 text-right">
+                          <Link href={item.href} className="text-sm font-semibold text-[#FF7A7F] hover:text-white">
+                            Ver todos los servicios →
+                          </Link>
+                        </div>
                       </div>
                     </div>
                   </div>
-                ) : item.iconOnly ? (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="text-gray-300 hover:text-white transition-colors font-medium text-sm flex items-center gap-2"
-                    title="Acceso"
-                  >
-                    <span className="hidden lg:inline">Acceso</span>
-                    <div className="h-8 w-8 rounded-full border border-white/20 flex items-center justify-center bg-white/5">
-                      <span className="text-xs font-bold">↗</span>
-                    </div>
-                  </Link>
                 ) : (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="text-gray-200 hover:text-[#FF7A7F] transition-colors font-medium text-sm"
-                  >
+                  <Link key={item.href} href={item.href} className="text-white hover:text-white transition-colors">
                     {item.label}
                   </Link>
                 )
               )}
             </div>
 
-            {/* CTA Buttons */}
-            <div className="hidden md:flex items-center gap-3">
+            {/* CTA */}
+            <div className="hidden md:flex justify-end">
               <Link
                 href="/contacto"
-                className="px-4 py-2 rounded-lg bg-[#FF5A5F] text-white hover:bg-[#FF3C48] transition-colors font-semibold text-sm shadow-[0_10px_30px_rgba(255,90,95,0.35)]"
+                className="px-5 py-2 rounded-lg bg-gradient-to-r from-[#1a2f55] via-[#0B1B33] to-[#FF5A5F] text-white font-semibold text-sm hover:shadow-[0_12px_36px_rgba(255,90,95,0.35)] transition-all"
               >
-                Contáctanos
-              </Link>
-              <Link
-                href="/trabaja-con-nosotros"
-                className="px-4 py-2 rounded-lg border border-[#FF5A5F] text-white hover:bg-[#FF5A5F]/15 transition-colors font-medium text-sm"
-              >
-                Trabaja con nosotros
+                Agenda una reunión
               </Link>
             </div>
 
             {/* Mobile Menu Button */}
-            <button className="md:hidden text-white" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle menu">
+            <button
+              className="md:hidden justify-self-end text-white"
+              onClick={() => {
+                setIsOpen(!isOpen)
+                setServicesOpen(false)
+                if (closeTimeout.current) clearTimeout(closeTimeout.current)
+              }}
+              aria-label="Toggle menu"
+            >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
 
-            {/* Mobile Navigation */}
-            {isOpen && (
-              <div className="md:hidden pb-4 space-y-4 text-white">
-                {navItems.map((item) =>
-                  item.hasSub ? (
-                    <div key={item.href} className="space-y-2">
-                      <Link
-                        href={item.href}
-                        className="block text-gray-200 hover:text-[#FF7A7F] transition-colors font-medium"
-                        onClick={() => setIsOpen(false)}
+          {/* Mobile Navigation */}
+          {isOpen && (
+            <div className="md:hidden pb-4 space-y-3 text-white">
+              {navItems.map((item) =>
+                item.hasSub ? (
+                  <div key={item.href} className="space-y-2">
+                    <Link
+                      href={item.href}
+                      className="block text-white/80 hover:text-white transition-colors font-medium"
+                      onClick={() => setIsOpen(false)}
                     >
                       {item.label}
                     </Link>
@@ -164,7 +162,7 @@ export function Navbar() {
                         <Link
                           key={service.slug}
                           href={`/servicios/${service.slug}`}
-                          className="block text-sm text-gray-300 hover:text-white"
+                          className="block text-sm text-white/60 hover:text-white"
                           onClick={() => setIsOpen(false)}
                         >
                           {service.title}
@@ -172,40 +170,24 @@ export function Navbar() {
                       ))}
                     </div>
                   </div>
-                ) : item.iconOnly ? (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="block text-gray-200 hover:text-[#FF7A7F] transition-colors font-medium"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Acceso
-                  </Link>
                 ) : (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="block text-gray-200 hover:text-[#FF7A7F] transition-colors font-medium"
+                    className="block text-white/80 hover:text-white transition-colors font-medium"
                     onClick={() => setIsOpen(false)}
                   >
                     {item.label}
                   </Link>
                 )
               )}
-              <div className="pt-4 space-y-2 border-t border-white/10">
+              <div className="pt-3 border-t border-white/10">
                 <Link
                   href="/contacto"
-                  className="block px-4 py-2 rounded-lg border border-[#FF5A5F] text-white text-center font-medium bg-[#FF5A5F]/10"
+                  className="block px-4 py-2 rounded-lg bg-gradient-to-r from-[#1a2f55] via-[#0B1B33] to-[#FF5A5F] text-white text-center font-semibold"
                   onClick={() => setIsOpen(false)}
                 >
-                  Contáctanos
-                </Link>
-                <Link
-                  href="/trabaja-con-nosotros"
-                  className="block px-4 py-2 rounded-lg bg-[#FF5A5F] text-white text-center font-medium"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Trabaja con nosotros
+                  Agenda una reunión
                 </Link>
               </div>
             </div>
