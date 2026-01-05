@@ -124,7 +124,7 @@ export function Navbar() {
             <div className="hidden md:flex justify-end">
               <Link
                 href="/contacto"
-                className="px-5 py-2 rounded-full bg-gradient-to-r from-[#1a2f55] via-[#0B1B33] to-[#FF5A5F] text-white font-semibold text-sm hover:shadow-[0_12px_36px_rgba(255,90,95,0.35)] transition-all"
+                className="px-5 py-2 rounded-lg bg-gradient-to-r from-[#1a2f55] via-[#0B1B33] to-[#FF5A5F] text-white font-semibold text-sm hover:shadow-[0_12px_36px_rgba(255,90,95,0.35)] transition-all"
               >
                 Agenda una reunión
               </Link>
@@ -184,7 +184,7 @@ export function Navbar() {
               <div className="pt-3 border-t border-white/10">
                 <Link
                   href="/contacto"
-                  className="block px-4 py-2 rounded-full bg-gradient-to-r from-[#1a2f55] via-[#0B1B33] to-[#FF5A5F] text-white text-center font-semibold"
+                  className="block px-4 py-2 rounded-lg bg-gradient-to-r from-[#1a2f55] via-[#0B1B33] to-[#FF5A5F] text-white text-center font-semibold"
                   onClick={() => setIsOpen(false)}
                 >
                   Agenda una reunión

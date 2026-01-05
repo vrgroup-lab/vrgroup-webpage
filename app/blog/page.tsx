@@ -87,7 +87,7 @@ export default function BlogPage() {
           {categories.map((category, idx) => (
             <button
               key={idx}
-              className={`px-4 py-2 rounded-full font-medium transition-all ${
+              className={`px-4 py-2 rounded-lg font-medium transition-all ${
                 idx === 0 ? "bg-coral text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
               }`}
             >

@@ -174,7 +174,7 @@ export function Footer() {
               href="https://cl.linkedin.com/company/vr-group-chile"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-gray-200 hover:text-coral transition-colors px-3 py-1 rounded-full border border-white/10"
+              className="inline-flex items-center gap-2 text-gray-200 hover:text-coral transition-colors px-3 py-1 rounded-lg border border-white/10"
               aria-label="LinkedIn"
             >
               <Linkedin className="w-4 h-4" />

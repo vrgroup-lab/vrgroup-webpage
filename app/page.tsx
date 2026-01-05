@@ -45,7 +45,7 @@ export default function Home() {
   ]
 
   const ctaBase =
-    "w-full sm:w-[280px] h-[56px] rounded-full font-display font-semibold transition-all inline-flex items-center justify-center gap-2 whitespace-nowrap"
+    "w-full sm:w-[280px] h-[56px] rounded-xl font-display font-semibold transition-all inline-flex items-center justify-center gap-2 whitespace-nowrap"
 
   return (
     <div className="min-h-screen flex flex-col">
