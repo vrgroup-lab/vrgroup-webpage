@@ -8,6 +8,8 @@ Sitio ES/EN para VR Group, consultora boutique en transformación digital, autom
 - **Styling**: Tailwind CSS v4
 - **Fonts**: Poppins (headings) · Inter (body)
 - **Icons**: Lucide React
+- **Backend**: Supabase (Postgres + RLS, Auth, Storage)
+- **Email**: API mock listo para integrar SendGrid/Resend (ver sección Conexiones)
 - **Analytics/Deploy**: Vercel
 
 ## 📁 Estructura
@@ -25,6 +27,7 @@ app/
   equipo/[slug]/page.tsx      # Perfil individual de cada miembro
   api/contact/route.ts        # Mock contacto
   api/jobs/route.ts           # Mock jobs
+  api/admin/*                 # CRUD admin (portafolio, usuarios, ofertas) contra Supabase
 components/
   layout/ (navbar con dropdown de servicios, footer)
   ui/ (hero, hero-rotator, section, highlights Appian/IA)
@@ -66,6 +69,19 @@ public/
 
 - `/api/contact` y `/api/jobs` son mocks; integrar SendGrid/Resend/EmailJS añadiendo credenciales y lógica.
 - Form de contacto: empresa, industria (select), email corporativo, teléfono/WhatsApp, asunto, mensaje; feedback de envío.
+
+## 🔌 Conexiones y servicios
+
+- **Supabase** (backend principal):
+  - **Auth**: `getSupabaseBrowser()` para sesión en cliente; rutas admin usan sesión vigente.
+  - **DB**: tablas `jobs`, `portfolio_projects`, `portfolio_media`, `user_profiles`.
+  - **Storage**: bucket `portfolio` (público) para media de portafolio.
+  - **Admin API**: rutas en `app/api/admin/*` (jobs, portfolio projects/media, upload, usuarios) consumen Supabase con policies activadas.
+- **Email**:
+  - Formularios usan mocks (`/api/contact`, `/api/jobs`). Para enviar correos:
+    - Agrega provider (SendGrid, Resend, EmailJS).
+    - Crea variables en `.env.local` (ej: `SENDGRID_API_KEY`, `RESEND_API_KEY`, `CONTACT_TO`).
+    - Implementa el send en las rutas API correspondientes.
 
 ## 🌍 Internacionalización
 

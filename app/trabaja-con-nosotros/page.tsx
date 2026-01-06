@@ -2,6 +2,7 @@ import { Navbar } from "@/components/layout/navbar"
 import { Footer } from "@/components/layout/footer"
 import { Hero } from "@/components/ui/hero"
 import { Section } from "@/components/ui/section"
+import { CTABanner } from "@/components/ui/cta-banner"
 import Link from "next/link"
 import {
   Shield,
@@ -236,31 +237,31 @@ export default async function CareersPage() {
         />
         <div
           className="absolute inset-0 opacity-[0.12]"
-          aria-hidden="true"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)",
-            backgroundSize: "80px 80px",
-          }}
-        />
-        <div className="relative max-w-3xl mx-auto text-center space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white/90 text-xs font-semibold shadow-sm backdrop-blur">
-            <Sparkles size={14} /> Únete a VR Group
-          </div>
-          <h2 className="font-display font-bold text-3xl sm:text-4xl leading-tight">¿Tu posición ideal no está listada?</h2>
-          <p className="text-lg sm:text-xl opacity-95 leading-relaxed">
-            Envíanos tu CV y cuéntanos por qué te gustaría unirte a VR Group. Siempre estamos buscando talento.
-          </p>
-          <Link
-            href="/contacto"
-            className="inline-flex px-8 py-3 bg-white text-coral rounded-xl font-display font-semibold shadow-[0_18px_38px_rgba(0,0,0,0.25)] hover:bg-gray-100 transition-colors"
-          >
-            Enviar candidatura
-          </Link>
-        </div>
-      </Section>
-
-      <Footer />
+      aria-hidden="true"
+      style={{
+        backgroundImage:
+          "linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)",
+        backgroundSize: "80px 80px",
+      }}
+    />
+    <div className="relative max-w-3xl mx-auto text-center space-y-4">
+      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white/90 text-xs font-semibold shadow-sm backdrop-blur">
+        <Sparkles size={14} /> Únete a VR Group
+      </div>
+      <h2 className="font-display font-bold text-3xl sm:text-4xl leading-tight">¿Tu posición ideal no está listada?</h2>
+      <p className="text-lg sm:text-xl opacity-95 leading-relaxed">
+        Envíanos tu CV y cuéntanos por qué te gustaría unirte a VR Group. Siempre estamos buscando talento.
+      </p>
+      <Link
+        href="/contacto"
+        className="inline-flex px-8 py-3 bg-white text-coral rounded-xl font-display font-semibold shadow-[0_18px_38px_rgba(0,0,0,0.25)] hover:bg-gray-100 transition-colors"
+      >
+        Enviar candidatura
+      </Link>
     </div>
+  </Section>
+
+  <Footer />
+</div>
   )
 }

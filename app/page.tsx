@@ -7,6 +7,7 @@ import { MetricCounter } from "@/components/ui/metric-counter"
 import { AppianHighlight } from "@/components/ui/appian-highlight"
 import { IAHighlight } from "@/components/ui/ia-highlight"
 import { ServicesSection } from "@/components/ui/services-section"
+import { CTABanner } from "@/components/ui/cta-banner"
 import { getLogosFromFolder } from "@/lib/logos"
 import Link from "next/link"
 import { Check, Brain, Workflow, Sparkles } from "lucide-react"
@@ -204,6 +205,14 @@ export default function Home() {
           </Link>
         </div>
       </Section>
+
+      <CTABanner
+        eyebrow="Contacto"
+        title="🚀 Hablemos de tu próximo release"
+        subtitle="Agenda una reunión y revisamos cómo escalar tu operación con arquitectura, automatización e IA."
+        buttonLabel="Agenda una reunión"
+        buttonHref="/contacto"
+      />
 
       <Footer />
     </div>
