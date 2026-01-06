@@ -5,7 +5,17 @@ import { Section } from "@/components/ui/section"
 import { InteractiveCardCarousel } from "@/components/ui/interactive-card-carousel"
 import { getLogosFromFolder } from "@/lib/logos"
 import Link from "next/link"
-import { Check, ArrowRight } from "lucide-react"
+import {
+  Check,
+  ArrowRight,
+  TrendingUp,
+  Wrench,
+  Square,
+  Circle,
+  Triangle,
+  ArrowRightFromLine,
+  Zap,
+} from "lucide-react"
 
 interface ServiceDetailPageProps {
   params: Promise<{
@@ -15,9 +25,8 @@ interface ServiceDetailPageProps {
 
 const serviceContent: Record<string, any> = {
   "transformacion-digital-desarrollo": {
-    title: "Experiencia Digital: UX/UI, Web & Mobile",
-    intro:
-      "Diseñamos y construimos canales y productos digitales (web y mobile) para que sean fáciles de usar, rápidos y medibles en su adopción.",
+    title: "Experiencia Digital.",
+    intro: "Soluciones integrales web y mobile.",
     offeringsIntro:
       "Combinamos research, UX/UI, desarrollo web/mobile y performance digital para entregar canales que se lanzan rápido, se usan sin fricción y evolucionan con datos.",
     showcase: [
@@ -143,9 +152,8 @@ const serviceContent: Record<string, any> = {
     ],
   },
   "soluciones-ti-proyectos": {
-    title: "Ingeniería de Software e Integración: Software Factory",
-    intro:
-      "Construimos y evolucionamos soluciones full-stack (backends, APIs e integraciones) para operar con resiliencia enterprise y velocidad de entrega, con estándares de calidad y despliegue continuo.",
+    title: "Ingeniería de Software.",
+    intro: "Soluciones integradas y a medida.",
     services: [
       { title: "Arquitectura & Diseño de Solución", description: "Decisiones técnicas, seguridad, escalabilidad y costos." },
       { title: "Backends & APIs", description: "Lógica de negocio, microservicios cuando aplica y contratos claros." },
@@ -196,9 +204,8 @@ const serviceContent: Record<string, any> = {
     ],
   },
   "automatizacion-procesos": {
-    title: "Automatización Digital de Procesos (ADP / Appian / RPA)",
-    intro:
-      "Discovery, roadmap, laboratorio de automatización, implementaciones Appian, RPA e iBPMS para automatizar end-to-end con enfoque low-code y gobierno claro.",
+    title: "Automatización digital.",
+    intro: "Optimiza procesos, impulsa eficiencia.",
     benefits: [
       "Time-to-market acelerado con low-code",
       "Reducción de TAT y costos operativos",
@@ -221,9 +228,8 @@ const serviceContent: Record<string, any> = {
     ],
   },
   "gestion-operaciones-riesgo": {
-    title: "Gestión, Operaciones, Riesgo & Cumplimiento",
-    intro:
-      "Modelos de gestión, mejora de procesos BPM, control de gestión, riesgos, cumplimiento normativo, auditoría y PMO para operar con eficiencia y control.",
+    title: "Gestión & Riesgo.",
+    intro: "Excelencia en procesos clave.",
     benefits: [
       "Modelos operativos alineados a la estrategia",
       "Control y mitigación de riesgos clave",
@@ -245,9 +251,8 @@ const serviceContent: Record<string, any> = {
     ],
   },
   "ia-agentes-inteligentes": {
-    title: "IA Aplicada a Procesos & Agentes Inteligentes",
-    intro:
-      "Diseño e integración de agentes inteligentes y copilots conectados a sistemas core, con seguridad, guardrails y automatización cognitiva en workflows empresariales.",
+    title: "IA Aplicada a Procesos.",
+    intro: "Agentes inteligentes para mayor eficiencia.",
     benefits: [
       "Agentes integrados a sistemas y datos empresariales",
       "Automatización cognitiva de tareas repetitivas",
@@ -269,30 +274,84 @@ const serviceContent: Record<string, any> = {
       { step: "05", title: "Escalado", description: "Despliegue y monitoreo continuo" },
     ],
   },
-  "analitica-ml": {
-    title: "Analítica Avanzada & Machine Learning Aplicado",
-    intro:
-      "Modelos predictivos, dashboards inteligentes, RAG corporativo, análisis avanzado y machine learning aplicado a problemas reales de negocio.",
-    benefits: [
-      "Decisiones basadas en datos y modelos",
-      "Dashboards accionables con métricas clave",
-      "Arquitecturas de datos modernas y seguras",
-      "ML aplicado a casos de negocio reales",
+  "staffing-celulas-agiles": {
+    title: "Staffing & Células Ágiles",
+    intro: "Soluciones digitales con equipos ágiles a demanda.",
+    heroEyebrow: "Staffing digital",
+    pillars: [
+      {
+        title: "Equipos ágiles.",
+        description: "Células flexibles conformadas por perfiles expertos para escalar tus proyectos rápidamente y sin burocracia.",
+        shape: "square",
+        image: "/images/staffing/equipos-agiles.jpg",
+      },
+      {
+        title: "Staffing digital.",
+        description: "Provisión inmediata de talento IT especializado, en modalidad on-demand y con rápida integración a tu operación.",
+        shape: "circle",
+        image: "/images/staffing/staffing-digital.jpg",
+      },
+      {
+        title: "Procesos eficientes.",
+        description: "Implementamos metodologías ágiles y herramientas colaborativas que aseguran entregas veloces y eficaces.",
+        shape: "triangle",
+        image: "/images/staffing/procesos-eficientes.jpg",
+      },
     ],
-    services: [
-      { title: "Modelos Predictivos & Forecasting", description: "Demanda, churn, scoring y más." },
-      { title: "RAG & Search Empresarial", description: "Recuperación aumentada para conocimiento interno." },
-      { title: "Dashboards & Data Viz", description: "Insights accionables para equipos de negocio." },
-      { title: "Data Pipelines & MLOps", description: "Gobierno, despliegue y monitoreo de modelos." },
-      { title: "Use Cases por Industria", description: "Retail, finanzas, logística, servicios." },
+    differentiators: [
+      { title: "Onboarding Express", icon: ArrowRightFromLine },
+      { title: "Escalabilidad real", icon: TrendingUp },
+      { title: "Toolbox propio", icon: Wrench },
+      { title: "Entrega rápida", icon: Zap },
     ],
-    process: [
-      { step: "01", title: "Data Discovery", description: "Calidad y disponibilidad de datos" },
-      { step: "02", title: "Diseño de Casos", description: "Hipótesis, KPIs y viabilidad" },
-      { step: "03", title: "Construcción", description: "Modelado, dashboards y APIs" },
-      { step: "04", title: "Deploy", description: "Despliegue seguro y monitoreo" },
-      { step: "05", title: "Mejora Continua", description: "Re-entrenos y optimización" },
+    profiles: [
+      {
+        name: "Ingenieros de software",
+        description: "Full-stack con enfoque en buenas prácticas, rendimiento y despliegues confiables.",
+      },
+      {
+        name: "Desarrolladores backend",
+        description: "APIs, microservicios y servicios robustos, seguros y escalables.",
+      },
+      {
+        name: "Desarrolladores frontend web",
+        description: "Experiencias web modernas, accesibles y optimizadas para performance.",
+      },
+      {
+        name: "Desarrolladores frontend mobile",
+        description: "Apps nativas/híbridas con UX cuidada, estabilidad y métricas en producción.",
+      },
+      {
+        name: "Consultores",
+        description: "Interfaz negocio-tecnología para levantar requerimientos y priorizar entregas.",
+      },
+      {
+        name: "Analistas QA",
+        description: "Calidad end-to-end: pruebas funcionales, automatizadas y regresiones.",
+      },
+      {
+        name: "Analistas de Business Intelligence",
+        description: "Modelado de datos, dashboards accionables y reporting para decisión.",
+      },
+      {
+        name: "Desarrolladores low-code",
+        description: "Implementación acelerada en Appian/low-code con gobierno y standards.",
+      },
+      {
+        name: "Arquitectos de software",
+        description: "Definen arquitectura, seguridad y escalabilidad alineadas a negocio.",
+      },
+      {
+        name: "Project Managers",
+        description: "Gestión ágil, riesgos y coordinación de equipos para liberar valor continuo.",
+      },
     ],
+    reasons: [
+      "Seleccionamos profesionales que se adaptan a tu cultura y objetivos, formando equipos cohesionados que impulsan la innovación y aceleran resultados.",
+      "Acompañamos desde la definición de perfiles hasta la puesta en marcha, gestionando la evolución y resolución de obstáculos para que el talento siempre esté alineado con tus metas.",
+      "Reducimos el tiempo de contratación y minimizamos riesgos, ofreciendo flexibilidad contractual y la posibilidad de escalar según la demanda de tu negocio.",
+    ],
+    subservices: [{ title: "Consultoría TI" }, { title: "Fábrica de Software" }, { title: "Soluciones IA" }],
   },
 }
 
@@ -303,6 +362,7 @@ const slugAliases: Record<string, string> = {
   transformacion: "transformacion-digital-desarrollo",
   "soluciones-ti": "soluciones-ti-proyectos",
   "gestion-riesgo": "gestion-operaciones-riesgo",
+  "analitica-ml": "staffing-celulas-agiles",
 }
 
 export default async function ServiceDetailPage({ params }: ServiceDetailPageProps) {
@@ -313,6 +373,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
   const isIAService = normalizedSlug === "ia-agentes-inteligentes"
   const isTransformacion = normalizedSlug === "transformacion-digital-desarrollo"
   const isSoftwareFactory = normalizedSlug === "soluciones-ti-proyectos"
+  const isStaffing = normalizedSlug === "staffing-celulas-agiles"
   const heroBackground = isAppian ? "/images/appian/process-automation-animation.gif" : undefined
   const providerLogos = isIAService ? getLogosFromFolder("ai-providers") : []
   const iaProvidersFallback = ["OpenAI", "Anthropic", "Google Gemini", "Azure OpenAI", "AWS Bedrock", "DeepSeek", "Cohere", "Meta Llama"]
@@ -334,12 +395,152 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
     )
   }
 
+  if (isStaffing) {
+    return (
+      <div className="min-h-screen flex flex-col bg-white text-gray-900">
+        <Navbar />
+
+        <Hero
+          title={content.title}
+          subtitle={content.intro}
+          alignment="center"
+          className="pt-16"
+          minHeight="520px"
+          variant="services"
+        />
+
+        <section id="detalles" className="pt-6 pb-16 bg-gradient-to-b from-[#f5f7fb] via-white to-[#eef2f7]">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mb-10">
+              <div className="relative overflow-hidden rounded-2xl border border-gray-200 bg-gradient-to-r from-[#0b1b33] via-[#12345a] to-[#0b1b33] p-[1px] shadow-lg">
+                <div className="rounded-2xl bg-white/95 p-6 sm:p-7">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="font-display text-xl sm:text-2xl font-semibold text-[#0b1b33]">¿Qué ofrecemos?</h3>
+                    <span className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">Talento ágil</span>
+                  </div>
+                  <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
+                    Proveemos células ágiles y talento especializado para activar, escalar o reforzar iniciativas digitales sin fricción.
+                    Equipos listos para integrarse a tu operación con onboarding express, gobierno liviano y herramientas ágiles que aseguran entrega
+                    continua y calidad.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {content.pillars.map((item: any) => (
+                <div key={item.title} className="rounded-2xl bg-gray-100 p-5 sm:p-6 flex flex-col gap-4">
+                  <div className="w-full aspect-[4/3] rounded-xl bg-gray-200 flex items-center justify-center overflow-hidden">
+                    {item.image ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                    ) : (
+                      <>
+                        {item.shape === "square" && <Square size={48} className="text-gray-400" />}
+                        {item.shape === "circle" && <Circle size={48} className="text-gray-400" />}
+                        {item.shape === "triangle" && <Triangle size={52} className="text-gray-400" />}
+                      </>
+                    )}
+                  </div>
+                  <div>
+                    <h3 className="font-display font-semibold text-lg text-black mb-1">{item.title}</h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">{item.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
+              {content.differentiators.map((diff: any) => {
+                const Icon = diff.icon
+                return (
+                  <div
+                    key={diff.title}
+                    className="flex flex-col items-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-5 text-center shadow-sm"
+                  >
+                    <Icon size={20} className="text-gray-700" />
+                    <p className="font-semibold text-gray-800 text-sm">{diff.title}</p>
+                  </div>
+                )
+              })}
+            </div>
+
+            <div className="mt-12">
+              <div className="flex items-center justify-between mb-4">
+                <h4 className="font-display text-lg sm:text-xl font-semibold text-black">Roles disponibles</h4>
+                <span className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">Staffing on-demand</span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {content.profiles.map((profile: any, idx: number) => (
+                  <div
+                    key={profile.name}
+                    className="group relative h-48 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden"
+                  >
+                    <div className="absolute inset-0 rounded-xl transition-all duration-500 group-hover:translate-y-[-100%] p-4 flex flex-col items-center justify-center gap-3">
+                      <div className="h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 text-lg">
+                        {idx + 1}
+                      </div>
+                      <p className="font-display font-semibold text-center text-gray-900 text-sm sm:text-base">{profile.name}</p>
+                    </div>
+                    <div className="absolute inset-0 rounded-xl bg-white border border-gray-200 p-4 flex items-center justify-center text-center text-sm text-gray-700 leading-relaxed translate-y-full transition-all duration-500 group-hover:translate-y-0">
+                      <p>{profile.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-12 space-y-4 max-w-3xl text-left mx-auto">
+              <div className="relative rounded-2xl border border-black bg-black p-6 shadow-lg">
+                <h4 className="font-display text-lg font-semibold text-white mb-3">¿Por qué elegir nuestro servicio?</h4>
+                <div className="space-y-3 text-white">
+                  {content.reasons.map((paragraph: string) => (
+                    <p key={paragraph} className="text-sm leading-relaxed opacity-90">
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-14 rounded-2xl border border-blue-200 bg-blue-50 p-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {content.subservices.map((sub: any) => (
+                  <div key={sub.title} className="rounded-xl bg-white/70 border border-white p-5 flex flex-col items-center gap-4 shadow-sm">
+                    <div className="w-full aspect-[4/3] rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden">
+                      {sub.image ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={sub.image} alt={sub.title} className="w-full h-full object-cover" />
+                      ) : sub.title.includes("IA") ? (
+                        <Triangle size={40} className="text-gray-400" />
+                      ) : sub.title.includes("Fábrica") ? (
+                        <Circle size={40} className="text-gray-400" />
+                      ) : (
+                        <Square size={36} className="text-gray-400" />
+                      )}
+                    </div>
+                    <div className="text-center">
+                      <p className="text-xs uppercase text-gray-500">Subservicio</p>
+                      <h5 className="font-display font-semibold text-base text-gray-900">{sub.title}</h5>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <Footer />
+      </div>
+    )
+  }
+
   if (isSoftwareFactory) {
     return (
       <div className="min-h-screen flex flex-col">
         <Navbar />
 
-        <Hero title={content.title} subtitle={content.intro} />
+        <Hero title={content.title} subtitle={content.intro} variant="services" />
 
         <Section
           title="¿Qué ofrecemos?"
@@ -481,7 +682,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
       <div className="min-h-screen flex flex-col">
         <Navbar />
 
-        <Hero title={content.title} subtitle={content.intro} />
+        <Hero title={content.title} subtitle={content.intro} variant="services" />
 
         <Section
           title="¿Qué ofrecemos?"
@@ -666,7 +867,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
     <div className="min-h-screen flex flex-col">
       <Navbar />
 
-      <Hero title={content.title} subtitle={content.intro} backgroundImage={heroBackground} />
+      <Hero title={content.title} subtitle={content.intro} backgroundImage={heroBackground} variant="services" />
 
       {/* Benefits Section */}
       <Section

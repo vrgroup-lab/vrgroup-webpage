@@ -71,6 +71,7 @@ export default function Home() {
         }
         alignment="center"
         minHeight="780px"
+        variant="default"
       >
         <div className="flex flex-col items-center gap-4">
           <span className="text-xs font-semibold uppercase tracking-[0.18em] text-white/70">
@@ -91,27 +92,6 @@ export default function Home() {
               Explora nuestros servicios
             </Link>
           </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full sm:w-auto text-left sm:text-center">
-            {[
-              { label: "+150 proyectos en producción misión crítica", icon: Check },
-              { label: "Gobierno, seguridad y continuidad operativa", icon: Sparkles },
-              { label: "Arquitectura, datos e IA aplicada a negocio", icon: Brain },
-            ].map((item, idx) => {
-              const Icon = item.icon
-              return (
-                <div
-                  key={idx}
-                  className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-white/85 backdrop-blur"
-                >
-                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 text-coral">
-                    <Icon size={18} />
-                  </div>
-                  <span className="text-sm font-semibold leading-snug">{item.label}</span>
-                </div>
-              )
-            })}
-          </div>
         </div>
       </Hero>
 
@@ -122,13 +102,13 @@ export default function Home() {
         className="bg-white"
         variant="light"
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 lg:gap-4 xl:gap-5">
           {differentiators.map((item, idx) => {
             const Icon = item.icon
             return (
               <div
                 key={idx}
-                className="rounded-2xl border border-gray-200 p-6 bg-white hover:shadow-lg transition-all group"
+                className="rounded-2xl border border-gray-200 p-6 lg:p-7 bg-white hover:shadow-lg transition-all group"
               >
                 <div className="w-11 h-11 rounded-xl bg-[#FF5A5F]/10 flex items-center justify-center text-coral mb-4 group-hover:scale-105 transition-transform">
                   <Icon size={22} />

@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { getSupabaseBrowser } from "@/lib/supabase/client"
 import { Lock, Mail, ShieldCheck, Sparkles } from "lucide-react"
+import Image from "next/image"
 
 export default function AdminLoginPage() {
   const router = useRouter()
@@ -38,90 +39,104 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#050711] text-white flex items-center justify-center px-4 py-10">
-      <div className="max-w-4xl w-full grid md:grid-cols-2 gap-6 items-stretch">
-        <div className="hidden md:flex flex-col justify-center rounded-3xl p-8 bg-gradient-to-br from-[#0B1B33] via-[#0e2240] to-[#FF5A5F] shadow-[0_24px_60px_rgba(6,12,30,0.45)]">
-          <div className="space-y-4">
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-xs font-semibold uppercase tracking-[0.2em]">
-              <ShieldCheck size={14} />
-              Acceso privado
-            </span>
-            <h1 className="font-display text-3xl font-bold leading-tight">Panel de administración</h1>
-            <p className="text-white/80">
-              Inicia sesión para acceder al panel interno de VR Group.
-            </p>
-          </div>
-        </div>
-
-        <div className="rounded-3xl bg-white/5 border border-white/10 p-6 sm:p-8 shadow-[0_18px_48px_rgba(6,12,30,0.4)] backdrop-blur">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="h-10 w-10 rounded-xl bg-white/10 flex items-center justify-center">
-              <Lock size={18} />
-            </div>
-            <div>
-              <p className="text-sm text-white/60">VR Group</p>
-              <h2 className="font-display text-2xl font-bold text-white">Iniciar sesión</h2>
-            </div>
-          </div>
-
-          {error && (
-            <div className="mb-4 rounded-xl border border-red-500/40 bg-red-500/10 text-red-100 px-4 py-3 text-sm">
-              {error}
-            </div>
-          )}
-
-          {supabaseError && (
-            <div className="mb-4 rounded-xl border border-amber-500/40 bg-amber-500/10 text-amber-100 px-4 py-3 text-sm">
-              {supabaseError}
-            </div>
-          )}
-
-          <form className="space-y-4" onSubmit={handleSubmit}>
-            <div>
-              <label className="block text-sm font-semibold text-white/80 mb-2">Email</label>
-              <div className="relative">
-                <Mail className="w-4 h-4 text-white/50 absolute left-3 top-3" />
-                <input
-                  type="email"
-                  name="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-white/40 focus:outline-none focus:border-[#FF5A5F]"
-                  placeholder="tu@empresa.com"
-                />
+    <div className="min-h-screen flex items-center justify-center px-4 py-10 bg-gray-100">
+      <div className="w-full max-w-2xl">
+        <div className="overflow-hidden rounded-2xl shadow-2xl border border-gray-200 bg-white">
+          <div className="grid md:grid-rows-[1fr_auto]">
+            {/* Top hero block */}
+            <div className="bg-[#0b1224] text-white px-6 sm:px-10 py-8 sm:py-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+              <div className="flex items-center gap-3">
+                <div className="relative h-14 w-14 sm:h-16 sm:w-16">
+                  <Image src="/logos/brand/logo_vrgroup_cuadrado.png" alt="VR Group" fill className="object-contain" sizes="128px" />
+                </div>
+                <div>
+                  <p className="text-xs uppercase tracking-[0.22em] text-white/70">Admin</p>
+                  <h1 className="font-display text-2xl sm:text-3xl font-bold leading-tight">Panel de administración</h1>
+                </div>
               </div>
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-semibold uppercase tracking-[0.2em] self-start sm:self-auto">
+                <ShieldCheck size={14} />
+                Acceso privado
+              </span>
             </div>
 
-            <div>
-              <label className="block text-sm font-semibold text-white/80 mb-2">Contraseña</label>
-              <div className="relative">
-                <Lock className="w-4 h-4 text-white/50 absolute left-3 top-3" />
-                <input
-                  type="password"
-                  name="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder:text-white/40 focus:outline-none focus:border-[#FF5A5F]"
-                  placeholder="********"
-                />
+            {/* Form block */}
+            <div className="px-6 sm:px-10 py-8 bg-white">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="relative h-12 w-12">
+                    <Image src="/logos/brand/logo_vrgroup_cuadrado.png" alt="VR Group" fill className="object-contain" sizes="96px" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-500">VR Group</p>
+                    <h2 className="font-display text-2xl font-bold text-gray-900">Iniciar sesión</h2>
+                  </div>
+                </div>
+                <div className="h-10 w-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center">
+                  <Lock size={18} />
+                </div>
               </div>
+
+              {error && (
+                <div className="mb-4 rounded-xl border border-red-200 bg-red-50 text-red-700 px-4 py-3 text-sm">
+                  {error}
+                </div>
+              )}
+
+              {supabaseError && (
+                <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 text-amber-800 px-4 py-3 text-sm">
+                  {supabaseError}
+                </div>
+              )}
+
+              <form className="space-y-4" onSubmit={handleSubmit}>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Email</label>
+                  <div className="relative">
+                    <Mail className="w-4 h-4 text-gray-400 absolute left-3 top-3" />
+                    <input
+                      type="email"
+                      name="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-blue-600"
+                      placeholder="tu@empresa.com"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Contraseña</label>
+                  <div className="relative">
+                    <Lock className="w-4 h-4 text-gray-400 absolute left-3 top-3" />
+                    <input
+                      type="password"
+                      name="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-blue-600"
+                      placeholder="********"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-white bg-blue-600 shadow-sm hover:bg-blue-700 transition-all disabled:opacity-60"
+                >
+                  {loading ? "Ingresando..." : "Ingresar"}
+                  <Sparkles size={18} />
+                </button>
+
+                <p className="text-xs text-gray-500">
+                  ¿Olvidaste tu contraseña? Escríbele a un administrador para restablecer tu acceso.
+                </p>
+              </form>
             </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-[#FF5A5F] to-[#FF7A7F] shadow-[0_14px_40px_rgba(255,90,95,0.35)] hover:shadow-[0_18px_50px_rgba(255,90,95,0.4)] transition-all disabled:opacity-60"
-            >
-              {loading ? "Ingresando..." : "Ingresar"}
-              <Sparkles size={18} />
-            </button>
-
-            <p className="text-xs text-white/60">
-              ¿Olvidaste tu contraseña? Escríbele a un administrador para restablecer tu acceso.
-            </p>
-          </form>
+          </div>
         </div>
       </div>
     </div>

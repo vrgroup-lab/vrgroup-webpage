@@ -193,9 +193,9 @@ export default function AdminJobsPage() {
     <div className="space-y-6">
       <header className="flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <p className="text-xs uppercase tracking-[0.2em] text-white/60">Ofertas</p>
-          <h1 className="font-display text-3xl font-bold">Administración de ofertas</h1>
-          <p className="text-white/70">Publica, edita o archiva vacantes.</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-gray-500">Ofertas</p>
+          <h1 className="font-display text-3xl font-bold text-gray-900">Administración de ofertas</h1>
+          <p className="text-gray-600">Publica, edita o archiva vacantes.</p>
         </div>
         <button
           type="button"
@@ -203,37 +203,37 @@ export default function AdminJobsPage() {
             setShowForm((v) => !v)
             if (!showForm) resetForm()
           }}
-          className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-[#FF5A5F] to-[#FF7A7F] text-sm font-semibold text-white shadow-[0_10px_28px_rgba(255,90,95,0.35)] hover:shadow-[0_12px_34px_rgba(255,90,95,0.45)] transition-all"
+          className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-600 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 transition-all"
         >
           <Plus size={14} />
           {showForm ? "Cerrar" : "Nueva oferta"}
         </button>
       </header>
 
-      {error && <div className="rounded-2xl border border-red-500/30 bg-red-500/10 text-red-100 px-4 py-3 text-sm">{error}</div>}
+      {error && <div className="rounded-xl border border-red-200 bg-red-50 text-red-700 px-4 py-3 text-sm">{error}</div>}
 
-      <section className="rounded-2xl border border-white/10 bg-white/5 p-4 sm:p-5 space-y-3">
+      <section className="rounded-xl border border-gray-200 bg-white p-4 sm:p-5 space-y-3 shadow-sm">
         <div className="flex items-center gap-2">
-          <BriefcaseBusiness className="w-4 h-4 text-white/70" />
-          <h2 className="font-display text-xl font-semibold text-white">Listado</h2>
+          <BriefcaseBusiness className="w-4 h-4 text-gray-500" />
+          <h2 className="font-display text-xl font-semibold text-gray-900">Listado</h2>
         </div>
         {loading ? (
-          <p className="text-white/70 text-sm">Cargando...</p>
+          <p className="text-gray-600 text-sm">Cargando...</p>
         ) : (
           <div className="space-y-3">
             {jobs.map((job) => (
               <div
                 key={job.id}
-                className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3"
+                className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-lg border border-gray-200 bg-white px-4 py-3 shadow-sm"
               >
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-white/10 text-white flex items-center justify-center font-semibold">
+                  <div className="h-10 w-10 rounded-full bg-gray-100 text-gray-900 flex items-center justify-center font-semibold">
                     {job.title?.[0]?.toUpperCase() || "J"}
                   </div>
                   <div>
-                    <p className="font-semibold text-white">{job.title}</p>
-                    <p className="text-xs text-white/60">{job.slug}</p>
-                    <p className="text-xs text-white/70 flex items-center gap-2">
+                    <p className="font-semibold text-gray-900">{job.title}</p>
+                    <p className="text-xs text-gray-500">{job.slug}</p>
+                    <p className="text-xs text-gray-600 flex items-center gap-2">
                       {job.location && (
                         <span className="inline-flex items-center gap-1">
                           <MapPin size={12} /> {job.location}
@@ -249,7 +249,7 @@ export default function AdminJobsPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <select
-                    className="bg-white/5 border border-white/10 text-white text-sm rounded-lg px-3 py-2"
+                    className="bg-white border border-gray-200 text-gray-900 text-sm rounded-lg px-3 py-2"
                     value={job.status}
                     onChange={(e) => updateJobStatus(job.id, e.target.value)}
                   >
@@ -265,7 +265,7 @@ export default function AdminJobsPage() {
                       editJob(job)
                       setShowForm(true)
                     }}
-                    className="text-white/80 hover:text-white"
+                    className="text-gray-600 hover:text-gray-800"
                     title="Editar"
                   >
                     <PenLine size={16} />
@@ -273,7 +273,7 @@ export default function AdminJobsPage() {
                   <button
                     type="button"
                     onClick={() => deleteJob(job.id)}
-                    className="text-red-200 hover:text-red-100"
+                    className="text-red-500 hover:text-red-600"
                     title="Eliminar"
                   >
                     <Trash2 size={16} />
@@ -281,23 +281,23 @@ export default function AdminJobsPage() {
                 </div>
               </div>
             ))}
-            {jobs.length === 0 && <p className="text-white/60 text-sm">No hay ofertas cargadas.</p>}
+            {jobs.length === 0 && <p className="text-gray-500 text-sm">No hay ofertas cargadas.</p>}
           </div>
         )}
       </section>
 
       {showForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">
-          <div className="w-full max-w-3xl rounded-2xl bg-[#0b1224] border border-white/10 p-6 shadow-[0_24px_60px_rgba(6,12,30,0.6)] space-y-4">
+        <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 backdrop-blur-sm px-4 py-8 overflow-y-auto">
+          <div className="w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl bg-white border border-gray-200 p-6 shadow-2xl space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Plus className="w-4 h-4 text-white/70" />
-                <h2 className="font-display text-xl font-semibold text-white">{editingId ? "Editar oferta" : "Nueva oferta"}</h2>
+                <Plus className="w-4 h-4 text-gray-500" />
+                <h2 className="font-display text-xl font-semibold text-gray-900">{editingId ? "Editar oferta" : "Nueva oferta"}</h2>
               </div>
               <button
                 type="button"
                 onClick={() => setShowForm(false)}
-                className="text-white/70 hover:text-white"
+                className="text-gray-500 hover:text-gray-800"
               >
                 ✕
               </button>
@@ -305,45 +305,45 @@ export default function AdminJobsPage() {
             <form className="space-y-3" onSubmit={upsertJob}>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm text-white/80 mb-1">Título</label>
+                  <label className="block text-sm text-gray-700 mb-1">Título</label>
                   <input
                     type="text"
                     required
                     value={form.title}
                     onChange={(e) => setForm((prev) => ({ ...prev, title: e.target.value }))}
-                    className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder:text-white/40 focus:outline-none focus:border-[#FF5A5F]"
+                    className="w-full px-3 py-2 rounded-lg bg-white border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-blue-600"
                     placeholder="Ej: Backend Engineer"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm text-white/80 mb-1">Slug</label>
+                  <label className="block text-sm text-gray-700 mb-1">Slug</label>
                   <input
                     type="text"
                     required
                     value={form.slug}
                     onChange={(e) => setForm((prev) => ({ ...prev, slug: e.target.value }))}
-                    className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder:text-white/40 focus:outline-none focus:border-[#FF5A5F]"
+                    className="w-full px-3 py-2 rounded-lg bg-white border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-blue-600"
                     placeholder="backend-engineer"
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm text-white/80 mb-1">Resumen</label>
+                <label className="block text-sm text-gray-700 mb-1">Resumen</label>
                 <textarea
                   value={form.summary}
                   onChange={(e) => setForm((prev) => ({ ...prev, summary: e.target.value }))}
                   rows={10}
-                  className="w-full px-3 py-3 rounded-lg bg-white/5 border border-white/10 text-white text-sm leading-relaxed placeholder:text-white/40 focus:outline-none focus:border-[#FF5A5F] resize-none"
+                  className="w-full px-3 py-3 rounded-lg bg-white border border-gray-200 text-gray-900 text-sm leading-relaxed placeholder:text-gray-400 focus:outline-none focus:border-blue-600 resize-none"
                   placeholder="Descripción breve de la vacante y su impacto"
                 ></textarea>
               </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm text-white/80 mb-1">Ubicación</label>
+                <label className="block text-sm text-gray-700 mb-1">Ubicación</label>
                 <select
                   value={form.location}
                     onChange={(e) => setForm((prev) => ({ ...prev, location: e.target.value }))}
-                    className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-[#FF5A5F]"
+                    className="w-full px-3 py-2 rounded-lg bg-white border border-gray-200 text-gray-900 focus:outline-none focus:border-blue-600"
                   >
                     <option value="" className="text-blue-dark">
                       Selecciona
@@ -354,13 +354,13 @@ export default function AdminJobsPage() {
                       </option>
                     ))}
                   </select>
-              </div>
+                </div>
               <div>
-                <label className="block text-sm text-white/80 mb-1">Modalidad</label>
+                <label className="block text-sm text-gray-700 mb-1">Modalidad</label>
                 <select
                   value={form.modality}
                     onChange={(e) => setForm((prev) => ({ ...prev, modality: e.target.value }))}
-                    className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-[#FF5A5F]"
+                    className="w-full px-3 py-2 rounded-lg bg-white border border-gray-200 text-gray-900 focus:outline-none focus:border-blue-600"
                   >
                     <option value="" className="text-blue-dark">
                       Selecciona
@@ -373,11 +373,11 @@ export default function AdminJobsPage() {
                   </select>
                 </div>
               <div>
-                <label className="block text-sm text-white/80 mb-1">Tipo de empleo</label>
+                <label className="block text-sm text-gray-700 mb-1">Tipo de empleo</label>
                 <select
                   value={form.employment_type}
                   onChange={(e) => setForm((prev) => ({ ...prev, employment_type: e.target.value }))}
-                  className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-[#FF5A5F]"
+                  className="w-full px-3 py-2 rounded-lg bg-white border border-gray-200 text-gray-900 focus:outline-none focus:border-blue-600"
                 >
                   <option value="" className="text-blue-dark">
                     Selecciona
@@ -392,43 +392,43 @@ export default function AdminJobsPage() {
             </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm text-white/80 mb-1">Responsabilidades</label>
+                  <label className="block text-sm text-gray-700 mb-1">Responsabilidades</label>
                   <textarea
                     value={form.responsibilities}
                     onChange={(e) => setForm((prev) => ({ ...prev, responsibilities: e.target.value }))}
                     rows={4}
-                    className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm placeholder:text-white/40 focus:outline-none focus:border-[#FF5A5F]"
+                    className="w-full px-3 py-2 rounded-lg bg-white border border-gray-200 text-gray-900 text-sm placeholder:text-gray-400 focus:outline-none focus:border-blue-600"
                     placeholder="Escribe cada línea como un ítem"
                   ></textarea>
                 </div>
                 <div>
-                  <label className="block text-sm text-white/80 mb-1">Requisitos</label>
+                  <label className="block text-sm text-gray-700 mb-1">Requisitos</label>
                   <textarea
                     value={form.requirements}
                     onChange={(e) => setForm((prev) => ({ ...prev, requirements: e.target.value }))}
                     rows={4}
-                    className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm placeholder:text-white/40 focus:outline-none focus:border-[#FF5A5F]"
+                    className="w-full px-3 py-2 rounded-lg bg-white border border-gray-200 text-gray-900 text-sm placeholder:text-gray-400 focus:outline-none focus:border-blue-600"
                     placeholder="Escribe cada línea como un ítem"
                   ></textarea>
                 </div>
               </div>
               <div>
-                <label className="block text-sm text-white/80 mb-1">Beneficios</label>
+                <label className="block text-sm text-gray-700 mb-1">Beneficios</label>
                 <textarea
                   value={form.benefits}
                   onChange={(e) => setForm((prev) => ({ ...prev, benefits: e.target.value }))}
                   rows={4}
-                  className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white text-sm placeholder:text-white/40 focus:outline-none focus:border-[#FF5A5F]"
+                  className="w-full px-3 py-2 rounded-lg bg-white border border-gray-200 text-gray-900 text-sm placeholder:text-gray-400 focus:outline-none focus:border-blue-600"
                   placeholder="Escribe cada línea como un ítem"
                 ></textarea>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm text-white/80 mb-1">Seniority</label>
+                  <label className="block text-sm text-gray-700 mb-1">Seniority</label>
                   <select
                     value={form.seniority}
                     onChange={(e) => setForm((prev) => ({ ...prev, seniority: e.target.value }))}
-                    className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-[#FF5A5F]"
+                    className="w-full px-3 py-2 rounded-lg bg-white border border-gray-200 text-gray-900 focus:outline-none focus:border-blue-600"
                   >
                     <option value="" className="text-blue-dark">
                       Selecciona
@@ -441,11 +441,11 @@ export default function AdminJobsPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm text-white/80 mb-1">Estado</label>
+                  <label className="block text-sm text-gray-700 mb-1">Estado</label>
                   <select
                     value={form.status}
                     onChange={(e) => setForm((prev) => ({ ...prev, status: e.target.value }))}
-                    className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white focus:outline-none focus:border-[#FF5A5F]"
+                    className="w-full px-3 py-2 rounded-lg bg-white border border-gray-200 text-gray-900 focus:outline-none focus:border-blue-600"
                   >
                     {statuses.map((s) => (
                       <option key={s} value={s} className="text-blue-dark">
@@ -456,26 +456,26 @@ export default function AdminJobsPage() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm text-white/80 mb-1 flex items-center gap-1">
+                <label className="block text-sm text-gray-700 mb-1 flex items-center gap-1">
                   <Tags size={14} /> Tags (separadas por coma)
                 </label>
                 <input
                   type="text"
                   value={form.tags}
                   onChange={(e) => setForm((prev) => ({ ...prev, tags: e.target.value }))}
-                  className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder:text-white/40 focus:outline-none focus:border-[#FF5A5F]"
+                  className="w-full px-3 py-2 rounded-lg bg-white border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-blue-600"
                   placeholder="react, node, agile"
                 />
               </div>
               <div className="space-y-3">
-                <label className="block text-sm text-white/80">Pretensión de renta</label>
-                <div className="flex items-center justify-between text-xs text-white/60">
+                <label className="block text-sm text-gray-700">Pretensión de renta</label>
+                <div className="flex items-center justify-between text-xs text-gray-500">
                   <span>Mín: {salaryMinValue.toLocaleString("es-CL")}</span>
                   <span>Máx: {Math.max(salaryMinValue, salaryMaxValue).toLocaleString("es-CL")}</span>
                 </div>
-                <div className="w-full h-2 rounded-full bg-white/10 overflow-hidden">
+                <div className="w-full h-2 rounded-full bg-gray-100 overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-[#FF5A5F] to-[#FF7A7F]"
+                    className="h-full bg-gradient-to-r from-blue-600 to-blue-400"
                     style={{
                       width: `${((Math.max(salaryMinValue, salaryMaxValue) - salaryMinRange) / (salaryMaxRange - salaryMinRange)) * 100}%`,
                       marginLeft: `${((salaryMinValue - salaryMinRange) / (salaryMaxRange - salaryMinRange)) * 100}%`,
@@ -484,7 +484,7 @@ export default function AdminJobsPage() {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs text-white/60 mb-1">Mínimo</label>
+                    <label className="block text-xs text-gray-600 mb-1">Mínimo</label>
                     <input
                       type="number"
                       min={salaryMinRange}
@@ -495,12 +495,12 @@ export default function AdminJobsPage() {
                         const val = e.target.value
                         setForm((prev) => ({ ...prev, salary_min: val }))
                       }}
-                    className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder:text-white/40 focus:outline-none focus:border-[#FF5A5F]"
+                    className="w-full px-3 py-2 rounded-lg bg-white border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-blue-600"
                     placeholder="Mínimo"
                   />
                   </div>
                   <div>
-                    <label className="block text-xs text-white/60 mb-1">Máximo</label>
+                    <label className="block text-xs text-gray-600 mb-1">Máximo</label>
                     <input
                       type="number"
                       min={salaryMinRange}
@@ -511,7 +511,7 @@ export default function AdminJobsPage() {
                         const val = e.target.value
                         setForm((prev) => ({ ...prev, salary_max: val }))
                       }}
-                    className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder:text-white/40 focus:outline-none focus:border-[#FF5A5F]"
+                    className="w-full px-3 py-2 rounded-lg bg-white border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-blue-600"
                     placeholder="Máximo"
                   />
                 </div>
@@ -519,22 +519,22 @@ export default function AdminJobsPage() {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm text-white/80 mb-1">Link oferta en LinkedIn</label>
+                  <label className="block text-sm text-gray-700 mb-1">Link oferta en LinkedIn</label>
                   <input
                     type="url"
                     value={form.apply_linkedin_url}
                     onChange={(e) => setForm((prev) => ({ ...prev, apply_linkedin_url: e.target.value }))}
-                    className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder:text-white/40 focus:outline-none focus:border-[#FF5A5F]"
+                    className="w-full px-3 py-2 rounded-lg bg-white border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-blue-600"
                     placeholder="https://www.linkedin.com/..."
                   />
                 </div>
                 <div>
-                  <label className="block text-sm text-white/80 mb-1">Link formulario (Notion)</label>
+                  <label className="block text-sm text-gray-700 mb-1">Link formulario (Notion)</label>
                   <input
                     type="url"
                     value={form.apply_notion_url}
                     onChange={(e) => setForm((prev) => ({ ...prev, apply_notion_url: e.target.value }))}
-                    className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder:text-white/40 focus:outline-none focus:border-[#FF5A5F]"
+                    className="w-full px-3 py-2 rounded-lg bg-white border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:border-blue-600"
                     placeholder="https://www.notion.so/..."
                   />
                 </div>
@@ -546,14 +546,14 @@ export default function AdminJobsPage() {
                     resetForm()
                     setShowForm(false)
                   }}
-                  className="text-white/70 hover:text-white text-sm"
+                  className="text-gray-600 hover:text-gray-800 text-sm"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
-                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-white bg-gradient-to-r from-[#FF5A5F] to-[#FF7A7F] shadow-[0_12px_32px_rgba(255,90,95,0.35)] hover:shadow-[0_16px_42px_rgba(255,90,95,0.4)] transition-all disabled:opacity-60"
+                  className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold text-white bg-blue-600 shadow-sm hover:bg-blue-700 transition-all disabled:opacity-60"
                 >
                   <Plus size={16} />
                   {saving ? "Guardando..." : editingId ? "Actualizar" : "Crear oferta"}

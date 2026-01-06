@@ -63,7 +63,7 @@ export function IAHighlight({ providerLogos = [] }: IAHighlightProps) {
 
   return (
     <Section className="bg-white" variant="light">
-      <div className="max-w-6xl mx-auto space-y-8">
+      <div className="max-w-[1260px] mx-auto space-y-8">
         <div className="flex flex-col items-center text-center gap-3">
           <h2 className="font-display font-bold text-4xl md:text-5xl text-blue-dark flex flex-wrap items-center justify-center gap-2">
             <span className="bg-[linear-gradient(120deg,#0f1729,#1f3d8f,#12a0c6)] bg-clip-text text-transparent">IA</span>
