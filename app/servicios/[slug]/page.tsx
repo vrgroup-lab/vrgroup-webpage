@@ -3,6 +3,7 @@ import { Footer } from "@/components/layout/footer"
 import { Hero } from "@/components/ui/hero"
 import { Section } from "@/components/ui/section"
 import { InteractiveCardCarousel } from "@/components/ui/interactive-card-carousel"
+import { CTABanner } from "@/components/ui/cta-banner"
 import { getLogosFromFolder } from "@/lib/logos"
 import Link from "next/link"
 import {
@@ -50,11 +51,6 @@ const serviceContent: Record<string, any> = {
         description: "SEO, tagging, dashboards y experimentación continua para mejorar velocidad y conversión.",
         tags: ["GA4", "GTM", "SEO", "A/B testing"],
       },
-      {
-        title: "Células ágiles & staffing digital",
-        description: "Equipos multidisciplinarios que mantienen y evolucionan el canal con releases frecuentes.",
-        tags: ["PO/UX/FE/QA", "Backlog", "Soporte evolutivo", "Sprints"],
-      },
     ],
     benefits: [
       "Experiencias intuitivas y consistentes en cada canal.",
@@ -84,7 +80,6 @@ const serviceContent: Record<string, any> = {
       "Diseño y desarrollo mobile",
       "Evolución y optimización de canal digital",
       "Performance digital (SEO/Analítica)",
-      "Células ágiles y staffing",
     ],
     includesPillars: [
       {
@@ -677,6 +672,9 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
 
   if (isTransformacion) {
     const technologies = content.technologiesCards ?? content.technologies?.map((name: string) => ({ name }))
+    const showcaseItems =
+      content.showcase?.filter((item: any) => !item.title.toLowerCase().includes("células") && !item.title.toLowerCase().includes("staffing")) ??
+      []
 
     return (
       <div className="min-h-screen flex flex-col">
@@ -695,7 +693,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
             <div className="absolute -right-24 -bottom-24 w-72 h-72 rounded-full bg-[#0B1B33]/10 blur-3xl"></div>
           </div>
           <div className="relative">
-            <InteractiveCardCarousel items={content.showcase} accent="#FF5A5F" />
+            <InteractiveCardCarousel items={showcaseItems} accent="#FF5A5F" />
           </div>
         </Section>
 
@@ -1069,21 +1067,13 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
       </Section>
 
       {/* CTA Section */}
-      <Section className="bg-gradient-to-r from-coral to-blue-dark text-white">
-        <div className="max-w-2xl mx-auto text-center">
-          <h2 className="font-display font-bold text-3xl mb-4">¿Listo para implementar esta solución?</h2>
-          <p className="text-lg mb-8 opacity-90">
-            Contáctanos para una consulta gratuita y descubre cómo podemos ayudarte.
-          </p>
-          <Link
-            href="/contacto"
-            className="inline-flex px-8 py-3 bg-white text-coral rounded-lg font-display font-semibold hover:bg-gray-100 transition-colors items-center gap-2"
-          >
-            Solicita una reunión
-            <ArrowRight size={20} />
-          </Link>
-        </div>
-      </Section>
+      <CTABanner
+        eyebrow="Contacto"
+        title="🤝 ¿Listo para implementar esta solución?"
+        subtitle="Agendemos una sesión para revisar tu caso y activar un plan con entrega a producción."
+        buttonLabel="Agenda una reunión"
+        buttonHref="/contacto"
+      />
 
       <Footer />
     </div>

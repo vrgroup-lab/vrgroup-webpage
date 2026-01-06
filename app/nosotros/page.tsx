@@ -2,6 +2,7 @@ import { Navbar } from "@/components/layout/navbar"
 import { Footer } from "@/components/layout/footer"
 import { HeroRotator } from "@/components/ui/hero-rotator"
 import { Section } from "@/components/ui/section"
+import { CTABanner } from "@/components/ui/cta-banner"
 import Image from "next/image"
 import Link from "next/link"
 import { CheckCircle2, Sparkles, Workflow, Users, Rocket, ShieldCheck, Linkedin } from "lucide-react"
@@ -242,22 +243,13 @@ export default function AboutPage() {
       </Section>
 
       {/* CTA */}
-      <Section className="bg-gradient-to-br from-coral via-coral-dark to-[#0B1B33]" variant="dark">
-        <div className="max-w-3xl mx-auto text-center text-white space-y-4">
-          <h2 className="font-display font-bold text-3xl sm:text-4xl">¿Listo para impulsar tu organización?</h2>
-          <p className="text-lg text-white/90">
-            Conversemos y diseñemos juntos la próxima etapa de tu estrategia digital.
-          </p>
-          <div className="flex justify-center">
-            <a
-              href="/contacto"
-              className="inline-flex px-6 py-3 rounded-lg bg-gradient-to-r from-[#FF5A5F] to-[#FF7A7F] text-white font-semibold shadow-[0_14px_30px_rgba(255,90,95,0.35)] hover:shadow-[0_18px_38px_rgba(255,90,95,0.45)] transition"
-            >
-              Hablemos
-            </a>
-          </div>
-        </div>
-      </Section>
+      <CTABanner
+        eyebrow="Contacto"
+        title="🤝 ¿Listo para impulsar tu organización?"
+        subtitle="Conversemos y diseñemos juntos la próxima etapa de tu estrategia digital."
+        buttonLabel="Hablemos"
+        buttonHref="/contacto"
+      />
 
       <Footer />
     </div>
