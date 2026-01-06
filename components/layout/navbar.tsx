@@ -33,7 +33,7 @@ export function Navbar() {
     "automatizacion-procesos": "Automatización de Procesos",
     "gestion-operaciones-riesgo": "Gestión y Riesgo",
     "ia-agentes-inteligentes": "IA & Agentes",
-    "analitica-ml": "Analítica & ML",
+    "staffing-celulas-agiles": "Staffing & Células",
   }
 
   const navItems = [
@@ -43,13 +43,13 @@ export function Navbar() {
   ]
 
   return (
-    <nav className="sticky top-0 z-50">
-      <div className="backdrop-blur bg-[#0a1530]/95 border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-[auto_1fr_auto] items-center h-16 gap-4">
+    <nav className="fixed top-0 left-0 right-0 z-50 pointer-events-none">
+      <div className="flex justify-center px-3 pt-3 sm:pt-4">
+        <div className="w-full max-w-[1260px] rounded-2xl border border-white/10 bg-black/90 shadow-[0_18px_45px_rgba(0,0,0,0.45)] backdrop-blur-lg px-4 sm:px-6 lg:px-8 pointer-events-auto">
+          <div className="grid grid-cols-[auto_1fr_auto] items-center h-16 gap-3 sm:gap-4">
             {/* Logo */}
             <Link href="/" className="flex items-center font-display text-white -ml-1 sm:-ml-2">
-              <div className="relative h-9 w-28 sm:h-10 sm:w-32">
+              <div className="relative h-11 w-36 sm:h-12 sm:w-40">
                 <Image
                   src="/logos/brand/logo-vr-group_rectangulo.png"
                   alt="VR Group"
@@ -62,7 +62,7 @@ export function Navbar() {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center justify-center gap-6 text-sm font-medium">
+            <div className="hidden md:flex items-center justify-center gap-6 text-sm font-semibold">
               {navItems.map((item) =>
                 item.hasSub ? (
                   <div
@@ -78,11 +78,11 @@ export function Navbar() {
                     <div
                       onMouseEnter={openServices}
                       onMouseLeave={delayedCloseServices}
-                      className={`fixed inset-x-0 top-[64px] w-full px-0 pt-0 z-40 transition-all duration-150 ${
+                      className={`fixed inset-x-0 top-[76px] w-full px-0 pt-0 z-40 transition-all duration-150 ${
                         servicesOpen ? "opacity-100 pointer-events-auto translate-y-0" : "opacity-0 pointer-events-none -translate-y-1"
                       }`}
                     >
-                      <div className="border-t border-white/10 bg-[#0b1428] shadow-[0_20px_70px_rgba(0,0,0,0.35)]">
+                      <div className="border-t border-white/10 bg-black shadow-[0_20px_70px_rgba(0,0,0,0.45)]">
                         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 px-6 pb-6 pt-6">
                           {servicesData.map((service) => {
                             const shortTitle = shortTitles[service.slug] ?? service.title
@@ -93,7 +93,7 @@ export function Navbar() {
                                 href={`/servicios/${service.slug}`}
                                 className="flex gap-3 p-4 rounded-2xl hover:bg-white/10 transition-colors h-full border border-transparent hover:border-white/20"
                               >
-                                <div className="mt-1 flex h-10 w-10 items-center justify-center rounded-xl bg-white/15 text-white">
+                                <div className="mt-1 flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-white">
                                   <Icon size={18} />
                                 </div>
                                 <div>
@@ -108,10 +108,10 @@ export function Navbar() {
                           <Link href={item.href} className="text-sm font-semibold text-[#FF7A7F] hover:text-white">
                             Ver todos los servicios →
                           </Link>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+            </div>
+          </div>
+        </div>
+      </div>
                 ) : (
                   <Link key={item.href} href={item.href} className="text-white hover:text-white transition-colors">
                     {item.label}
@@ -121,10 +121,10 @@ export function Navbar() {
             </div>
 
             {/* CTA */}
-            <div className="hidden md:flex justify-end">
+            <div className="hidden md:flex items-center gap-3 justify-end">
               <Link
                 href="/contacto"
-                className="px-5 py-2 rounded-lg bg-gradient-to-r from-[#1a2f55] via-[#0B1B33] to-[#FF5A5F] text-white font-semibold text-sm hover:shadow-[0_12px_36px_rgba(255,90,95,0.35)] transition-all"
+                className="px-5 py-2 rounded-xl bg-white text-black font-semibold text-sm hover:bg-gray-100 transition-all"
               >
                 Agenda una reunión
               </Link>
@@ -184,7 +184,7 @@ export function Navbar() {
               <div className="pt-3 border-t border-white/10">
                 <Link
                   href="/contacto"
-                  className="block px-4 py-2 rounded-lg bg-gradient-to-r from-[#1a2f55] via-[#0B1B33] to-[#FF5A5F] text-white text-center font-semibold"
+                  className="block px-4 py-2 rounded-xl bg-white text-black text-center font-semibold"
                   onClick={() => setIsOpen(false)}
                 >
                   Agenda una reunión

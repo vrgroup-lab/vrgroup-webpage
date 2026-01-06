@@ -9,13 +9,13 @@ const shortServiceTitles: Record<string, string> = {
   "automatizacion-procesos": "Automatización de Procesos",
   "gestion-operaciones-riesgo": "Gestión y Riesgo",
   "ia-agentes-inteligentes": "IA & Agentes",
-  "analitica-ml": "Analítica & ML",
+  "staffing-celulas-agiles": "Staffing & Células",
 }
 
 export function Footer() {
   return (
     <footer className="bg-black text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
+      <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-8">
           {/* Company Info */}
           <div className="md:col-span-1">

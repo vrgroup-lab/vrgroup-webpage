@@ -25,7 +25,7 @@ export function Section({
 
   return (
     <section id={id} className={`${padding} ${className}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8">
         {(title || subtitle) && (
           <div className="mb-12 text-center">
             {title && (

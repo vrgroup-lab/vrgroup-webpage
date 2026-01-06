@@ -1,6 +1,6 @@
 import { ServiceCard } from "@/components/ui/service-card"
 import type { LucideIcon } from "lucide-react"
-import { Bot, Layers, LineChart, ShieldCheck, Sparkles, Workflow } from "lucide-react"
+import { Bot, Layers, ShieldCheck, Sparkles, Users, Workflow } from "lucide-react"
 
 export type ServiceVariant = "light" | "dark"
 
@@ -48,11 +48,10 @@ export const servicesData: ServiceItem[] = [
     icon: Bot,
   },
   {
-    slug: "analitica-ml",
-    title: "Analítica Avanzada & Machine Learning Aplicado",
-    description:
-      "Modelos predictivos, dashboards inteligentes, RAG corporativo, análisis avanzado y machine learning aplicado a problemas reales de negocio.",
-    icon: LineChart,
+    slug: "staffing-celulas-agiles",
+    title: "Staffing & Células Ágiles",
+    description: "Equipos ágiles on-demand para ejecutar y escalar iniciativas digitales con velocidad y gobierno liviano.",
+    icon: Users,
   },
 ]
 
