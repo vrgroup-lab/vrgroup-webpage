@@ -369,7 +369,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
   const isTransformacion = normalizedSlug === "transformacion-digital-desarrollo"
   const isSoftwareFactory = normalizedSlug === "soluciones-ti-proyectos"
   const isStaffing = normalizedSlug === "staffing-celulas-agiles"
-  const heroBackground = isAppian ? "/images/appian/process-automation-animation.gif" : undefined
+  const heroBackground = isAppian ? undefined : undefined
   const providerLogos = isIAService ? getLogosFromFolder("ai-providers") : []
   const iaProvidersFallback = ["OpenAI", "Anthropic", "Google Gemini", "Azure OpenAI", "AWS Bedrock", "DeepSeek", "Cohere", "Meta Llama"]
 
@@ -385,6 +385,176 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
             </Link>
           </div>
         </div>
+        <Footer />
+      </div>
+    )
+  }
+
+  if (isAppian) {
+    const useCases = content.useCases ?? []
+
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+
+        <Hero title={content.title} subtitle={content.intro} variant="services" />
+
+        <Section className="relative bg-gradient-to-br from-white via-[#f6f8fc] to-[#e8edfa] overflow-hidden" variant="light">
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute -left-32 -top-32 w-80 h-80 rounded-full bg-coral/10 blur-3xl"></div>
+            <div className="absolute -right-24 -bottom-24 w-72 h-72 rounded-full bg-[#0B1B33]/10 blur-3xl"></div>
+          </div>
+          <div className="relative max-w-4xl mx-auto">
+            <div className="relative overflow-hidden rounded-2xl border border-gray-200 bg-gradient-to-r from-[#0b1b33] via-[#12345a] to-[#0b1b33] p-[1px] shadow-lg">
+              <div className="rounded-2xl bg-white/95 p-6 sm:p-7">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-display text-xl sm:text-2xl font-semibold text-[#0b1b33]">¿Qué ofrecemos?</h3>
+                  <span className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">Automatización</span>
+                </div>
+                <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
+                  Automatizamos procesos end-to-end con Appian, RPA e iBPMS: discovery, pipeline priorizado, laboratorio de prototipos,
+                  implementaciones gobernadas y operación con métricas. Reducimos TAT, mejoramos cumplimiento y habilitamos escalabilidad con
+                  trazabilidad y observabilidad desde el día uno.
+                </p>
+              </div>
+            </div>
+          </div>
+        </Section>
+
+        <Section className="bg-white" variant="light">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                title: "Eficiencia inmediata.",
+                description: "Digitalizamos procesos repetitivos para liberar a tu equipo hacia tareas de mayor valor.",
+                shape: "square",
+              },
+              {
+                title: "Escalabilidad garantizada.",
+                description: "Las soluciones crecen con tu negocio, adaptándose a nuevos casos y demanda.",
+                shape: "circle",
+              },
+              {
+                title: "Resultados medibles.",
+                description: "Desde el primer día obtienes reportes claros de mejora y oportunidades de optimización.",
+                shape: "triangle",
+              },
+            ].map((item) => (
+              <div key={item.title} className="rounded-2xl border border-gray-200 bg-gray-50 p-5 flex flex-col gap-4">
+                <div className="w-full aspect-[4/3] rounded-xl bg-gray-200 flex items-center justify-center">
+                  {item.shape === "square" && <Square size={48} className="text-gray-400" />}
+                  {item.shape === "circle" && <Circle size={48} className="text-gray-400" />}
+                  {item.shape === "triangle" && <Triangle size={52} className="text-gray-400" />}
+                </div>
+                <div>
+                  <h3 className="font-display font-semibold text-lg text-[#0b1b33] mb-1">{item.title}</h3>
+                  <p className="text-gray-700 text-sm leading-relaxed">{item.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        <Section className="bg-white" variant="light">
+          <div className="rounded-3xl overflow-hidden border border-gray-200 shadow-[0_18px_55px_rgba(0,0,0,0.12)]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/appian/process-automation-animation.gif"
+              alt="Automatización en acción"
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </Section>
+
+        <Section className="bg-white" variant="light">
+          <div className="max-w-4xl mx-auto space-y-3">
+            <h3 className="font-display text-lg font-semibold text-[#0b1b33]">De la detección al éxito</h3>
+            <p className="text-gray-700 text-sm leading-relaxed">
+              Comenzamos con discovery para identificar procesos críticos y objetivos claros. Nos enfocamos en comprender tus desafíos y alinearlos con tus
+              metas.
+            </p>
+            <p className="text-gray-700 text-sm leading-relaxed">
+              Diseñamos soluciones personalizadas integrando automatización, IA y optimización digital para un despliegue eficiente y sin fricciones.
+            </p>
+            <p className="text-gray-700 text-sm leading-relaxed">
+              Monitoreamos y mejoramos continuamente lo implementado para que el valor se multiplique y se mantenga en el tiempo.
+            </p>
+          </div>
+        </Section>
+
+        <Section
+          title="¿Qué incluye el servicio?"
+          subtitle="Desde discovery y laboratorio de automatización hasta operación y mejora continua."
+          className="bg-gray-50"
+          variant="light"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {content.services.map((service: any) => (
+              <div key={service.title} className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all">
+                <h3 className="font-display font-semibold text-lg text-blue-dark mb-2">{service.title}</h3>
+                <p className="text-gray-700 text-sm leading-relaxed">{service.description}</p>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        <Section title="Beneficios principales" className="bg-white" variant="light">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {content.benefits.map((benefit: string) => (
+              <div key={benefit} className="flex gap-3 items-start rounded-xl bg-gray-50 border border-gray-200 px-4 py-3 shadow-sm">
+                <div className="w-8 h-8 rounded-full bg-[#FF5A5F]/10 text-[#FF5A5F] flex items-center justify-center mt-1">
+                  <Check size={16} />
+                </div>
+                <p className="text-gray-700">{benefit}</p>
+              </div>
+            ))}
+          </div>
+        </Section>
+
+        {useCases.length > 0 && (
+          <Section title="Casos y ejemplos" className="bg-white" variant="light">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {useCases.map((item: any) => (
+                <div key={item.title} className="rounded-2xl bg-gray-50 border border-gray-200 p-4 shadow-sm">
+                  <h4 className="font-display font-semibold text-lg text-blue-dark mb-2">{item.title}</h4>
+                  <p className="text-gray-700 text-sm leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </Section>
+        )}
+
+        <Section title="Nuestro proceso" className="bg-gray-50" variant="light">
+          <div className="relative">
+            <div className="pointer-events-none hidden md:block absolute left-1/2 top-6 bottom-6 w-px bg-coral/60 transform -translate-x-1/2"></div>
+            <div className="pointer-events-none md:hidden absolute left-6 top-6 bottom-6 w-px bg-coral/60"></div>
+            <div className="space-y-12">
+              {content.process.map((item: any, idx: number) => (
+                <div key={item.title} className={`flex gap-6 items-start ${idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}>
+                  <div className="hidden md:block flex-1"></div>
+                  <div className="flex-shrink-0 relative z-10">
+                    <div className="w-12 h-12 bg-coral rounded-full flex items-center justify-center shadow-md">
+                      <span className="text-white font-display font-bold">{item.step}</span>
+                    </div>
+                  </div>
+                  <div className="flex-1 md:py-2">
+                    <h3 className="font-display font-bold text-lg mb-1 text-blue-dark">{item.title}</h3>
+                    <p className="text-gray-700">{item.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Section>
+
+        <CTABanner
+          eyebrow="Contacto"
+          title="🤝 ¿Listo para implementar esta solución?"
+          subtitle="Agendemos una sesión para revisar tu caso y activar un plan con entrega a producción."
+          buttonLabel="Agenda una reunión"
+          buttonHref="/contacto"
+        />
+
         <Footer />
       </div>
     )
