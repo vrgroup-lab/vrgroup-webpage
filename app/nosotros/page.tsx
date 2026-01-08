@@ -63,6 +63,14 @@ export default function AboutPage() {
                 </div>
               ))}
             </div>
+            <div className="pt-3 mt-1 border-t border-white/15 flex justify-center">
+              <Link
+                href="/trabaja-con-nosotros"
+                className="inline-flex items-center gap-2 rounded-full bg-white text-[#0B1B33] px-5 py-2 text-sm font-semibold hover:bg-gray-100 transition-colors"
+              >
+                Trabaja con nosotros
+              </Link>
+            </div>
           </div>
         </div>
       </HeroRotator>

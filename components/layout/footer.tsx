@@ -104,10 +104,15 @@ export function Footer() {
             <ul className="space-y-2.5 text-gray-400 text-[13px]">
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-white flex-shrink-0 mt-0.5" />
-                <span>
+                <a
+                  href="https://www.google.com/maps/search/?api=1&query=Libertador+Bernardo+O%27Higgins+949,+Santiago,+Chile"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-coral transition-colors"
+                >
                   Libertador Bernardo O'Higgins 949, piso 25 Of. 4<br />
                   Santiago, Chile
-                </span>
+                </a>
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={18} className="text-white flex-shrink-0" />
@@ -161,9 +166,15 @@ export function Footer() {
         {/* Partner */}
         <div className="border-t border-white/10 pt-6 flex items-center gap-3">
           <span className="text-sm text-white/70">Partnership</span>
-          <div className="relative h-8 w-[90px]">
+          <a
+            href="https://appian.com/es"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative h-8 w-[90px] hover:opacity-80 transition-opacity"
+            aria-label="Appian"
+          >
             <Image src="/logos/partners/letter_appian.png" alt="Appian Partner" fill className="object-contain" />
-          </div>
+          </a>
         </div>
 
         {/* Bottom Section */}
