@@ -7,6 +7,8 @@ import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { supabasePublic } from "@/lib/supabase/public"
 
+export const dynamic = "force-dynamic"
+
 type PortfolioMedia = {
   url: string
   thumbnail_url?: string | null
@@ -87,9 +89,9 @@ async function getProjects(serviceSlug?: string): Promise<PortfolioProject[]> {
 
 export default async function PortfolioPage({ searchParams }: { searchParams?: { servicio?: string | string[] } }) {
   const rawFilter = searchParams?.servicio
-  const serviceFilter = Array.isArray(rawFilter) ? rawFilter[0]?.trim() : rawFilter?.trim()
+  const serviceFilter = Array.isArray(rawFilter) ? rawFilter[0]?.trim().toLowerCase() : rawFilter?.trim().toLowerCase()
   const normalizedFilter = serviceFilter ? serviceSlugAliases[serviceFilter] ?? serviceFilter : ""
-  const projects = await getProjects(serviceFilter)
+  const projects = await getProjects(normalizedFilter)
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-blue-dark">
