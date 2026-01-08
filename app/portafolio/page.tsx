@@ -58,6 +58,8 @@ export default async function PortfolioPage() {
         subtitle="Proyectos en producción con arquitectura sólida, automatización y experiencias digitales."
         alignment="left"
         minHeight="520px"
+        overlayImage="/images/hero/portafolio/hero-overlay.gif"
+        overlayClassName="opacity-40"
       />
 
       <Section className="bg-white">

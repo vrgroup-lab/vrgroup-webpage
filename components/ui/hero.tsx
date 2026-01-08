@@ -1,5 +1,6 @@
 import type { ReactNode } from "react"
 import type { CSSProperties } from "react"
+import { TypewriterText } from "@/components/ui/typewriter-text"
 
 interface HeroProps {
   title: ReactNode
@@ -7,6 +8,8 @@ interface HeroProps {
   eyebrow?: ReactNode
   children?: ReactNode
   backgroundImage?: string
+  overlayImage?: string
+  overlayClassName?: string
   alignment?: "left" | "center"
   minHeight?: string
   backgroundSize?: string
@@ -21,6 +24,8 @@ export function Hero({
   eyebrow,
   children,
   backgroundImage,
+  overlayImage,
+  overlayClassName = "opacity-30 mix-blend-screen",
   alignment = "center",
   minHeight,
   backgroundSize = "cover",
@@ -54,6 +59,12 @@ export function Hero({
           <div className="pointer-events-none absolute right-[-60px] bottom-[-80px] h-96 w-96 rounded-full bg-[radial-gradient(circle_at_center,rgba(0,153,255,0.16),transparent_60%)] blur-3xl opacity-80" />
         </>
       )}
+      {overlayImage && (
+        <div
+          className={`absolute inset-0 bg-center bg-cover ${overlayClassName}`}
+          style={{ backgroundImage: `url(${overlayImage})` }}
+        />
+      )}
 
       {/* Content */}
       <div
@@ -73,7 +84,7 @@ export function Hero({
             </h1>
             {subtitle && (
               <p className="font-display font-black text-white text-2xl sm:text-[2.2rem] lg:text-[2.4rem] opacity-70 leading-tight drop-shadow">
-                {subtitle}
+                {typeof subtitle === "string" ? <TypewriterText text={subtitle} /> : subtitle}
               </p>
             )}
           </div>

@@ -8,6 +8,7 @@ import { AppianHighlight } from "@/components/ui/appian-highlight"
 import { IAHighlight } from "@/components/ui/ia-highlight"
 import { ServicesSection } from "@/components/ui/services-section"
 import { CTABanner } from "@/components/ui/cta-banner"
+import { RotatingWord } from "@/components/ui/rotating-word"
 import { getLogosFromFolder } from "@/lib/logos"
 import Link from "next/link"
 import { Check, Brain, Workflow, Sparkles } from "lucide-react"
@@ -57,24 +58,31 @@ export default function Home() {
         eyebrow="Consultoría Tecnologíca"
         title={
           <>
-            Diseñamos, construimos y operamos soluciones digitales{" "}
+            Diseñamos, construimos y operamos soluciones digitales que escalan tu{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF7A7F] via-[#FF5A5F] to-[#FF3C48]">
-              que escalan tu negocio
+              <RotatingWord
+                words={[
+                  "operación",
+                  "productividad",
+                  "time-to-market",
+                  "experiencia digital",
+                  "backoffice",
+                  "continuidad",
+                  "cumplimiento",
+                  "crecimiento",
+                ]}
+                intervalMs={3000}
+                fallback="operación"
+              />
             </span>
           </>
         }
-        subtitle={
-          <>
-            Arquitectura sólida, seguridad y gobierno claro para banca, retail y corporativos. Equipos senior end-to-end
-            que combinan estrategia, diseño, ingeniería, datos e IA aplicada para llevar tu operación a producción con
-            excelencia.
-          </>
-        }
+        subtitle="De estrategia a producción: arquitectura sólida, seguridad y gobierno claro para entornos críticos."
         alignment="center"
         minHeight="780px"
         variant="default"
       >
-        <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-col items-center gap-5 mt-8">
           <span className="text-xs font-semibold uppercase tracking-[0.18em] text-white/70">
             Atención ejecutiva
           </span>
@@ -88,11 +96,19 @@ export default function Home() {
             </Link>
             <Link
               href="/servicios"
-              className={`${ctaBase} px-8 border-2 border-white/70 text-white backdrop-blur hover:border-white hover:scale-[1.05] active:scale-[0.99]`}
+              className={`${ctaBase} px-8 bg-white text-[#0B1B33] hover:bg-gray-100 hover:scale-[1.05] active:scale-[0.99]`}
             >
               Explora nuestros servicios
             </Link>
           </div>
+        </div>
+        <div className="mt-10 w-full">
+          <LogoCarousel
+            logos={clientLogos}
+            className="py-3"
+            logoClassName="brightness-0 invert opacity-80"
+            showFades={false}
+          />
         </div>
       </Hero>
 
@@ -164,25 +180,6 @@ export default function Home() {
             </p>
             <p className="text-gray-500 text-sm">Gerente de Operaciones, Banca</p>
           </div>
-        </div>
-      </Section>
-
-      {/* Clients Section */}
-      <Section
-        title="Confían en nosotros"
-        subtitle="Equipos de banca, retail, consumo masivo y tecnología ya trabajan con VR Group."
-        className="bg-[#f3f5fa]"
-        variant="light"
-      >
-        <LogoCarousel logos={clientLogos} fadeColor="#f3f5fa" />
-        <div className="text-center mt-8">
-          <Link
-            href="/clientes"
-            className="inline-flex items-center gap-2 text-coral font-semibold hover:text-blue-dark transition-colors"
-          >
-            Ver todos los clientes
-            <span>→</span>
-          </Link>
         </div>
       </Section>
 
