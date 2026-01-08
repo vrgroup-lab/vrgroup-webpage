@@ -270,7 +270,7 @@ export default function ContactPage() {
                   <div className="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 flex items-center gap-3">
                     <Phone className="w-4 h-4 text-coral" />
                     <div>
-                      <p className="font-semibold text-blue-dark">+56 9 6192 8852</p>
+                      <p className="font-semibold text-blue-dark">+56 9 8950 6375</p>
                       <p className="text-gray-500 text-xs">WhatsApp habilitado</p>
                     </div>
                   </div>
@@ -285,12 +285,12 @@ export default function ContactPage() {
             <div className="text-center mb-6">
               <p className="text-xs uppercase tracking-[0.3em] text-gray-500 mb-2">Ubicación</p>
               <h2 className="font-display text-2xl sm:text-3xl font-semibold text-blue-dark">Visítanos en Santiago</h2>
-              <p className="text-sm text-gray-600 mt-2">Libertador Bernardo O&apos;Higgins 949, piso 25 Of. 4</p>
+              <p className="text-sm text-gray-600 mt-2">Av. Apoquindo 7331, oficina 420, Las Condes</p>
             </div>
             <div className="rounded-2xl overflow-hidden border border-gray-200 shadow-sm">
               <iframe
                 title="Mapa VR Group"
-                src="https://www.google.com/maps?q=Libertador+Bernardo+O%27Higgins+949,+Santiago,+Chile&output=embed"
+                src="https://www.google.com/maps?q=Av.+Apoquindo+7331,+Las+Condes,+Chile&output=embed"
                 className="w-full h-[320px] sm:h-[400px]"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"

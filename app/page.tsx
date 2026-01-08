@@ -58,8 +58,15 @@ export default function Home() {
         eyebrow="Consultoría Tecnologíca"
         title={
           <>
-            Diseñamos, construimos y operamos soluciones digitales que escalan tu{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF7A7F] via-[#FF5A5F] to-[#FF3C48]">
+            <span className="block text-3xl sm:text-5xl lg:text-6xl leading-[1.1]">
+              <span className="block sm:hidden">Diseñamos y operamos</span>
+              <span className="hidden sm:block">Diseñamos, construimos y operamos</span>
+            </span>
+            <span className="block text-3xl sm:text-5xl lg:text-6xl leading-[1.1]">
+              <span className="block sm:hidden">soluciones que escalan tu</span>
+              <span className="hidden sm:block">soluciones digitales que escalan tu</span>
+            </span>
+            <span className="block text-3xl sm:text-5xl lg:text-6xl leading-[1.1]">
               <RotatingWord
                 words={[
                   "operación",
@@ -71,13 +78,15 @@ export default function Home() {
                   "cumplimiento",
                   "crecimiento",
                 ]}
-                intervalMs={3000}
                 fallback="operación"
+                className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF7A7F] via-[#FF5A5F] to-[#FF3C48]"
+                containerClassName="whitespace-nowrap"
               />
             </span>
           </>
         }
         subtitle="De estrategia a producción: arquitectura sólida, seguridad y gobierno claro para entornos críticos."
+        subtitleClassName="text-base sm:text-xl leading-relaxed max-w-[22rem] sm:max-w-3xl"
         alignment="center"
         minHeight="780px"
         variant="default"

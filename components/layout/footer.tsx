@@ -105,24 +105,24 @@ export function Footer() {
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-white flex-shrink-0 mt-0.5" />
                 <a
-                  href="https://www.google.com/maps/search/?api=1&query=Libertador+Bernardo+O%27Higgins+949,+Santiago,+Chile"
+                  href="https://www.google.com/maps/search/?api=1&query=Av.+Apoquindo+7331,+Las+Condes,+Chile"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-coral transition-colors"
                 >
-                  Libertador Bernardo O'Higgins 949, piso 25 Of. 4<br />
-                  Santiago, Chile
+                  Av. Apoquindo 7331, oficina 420<br />
+                  Las Condes, Chile
                 </a>
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={18} className="text-white flex-shrink-0" />
-                <a href="tel:+56961928852" className="hover:text-coral transition-colors">
-                  (+56) 9 6192 8852
+                <a href="tel:+56989506375" className="hover:text-coral transition-colors">
+                  (+56) 9 8950 6375
                 </a>
               </li>
               <li className="flex items-center gap-3">
                 <MessageCircle size={18} className="text-white flex-shrink-0" />
-                <a href="https://wa.me/56961928852" className="hover:text-coral transition-colors">
+                <a href="https://wa.me/56989506375" className="hover:text-coral transition-colors">
                   WhatsApp
                 </a>
               </li>
