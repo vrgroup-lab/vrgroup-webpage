@@ -24,6 +24,54 @@ interface ServiceDetailPageProps {
   }>
 }
 
+function WhyChooseSection({
+  reasons,
+  highlights,
+  className,
+}: {
+  reasons: string[]
+  highlights?: string[]
+  className?: string
+}) {
+  if (!reasons?.length) return null
+
+  return (
+    <div className={className ? `bg-black ${className}` : "bg-black"}>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-8 items-center">
+          <div>
+            <h4 className="font-display text-xl sm:text-2xl font-semibold text-white mb-4">¿Por qué elegir nuestro servicio?</h4>
+            <div className="space-y-4 text-white/90">
+              {reasons.map((paragraph) => (
+                <p key={paragraph} className="text-sm leading-relaxed">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+          </div>
+          <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 via-white/0 to-white/10 p-3 sm:p-4 shadow-[0_24px_60px_rgba(0,0,0,0.45)]">
+            <div className="aspect-[4/3] w-full rounded-xl border border-dashed border-white/20 bg-white/5 flex items-center justify-center">
+              <span className="text-[11px] uppercase tracking-[0.3em] text-white/60">Imagen</span>
+            </div>
+          </div>
+        </div>
+        {highlights?.length ? (
+          <div className="mt-8 pt-6 border-t border-white/10">
+            <p className="text-[11px] uppercase tracking-[0.3em] text-white/60 mb-3">Beneficios principales</p>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 list-disc list-inside text-sm text-white/90">
+              {highlights.map((item) => (
+                <li key={item} className="leading-relaxed">
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+      </div>
+    </div>
+  )
+}
+
 const serviceContent: Record<string, any> = {
   "transformacion-digital-desarrollo": {
     title: "Experiencia Digital.",
@@ -145,6 +193,11 @@ const serviceContent: Record<string, any> = {
       { step: "04", title: "Lanzamiento & Medición", description: "Go-live con SEO, analítica y performance instrumentada" },
       { step: "05", title: "Evolución Continua", description: "Backlog, releases y optimización guiada por métricas" },
     ],
+    reasons: [
+      "Diseñamos canales digitales con foco en usuarios y objetivos de negocio, para maximizar adopción y conversión.",
+      "Entregamos rápido con design systems, componentes reutilizables y un roadmap priorizado por impacto.",
+      "Medimos performance, SEO y uso real para iterar con datos y mejorar resultados continuamente.",
+    ],
   },
   "soluciones-ti-proyectos": {
     title: "Ingeniería de Software.",
@@ -197,15 +250,20 @@ const serviceContent: Record<string, any> = {
       { step: "04", title: "Integración & UAT", description: "Conexión a sistemas, validación y hardening" },
       { step: "05", title: "Operación & Mejora", description: "SLAs, observabilidad y optimización continua" },
     ],
+    reasons: [
+      "Definimos arquitectura y estándares desde el inicio para asegurar performance, seguridad y escalabilidad.",
+      "Construimos APIs e integraciones con observabilidad y documentación clara para operar sin fricción.",
+      "Operamos con CI/CD y QA continuo para reducir riesgos y acelerar releases.",
+    ],
   },
   "automatizacion-procesos": {
     title: "Automatización digital.",
     intro: "Optimiza procesos, impulsa eficiencia.",
     benefits: [
-      "Time-to-market acelerado con low-code",
-      "Reducción de TAT y costos operativos",
-      "Trazabilidad y cumplimiento integrado",
-      "Orquestación de humanos y bots",
+      "Time-to-market acelerado con Appian low-code.",
+      "Reducción de TAT y costos operativos con automatización end-to-end.",
+      "Trazabilidad, auditoría y compliance integrados en cada flujo.",
+      "Orquestación de humanos, bots y sistemas desde una sola plataforma.",
     ],
     services: [
       { title: "Discovery & Pipeline", description: "Identificación y priorización de casos." },
@@ -220,6 +278,11 @@ const serviceContent: Record<string, any> = {
       { step: "03", title: "Build", description: "Configuración, desarrollo y QA" },
       { step: "04", title: "Hypercare", description: "Acompañamiento post go-live" },
       { step: "05", title: "Optimización", description: "Monitoreo y mejora continua" },
+    ],
+    reasons: [
+      "Appian es nuestro core: contamos con un equipo dedicado y certificado que vive la plataforma día a día.",
+      "Implementamos Appian con gobierno, CI/CD y estándares para escalar sin deuda técnica.",
+      "Acompañamos el ciclo completo con mejora continua, soporte y roadmap de automatización.",
     ],
   },
   "gestion-operaciones-riesgo": {
@@ -244,6 +307,11 @@ const serviceContent: Record<string, any> = {
       { step: "04", title: "Control", description: "KPIs, riesgos y cumplimiento" },
       { step: "05", title: "Optimización", description: "Ciclos de mejora y auditoría" },
     ],
+    reasons: [
+      "Alineamos procesos y controles a la estrategia para mejorar la gestión y la toma de decisiones.",
+      "Diseñamos matrices de riesgo y evidencia trazable para cumplimiento y auditoría.",
+      "Implementamos KPIs y reporting ejecutivo para monitorear y corregir a tiempo.",
+    ],
   },
   "ia-agentes-inteligentes": {
     title: "IA Aplicada a Procesos.",
@@ -267,6 +335,11 @@ const serviceContent: Record<string, any> = {
       { step: "03", title: "Integración", description: "Conexión a datos y sistemas" },
       { step: "04", title: "Validación", description: "Seguridad, compliance y guardrails" },
       { step: "05", title: "Escalado", description: "Despliegue y monitoreo continuo" },
+    ],
+    reasons: [
+      "Aterrizamos casos de uso con datos reales e integración a sistemas críticos.",
+      "Aplicamos guardrails, seguridad y métricas para un uso responsable y confiable.",
+      "Integramos agentes en workflows para aumentar productividad y mejorar experiencia.",
     ],
   },
   "staffing-celulas-agiles": {
@@ -346,7 +419,6 @@ const serviceContent: Record<string, any> = {
       "Acompañamos desde la definición de perfiles hasta la puesta en marcha, gestionando la evolución y resolución de obstáculos para que el talento siempre esté alineado con tus metas.",
       "Reducimos el tiempo de contratación y minimizamos riesgos, ofreciendo flexibilidad contractual y la posibilidad de escalar según la demanda de tu negocio.",
     ],
-    subservices: [{ title: "Consultoría TI" }, { title: "Fábrica de Software" }, { title: "Soluciones IA" }],
   },
 }
 
@@ -399,44 +471,47 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
 
         <Hero title={content.title} subtitle={content.intro} variant="services" />
 
-        <Section className="relative bg-gradient-to-br from-white via-[#f6f8fc] to-[#e8edfa] overflow-hidden" variant="light">
+        <Section
+          className="relative bg-gradient-to-br from-white via-[#f6f8fc] to-[#e8edfa] overflow-hidden"
+          variant="light"
+          paddingClass="py-8 sm:py-10 lg:py-12"
+        >
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute -left-32 -top-32 w-80 h-80 rounded-full bg-coral/10 blur-3xl"></div>
             <div className="absolute -right-24 -bottom-24 w-72 h-72 rounded-full bg-[#0B1B33]/10 blur-3xl"></div>
           </div>
-          <div className="relative max-w-4xl mx-auto">
-            <div className="relative overflow-hidden rounded-2xl border border-gray-200 bg-gradient-to-r from-[#0b1b33] via-[#12345a] to-[#0b1b33] p-[1px] shadow-lg">
-              <div className="rounded-2xl bg-white/95 p-6 sm:p-7">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-display text-xl sm:text-2xl font-semibold text-[#0b1b33]">¿Qué ofrecemos?</h3>
-                  <span className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">Automatización</span>
-                </div>
-                <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
-                  Automatizamos procesos end-to-end con Appian, RPA e iBPMS: discovery, pipeline priorizado, laboratorio de prototipos,
-                  implementaciones gobernadas y operación con métricas. Reducimos TAT, mejoramos cumplimiento y habilitamos escalabilidad con
-                  trazabilidad y observabilidad desde el día uno.
-                </p>
+          <div className="relative max-w-5xl mx-auto">
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <span className="text-[11px] uppercase tracking-[0.3em] text-gray-500">Automatización</span>
+                <span className="h-1 w-6 rounded-full bg-coral/70"></span>
               </div>
+              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-400">Appian Core</span>
             </div>
+            <h2 className="font-display text-2xl sm:text-3xl font-semibold text-[#0b1b33]">¿Qué ofrecemos?</h2>
+            <p className="mt-4 text-gray-700 leading-relaxed text-sm sm:text-base">
+              Appian es nuestro core. Equipo dedicado y certificado para discovery, diseño y delivery en la plataforma. Integramos RPA, Data Fabric y
+              APIs para automatizar procesos end-to-end con gobierno y operación continua.
+            </p>
           </div>
         </Section>
 
-        <Section className="bg-white" variant="light">
+        <Section className="bg-white" variant="light" paddingClass="py-6 sm:py-8 lg:py-10">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               {
-                title: "Eficiencia inmediata.",
-                description: "Digitalizamos procesos repetitivos para liberar a tu equipo hacia tareas de mayor valor.",
+                title: "Core Appian.",
+                description: "Equipo dedicado y certificado, con experiencia en casos complejos y entregas enterprise.",
                 shape: "square",
               },
               {
-                title: "Escalabilidad garantizada.",
-                description: "Las soluciones crecen con tu negocio, adaptándose a nuevos casos y demanda.",
+                title: "Delivery low-code.",
+                description: "Apps y procesos en semanas con componentes reutilizables y mejores prácticas Appian.",
                 shape: "circle",
               },
               {
-                title: "Resultados medibles.",
-                description: "Desde el primer día obtienes reportes claros de mejora y oportunidades de optimización.",
+                title: "Data Fabric & integraciones.",
+                description: "Unificamos datos y conectamos sistemas con Appian Data Fabric, RPA y APIs.",
                 shape: "triangle",
               },
             ].map((item) => (
@@ -455,7 +530,47 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
           </div>
         </Section>
 
-        <Section className="bg-white" variant="light">
+        <section className="bg-gradient-to-r from-[#0B1B33] via-[#12345a] to-[#0B1B33] text-white">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+            <div className="rounded-2xl border border-white/10 bg-white/5 px-6 py-5 sm:px-8 sm:py-6 text-center shadow-[0_18px_55px_rgba(0,0,0,0.35)]">
+              <p className="text-[11px] uppercase tracking-[0.3em] text-white/70 mb-2">Partner oficial</p>
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                <span className="font-display text-2xl sm:text-3xl font-semibold text-white">Somos partners</span>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/logos/partners/letter_appian.png" alt="Appian" className="h-9 sm:h-10 object-contain" />
+                <span className="font-display text-2xl sm:text-3xl font-semibold text-white">, pioneros en Chile.</span>
+              </div>
+              <p className="mt-2 text-sm text-white/85">
+                Lideramos implementaciones y equipos dedicados para acelerar la adopción de Appian en empresas de alto impacto.
+              </p>
+              <a
+                href="https://appian.com/es"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 text-xs font-semibold text-white/90 hover:text-coral transition-colors mt-3"
+              >
+                Conocer más sobre Appian
+                <ArrowRight size={14} />
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <Section className="bg-white" variant="light" paddingClass="py-8 sm:py-10 lg:py-12">
+          <div className="max-w-4xl mx-auto mb-6 text-center">
+            <p className="text-xs uppercase tracking-[0.3em] text-gray-500 mb-2">BPMN</p>
+            <h3 className="font-display text-lg sm:text-xl font-semibold text-[#0b1b33]">Automatización con modelos BPMN</h3>
+            <details className="group mt-3 text-sm text-gray-600">
+              <summary className="flex items-center justify-center gap-2 cursor-pointer list-none font-semibold text-coral">
+                Leer descripción
+                <span className="text-xs group-open:rotate-90 transition-transform">→</span>
+              </summary>
+              <p className="mt-3 leading-relaxed">
+                Modelamos procesos en BPMN dentro de Appian para visualizar flujos, detectar cuellos de botella y acelerar la automatización con reglas
+                claras y reutilizables.
+              </p>
+            </details>
+          </div>
           <div className="rounded-3xl overflow-hidden border border-gray-200 shadow-[0_18px_55px_rgba(0,0,0,0.12)]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -466,7 +581,34 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
           </div>
         </Section>
 
-        <Section className="bg-white" variant="light">
+        <Section className="bg-white" variant="light" paddingClass="py-8 sm:py-10 lg:py-12">
+          <div className="max-w-4xl mx-auto mb-6 text-center">
+            <p className="text-xs uppercase tracking-[0.3em] text-gray-500 mb-2">Data Fabric</p>
+            <h3 className="font-display text-lg sm:text-xl font-semibold text-[#0b1b33]">Gobierno y unificación de datos</h3>
+            <details className="group mt-3 text-sm text-gray-600">
+              <summary className="flex items-center justify-center gap-2 cursor-pointer list-none font-semibold text-coral">
+                Leer descripción
+                <span className="text-xs group-open:rotate-90 transition-transform">→</span>
+              </summary>
+              <p className="mt-3 leading-relaxed">
+                Appian Data Fabric unifica fuentes de datos para asegurar gobernanza, consistencia y una automatización correcta de procesos sin duplicar
+                información.
+              </p>
+            </details>
+          </div>
+          <div className="rounded-3xl overflow-hidden border border-gray-200 shadow-[0_18px_55px_rgba(0,0,0,0.12)]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/appian/data-fabric-animation.gif"
+              alt="Appian Data Fabric en acción"
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </Section>
+
+        <WhyChooseSection reasons={content.reasons} highlights={content.benefits} className="mt-6" />
+
+        <Section className="bg-white" variant="light" paddingClass="py-8 sm:py-10 lg:py-12">
           <div className="max-w-4xl mx-auto space-y-3">
             <h3 className="font-display text-lg font-semibold text-[#0b1b33]">De la detección al éxito</h3>
             <p className="text-gray-700 text-sm leading-relaxed">
@@ -488,24 +630,11 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
           className="bg-gray-50"
           variant="light"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             {content.services.map((service: any) => (
               <div key={service.title} className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all">
                 <h3 className="font-display font-semibold text-lg text-blue-dark mb-2">{service.title}</h3>
                 <p className="text-gray-700 text-sm leading-relaxed">{service.description}</p>
-              </div>
-            ))}
-          </div>
-        </Section>
-
-        <Section title="Beneficios principales" className="bg-white" variant="light">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {content.benefits.map((benefit: string) => (
-              <div key={benefit} className="flex gap-3 items-start rounded-xl bg-gray-50 border border-gray-200 px-4 py-3 shadow-sm">
-                <div className="w-8 h-8 rounded-full bg-[#FF5A5F]/10 text-[#FF5A5F] flex items-center justify-center mt-1">
-                  <Check size={16} />
-                </div>
-                <p className="text-gray-700">{benefit}</p>
               </div>
             ))}
           </div>
@@ -526,7 +655,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
 
         <Section title="Nuestro proceso" className="bg-gray-50" variant="light">
           <div className="relative">
-            <div className="pointer-events-none hidden md:block absolute left-1/2 top-6 bottom-6 w-px bg-coral/60 transform -translate-x-1/2"></div>
+            <div className="pointer-events-none hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-coral/60 transform -translate-x-1/2"></div>
             <div className="pointer-events-none md:hidden absolute left-6 top-6 bottom-6 w-px bg-coral/60"></div>
             <div className="space-y-12">
               {content.process.map((item: any, idx: number) => (
@@ -629,7 +758,11 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
                 )
               })}
             </div>
+          </div>
 
+          <WhyChooseSection reasons={content.reasons} className="mt-12" />
+
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mt-12">
               <div className="flex items-center justify-between mb-4">
                 <h4 className="font-display text-lg sm:text-xl font-semibold text-black">Roles disponibles</h4>
@@ -654,46 +787,16 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
                 ))}
               </div>
             </div>
-
-            <div className="mt-12 space-y-4 max-w-3xl text-left mx-auto">
-              <div className="relative rounded-2xl border border-black bg-black p-6 shadow-lg">
-                <h4 className="font-display text-lg font-semibold text-white mb-3">¿Por qué elegir nuestro servicio?</h4>
-                <div className="space-y-3 text-white">
-                  {content.reasons.map((paragraph: string) => (
-                    <p key={paragraph} className="text-sm leading-relaxed opacity-90">
-                      {paragraph}
-                    </p>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-14 rounded-2xl border border-blue-200 bg-blue-50 p-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                {content.subservices.map((sub: any) => (
-                  <div key={sub.title} className="rounded-xl bg-white/70 border border-white p-5 flex flex-col items-center gap-4 shadow-sm">
-                    <div className="w-full aspect-[4/3] rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden">
-                      {sub.image ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={sub.image} alt={sub.title} className="w-full h-full object-cover" />
-                      ) : sub.title.includes("IA") ? (
-                        <Triangle size={40} className="text-gray-400" />
-                      ) : sub.title.includes("Fábrica") ? (
-                        <Circle size={40} className="text-gray-400" />
-                      ) : (
-                        <Square size={36} className="text-gray-400" />
-                      )}
-                    </div>
-                    <div className="text-center">
-                      <p className="text-xs uppercase text-gray-500">Subservicio</p>
-                      <h5 className="font-display font-semibold text-base text-gray-900">{sub.title}</h5>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
           </div>
         </section>
+
+        <CTABanner
+          eyebrow="Contacto"
+          title="🤝 ¿Listo para armar tu célula ágil?"
+          subtitle="Cuéntanos perfiles, plazos y objetivos. Te proponemos un equipo en días."
+          buttonLabel="Agenda una reunión"
+          buttonHref="/contacto"
+        />
 
         <Footer />
       </div>
@@ -739,6 +842,8 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
             ))}
           </div>
         </Section>
+
+        <WhyChooseSection reasons={content.reasons} className="mt-12" />
 
         <Section
           title="Qué incluye normalmente"
@@ -917,6 +1022,8 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
           </details>
         </Section>
 
+        <WhyChooseSection reasons={content.reasons} className="mt-12" />
+
         <Section title="Áreas de especialización" className="bg-white" variant="light">
           <div className="flex flex-wrap gap-3 justify-center">
             {content.specializations.map((item: string) => (
@@ -1073,6 +1180,8 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
           ))}
         </div>
       </Section>
+
+      <WhyChooseSection reasons={content.reasons} className="mt-12" />
 
       {isTransformacion && (
         <>

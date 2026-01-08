@@ -18,7 +18,7 @@ export default async function TeamMemberPage({ params }: { params: Promise<{ slu
     <div className="min-h-screen flex flex-col bg-[#0B1B33] text-white">
       <Navbar />
 
-      <Section paddingClass="py-12 sm:py-16" className="bg-[#0B1B33]" variant="dark">
+      <Section paddingClass="pt-28 pb-12 sm:pt-32 sm:pb-16" className="bg-[#0B1B33] flex-1" variant="dark">
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-[280px_1fr] gap-8 items-center">
           <div className="flex flex-col items-center gap-4">
             <div className="relative w-48 h-48 rounded-full overflow-hidden bg-white/10">
