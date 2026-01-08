@@ -29,15 +29,54 @@ type PortfolioProject = {
   tags?: string[] | null
   highlights?: string[] | null
   portfolio_media?: PortfolioMedia[]
+  service_lines?: { id: string; slug: string; name: string } | null
 }
 
-async function getProjects(): Promise<PortfolioProject[]> {
-  const { data, error } = await supabasePublic
+const serviceSlugAliases: Record<string, string> = {
+  "experiencia-digital": "experiencia-digital",
+  "software-factory": "software-factory",
+  "automatizacion-de-procesos": "automatizacion-de-procesos",
+  "gestion-y-riesgo": "gestion-y-riesgo",
+  "ia-y-agentes": "ia-y-agentes",
+  "staffing-y-celulas": "staffing-y-celulas",
+  "transformacion-digital": "experiencia-digital",
+  "transformacion-digital-desarrollo": "experiencia-digital",
+  "soluciones-ti-proyectos": "software-factory",
+  "automatizacion-procesos": "automatizacion-de-procesos",
+  "gestion-operaciones-riesgo": "gestion-y-riesgo",
+  "ia-agentes-inteligentes": "ia-y-agentes",
+  "staffing-celulas-agiles": "staffing-y-celulas",
+}
+
+const serviceFilters = [
+  { slug: "experiencia-digital", label: "Experiencia Digital" },
+  { slug: "software-factory", label: "Software Factory" },
+  { slug: "automatizacion-de-procesos", label: "Automatización de Procesos" },
+  { slug: "ia-y-agentes", label: "IA & Agentes" },
+  { slug: "gestion-y-riesgo", label: "Gestión y Riesgo" },
+  { slug: "staffing-y-celulas", label: "Staffing & Células" },
+]
+
+async function getProjects(serviceSlug?: string): Promise<PortfolioProject[]> {
+  const normalizedSlug = serviceSlug ? serviceSlugAliases[serviceSlug] ?? serviceSlug : ""
+  let query = supabasePublic
     .from("portfolio_projects")
-    .select("*, portfolio_media(*)")
+    .select("*, portfolio_media(*), service_lines(id, slug, name)")
     .eq("status", "public")
     .order("display_order", { ascending: true })
     .order("created_at", { ascending: false })
+
+  if (normalizedSlug) {
+    query = supabasePublic
+      .from("portfolio_projects")
+      .select("*, portfolio_media(*), service_lines!inner(id, slug, name)")
+      .eq("status", "public")
+      .eq("service_lines.slug", normalizedSlug)
+      .order("display_order", { ascending: true })
+      .order("created_at", { ascending: false })
+  }
+
+  const { data, error } = await query
 
   if (error) {
     console.error("Error fetching portfolio projects", error.message)
@@ -46,8 +85,11 @@ async function getProjects(): Promise<PortfolioProject[]> {
   return data ?? []
 }
 
-export default async function PortfolioPage() {
-  const projects = await getProjects()
+export default async function PortfolioPage({ searchParams }: { searchParams?: { servicio?: string | string[] } }) {
+  const rawFilter = searchParams?.servicio
+  const serviceFilter = Array.isArray(rawFilter) ? rawFilter[0]?.trim() : rawFilter?.trim()
+  const normalizedFilter = serviceFilter ? serviceSlugAliases[serviceFilter] ?? serviceFilter : ""
+  const projects = await getProjects(serviceFilter)
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-blue-dark">
@@ -58,17 +100,53 @@ export default async function PortfolioPage() {
         subtitle="Proyectos en producción con arquitectura sólida, automatización y experiencias digitales."
         alignment="left"
         minHeight="520px"
-        overlayImage="/images/hero/portafolio/hero-overlay.gif"
-        overlayClassName="opacity-40"
+        overlayImage="/images/hero/portafolio/estetica-ondas-voz.gif"
+        overlayClassName="opacity-35"
+        overlayPosition="center 20%"
       />
 
       <Section className="bg-white">
+        <div className="mb-8 flex flex-col gap-4">
+          <div className="flex items-center justify-between flex-wrap gap-3">
+            <h2 className="font-display text-xl sm:text-2xl font-semibold text-blue-dark">Filtra por servicio</h2>
+            <p className="text-sm text-gray-500">
+              {normalizedFilter
+                ? `Mostrando: ${serviceFilters.find((f) => f.slug === normalizedFilter)?.label ?? "Servicio"}`
+                : "Mostrando: Todos"}
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Link
+              href="/portafolio"
+              className={`px-4 py-2 rounded-full text-sm font-semibold border transition ${
+                !normalizedFilter ? "bg-[#0b1b33] text-white border-[#0b1b33]" : "bg-white text-blue-dark border-gray-200 hover:border-gray-300"
+              }`}
+            >
+              Todos
+            </Link>
+            {serviceFilters.map((filter) => {
+              const isActive = normalizedFilter === filter.slug
+              return (
+                <Link
+                  key={filter.slug}
+                  href={`/portafolio?servicio=${filter.slug}`}
+                  className={`px-4 py-2 rounded-full text-sm font-semibold border transition ${
+                    isActive ? "bg-[#0b1b33] text-white border-[#0b1b33]" : "bg-white text-blue-dark border-gray-200 hover:border-gray-300"
+                  }`}
+                >
+                  {filter.label}
+                </Link>
+              )
+            })}
+          </div>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {projects.map((project) => {
             const primaryMedia =
               project.portfolio_media?.find((m) => m.is_primary) ??
               project.portfolio_media?.sort((a, b) => (a.order_index || 0) - (b.order_index || 0))[0]
-            const tags = (project.tags ?? []).slice(0, 2)
+            const tags = Array.isArray(project.tags) ? project.tags.slice(0, 2) : []
+            const serviceLabel = project.service_lines?.name
 
             return (
               <Link
@@ -83,8 +161,8 @@ export default async function PortfolioPage() {
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent" />
                   <div className="absolute top-3 left-3 flex gap-2 flex-wrap">
-                    {tags.length ? (
-                      tags.map((tag) => (
+                    {[serviceLabel, ...tags].filter(Boolean).length ? (
+                      [serviceLabel, ...tags].filter(Boolean).map((tag) => (
                         <span
                           key={tag}
                           className="inline-flex items-center px-3 py-1 rounded-full bg-white/80 text-blue-dark text-xs font-semibold backdrop-blur"

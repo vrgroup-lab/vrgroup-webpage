@@ -27,12 +27,13 @@ type Project = {
   tags: string[]
   highlights: string[]
   portfolio_media?: Media[]
+  service_lines?: { id: string; slug: string; name: string } | null
 }
 
 async function getProject(slug: string): Promise<Project | null> {
   const { data, error } = await supabasePublic
     .from("portfolio_projects")
-    .select("*, portfolio_media(*)")
+    .select("*, portfolio_media(*), service_lines(id, slug, name)")
     .eq("slug", slug)
     .eq("status", "public")
     .maybeSingle()
@@ -55,20 +56,8 @@ export default async function PortfolioDetailPage({ params }: { params: Promise<
     project.portfolio_media?.find((m) => m.is_primary) ??
     project.portfolio_media?.sort((a, b) => (a.order_index || 0) - (b.order_index || 0))[0]
 
-  const serviceCategories = [
-    { key: "software", label: "Software Factory", keywords: ["software", "app", "api", "dev", "product", "ci/cd"] },
-    { key: "autom", label: "Automatización de Procesos", keywords: ["automat", "rpa", "process", "workflow", "bpm"] },
-    { key: "exp", label: "Experiencia Digital", keywords: ["ux", "ui", "web", "mobile", "experiencia"] },
-    { key: "gestion", label: "Gestión & Riesgo", keywords: ["riesgo", "gestion", "compliance", "operacion"] },
-    { key: "ia", label: "IA & Agentes", keywords: ["ia", "ml", "ai", "agente", "copilot"] },
-    { key: "data", label: "Analítica & ML", keywords: ["analitica", "data", "bi", "dashboard"] },
-  ]
-
-  const tagsLower = (project.tags || []).map((t) => t.toLowerCase())
-  const serviceBadges =
-    tagsLower.length === 0
-      ? []
-      : serviceCategories.filter((cat) => cat.keywords.some((kw) => tagsLower.some((tag) => tag.includes(kw))))
+  const tags = Array.isArray(project.tags) ? project.tags : []
+  const highlights = Array.isArray(project.highlights) ? project.highlights : []
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-[#0b1b33]">
@@ -98,15 +87,12 @@ export default async function PortfolioDetailPage({ params }: { params: Promise<
               <p className="text-gray-700 text-lg leading-relaxed">{project.summary}</p>
 
               <div className="flex flex-wrap gap-2">
-                {serviceBadges.map((cat) => (
-                  <span
-                    key={cat.key}
-                    className="px-3 py-1.5 rounded-lg bg-[#0b1b33]/5 border border-[#0b1b33]/10 text-[#0b1b33] text-xs font-semibold"
-                  >
-                    {cat.label}
+                {project.service_lines?.name && (
+                  <span className="px-3 py-1.5 rounded-lg bg-[#0b1b33]/5 border border-[#0b1b33]/10 text-[#0b1b33] text-xs font-semibold">
+                    {project.service_lines.name}
                   </span>
-                ))}
-                {(project.tags || []).map((tag) => (
+                )}
+                {tags.map((tag) => (
                   <span key={tag} className="px-3 py-1.5 rounded-lg bg-gray-100 border border-gray-200 text-gray-700 text-xs">
                     {tag}
                   </span>
@@ -130,11 +116,11 @@ export default async function PortfolioDetailPage({ params }: { params: Promise<
             )}
           </div>
 
-          {project.highlights?.length ? (
+          {highlights.length ? (
             <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
               <h3 className="font-display text-xl font-semibold text-[#0b1b33] mb-3">Highlights</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {project.highlights.map((item, idx) => (
+                {highlights.map((item, idx) => (
                   <div key={idx} className="flex items-start gap-2">
                     <CheckCircle2 size={16} className="text-coral mt-1" />
                     <p className="text-gray-700 text-sm leading-relaxed">{item}</p>

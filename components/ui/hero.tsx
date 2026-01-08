@@ -10,6 +10,7 @@ interface HeroProps {
   backgroundImage?: string
   overlayImage?: string
   overlayClassName?: string
+  overlayPosition?: string
   alignment?: "left" | "center"
   minHeight?: string
   backgroundSize?: string
@@ -26,6 +27,7 @@ export function Hero({
   backgroundImage,
   overlayImage,
   overlayClassName = "opacity-30 mix-blend-screen",
+  overlayPosition = "center",
   alignment = "center",
   minHeight,
   backgroundSize = "cover",
@@ -62,7 +64,7 @@ export function Hero({
       {overlayImage && (
         <div
           className={`absolute inset-0 bg-center bg-cover ${overlayClassName}`}
-          style={{ backgroundImage: `url(${overlayImage})` }}
+          style={{ backgroundImage: `url(${overlayImage})`, backgroundPosition: overlayPosition }}
         />
       )}
 

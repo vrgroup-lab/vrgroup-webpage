@@ -8,7 +8,7 @@ export async function GET() {
   const supabase = getSupabaseAdmin()
   const { data, error } = await supabase
     .from("portfolio_projects")
-    .select("*, portfolio_media(*)")
+    .select("*, portfolio_media(*), service_lines(id, slug, name)")
     .order("display_order", { ascending: true })
     .order("created_at", { ascending: false })
 
@@ -61,6 +61,7 @@ export async function POST(request: Request) {
         problem: body.problem ?? null,
         solution: body.solution ?? null,
         outcomes: body.outcomes ?? null,
+        service_line_id: body.service_line_id ?? null,
         tags: Array.isArray(body.tags) ? body.tags : [],
         highlights: Array.isArray(body.highlights) ? body.highlights : [],
         created_by: body.created_by ?? null,

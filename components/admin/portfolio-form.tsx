@@ -29,9 +29,19 @@ type PortfolioProject = {
   problem: string | null
   solution: string | null
   outcomes: string | null
+  service_line_id?: string | null
   tags: string[]
   highlights: string[]
   portfolio_media?: MediaPayload[]
+  service_lines?: { id: string; slug: string; name: string } | null
+}
+
+type ServiceLine = {
+  id: string
+  slug: string
+  name: string
+  display_order?: number
+  is_active?: boolean
 }
 
 const statusOptions = [
@@ -49,6 +59,7 @@ const mutedButton =
 export function PortfolioForm({ projectId }: { projectId?: string }) {
   const uploadInputRef = useRef<HTMLInputElement | null>(null)
   const [projects, setProjects] = useState<PortfolioProject[]>([])
+  const [serviceLines, setServiceLines] = useState<ServiceLine[]>([])
   const [loading, setLoading] = useState(false)
   const [saving, setSaving] = useState(false)
   const [mediaSaving, setMediaSaving] = useState(false)
@@ -66,6 +77,7 @@ export function PortfolioForm({ projectId }: { projectId?: string }) {
     summary: "",
     tags: "",
     highlights: "",
+    service_line_id: "",
   })
   const [mediaForm, setMediaForm] = useState({
     url: "",
@@ -89,8 +101,21 @@ export function PortfolioForm({ projectId }: { projectId?: string }) {
     }
   }
 
+  const fetchServiceLines = async () => {
+    try {
+      const res = await fetch("/api/admin/service-lines")
+      const json = await res.json()
+      if (!res.ok) throw new Error(json.error || "Error al cargar líneas de servicio")
+      const lines = (json.data || []).filter((line: ServiceLine) => line.is_active !== false)
+      setServiceLines(lines)
+    } catch {
+      setServiceLines([])
+    }
+  }
+
   useEffect(() => {
     fetchProjects()
+    fetchServiceLines()
   }, [])
 
   useEffect(() => {
@@ -107,8 +132,9 @@ export function PortfolioForm({ projectId }: { projectId?: string }) {
       display_order: project.display_order ?? 0,
       client_display: project.client_display ?? "",
       summary: project.summary ?? "",
-      tags: project.tags?.join(", ") ?? "",
-      highlights: project.highlights?.join("\n") ?? "",
+      tags: Array.isArray(project.tags) ? project.tags.join(", ") : "",
+      highlights: Array.isArray(project.highlights) ? project.highlights.join("\n") : "",
+      service_line_id: project.service_line_id ?? "",
     })
     setMediaForm({
       url: primaryMedia?.url ?? "",
@@ -128,6 +154,7 @@ export function PortfolioForm({ projectId }: { projectId?: string }) {
       summary: "",
       tags: "",
       highlights: "",
+      service_line_id: "",
     })
     setEditingId(null)
     setStep(1)
@@ -151,6 +178,7 @@ export function PortfolioForm({ projectId }: { projectId?: string }) {
       display_order: Number(form.display_order) || 0,
       client_display: form.client_display || null,
       summary: form.summary || null,
+      service_line_id: form.service_line_id || null,
       tags: form.tags ? form.tags.split(",").map((t) => t.trim()).filter(Boolean) : [],
       highlights: form.highlights ? form.highlights.split("\n").map((t) => t.trim()).filter(Boolean) : [],
     }
@@ -370,6 +398,22 @@ export function PortfolioForm({ projectId }: { projectId?: string }) {
                 className={inputClass}
                 required
               />
+            </label>
+            <label className={labelClass}>
+              <span>Línea de servicio</span>
+              <select
+                value={form.service_line_id}
+                onChange={(e) => setForm({ ...form, service_line_id: e.target.value })}
+                className={`${inputClass} pr-10`}
+                required={serviceLines.length > 0}
+              >
+                <option value="">Selecciona una línea</option>
+                {serviceLines.map((line) => (
+                  <option key={line.id} value={line.id}>
+                    {line.name}
+                  </option>
+                ))}
+              </select>
             </label>
             <label className={labelClass}>
               <span>Resumen</span>
