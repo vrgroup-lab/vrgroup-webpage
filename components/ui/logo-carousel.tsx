@@ -6,10 +6,21 @@ interface LogoCarouselProps {
   speedMs?: number
   height?: number
   fadeColor?: string
+  className?: string
+  logoClassName?: string
+  showFades?: boolean
 }
 
 // Simple CSS marquee-style carousel (duplicates logos to create infinite scroll).
-export function LogoCarousel({ logos, speedMs = 24000, height = 48, fadeColor = "#050711" }: LogoCarouselProps) {
+export function LogoCarousel({
+  logos,
+  speedMs = 24000,
+  height = 48,
+  fadeColor = "#050711",
+  className = "",
+  logoClassName = "brightness-100 contrast-100",
+  showFades = true,
+}: LogoCarouselProps) {
   if (!logos || logos.length === 0) {
     return null
   }
@@ -17,7 +28,7 @@ export function LogoCarousel({ logos, speedMs = 24000, height = 48, fadeColor = 
   const repeated = [...logos, ...logos]
 
   return (
-    <div className="relative overflow-hidden py-6">
+    <div className={`relative overflow-hidden py-6 ${className}`}>
       <div
         className="flex items-center gap-10 hover:[animation-play-state:paused]"
         style={{ animation: `marquee ${speedMs}ms linear infinite` }}
@@ -29,7 +40,7 @@ export function LogoCarousel({ logos, speedMs = 24000, height = 48, fadeColor = 
               alt={logoAltFromPath(logo)}
               width={160}
               height={height}
-              className="h-12 w-auto object-contain brightness-100 contrast-100"
+              className={`h-12 w-auto object-contain ${logoClassName}`}
               sizes="160px"
               priority={idx < 3}
             />
@@ -38,14 +49,18 @@ export function LogoCarousel({ logos, speedMs = 24000, height = 48, fadeColor = 
       </div>
 
       {/* Gradient fades */}
-      <div
-        className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r"
-        style={{ backgroundImage: `linear-gradient(to right, ${fadeColor}, ${fadeColor}99, transparent)` }}
-      />
-      <div
-        className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l"
-        style={{ backgroundImage: `linear-gradient(to left, ${fadeColor}, ${fadeColor}99, transparent)` }}
-      />
+      {showFades ? (
+        <>
+          <div
+            className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r"
+            style={{ backgroundImage: `linear-gradient(to right, ${fadeColor}, ${fadeColor}99, transparent)` }}
+          />
+          <div
+            className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l"
+            style={{ backgroundImage: `linear-gradient(to left, ${fadeColor}, ${fadeColor}99, transparent)` }}
+          />
+        </>
+      ) : null}
     </div>
   )
 }

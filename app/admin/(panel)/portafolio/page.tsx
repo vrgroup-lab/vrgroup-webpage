@@ -22,6 +22,7 @@ type PortfolioProject = {
   summary: string | null
   tags: string[]
   portfolio_media?: MediaPayload[]
+  service_lines?: { id: string; slug: string; name: string } | null
 }
 
 export default function AdminPortfolioListPage() {
@@ -97,22 +98,27 @@ export default function AdminPortfolioListPage() {
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="space-y-1">
-                    <div className="flex items-center gap-2 text-xs text-gray-500 uppercase tracking-[0.12em]">
-                      <span className="px-2 py-0.5 rounded-md bg-gray-100 border border-gray-200 text-gray-700">
-                        {project.status}
+                  <div className="flex items-center gap-2 text-xs text-gray-500 uppercase tracking-[0.12em]">
+                    <span className="px-2 py-0.5 rounded-md bg-gray-100 border border-gray-200 text-gray-700">
+                      {project.status}
+                    </span>
+                    {project.is_featured && (
+                      <span className="px-2 py-0.5 rounded-md bg-amber-100 text-amber-800 border border-amber-200">Featured</span>
+                    )}
+                    <span className="px-2 py-0.5 rounded-md bg-gray-100 border border-gray-200 text-gray-700">
+                      #{project.display_order}
+                    </span>
+                    {project.service_lines?.name && (
+                      <span className="px-2 py-0.5 rounded-md bg-blue-50 text-blue-700 border border-blue-100">
+                        {project.service_lines.name}
                       </span>
-                      {project.is_featured && (
-                        <span className="px-2 py-0.5 rounded-md bg-amber-100 text-amber-800 border border-amber-200">Featured</span>
-                      )}
-                      <span className="px-2 py-0.5 rounded-md bg-gray-100 border border-gray-200 text-gray-700">
-                        #{project.display_order}
-                      </span>
-                    </div>
+                    )}
+                  </div>
                     <p className="text-sm text-gray-600">{project.client_display}</p>
                     <h4 className="font-display text-lg text-gray-900">{project.title}</h4>
                     <p className="text-xs text-gray-600 line-clamp-2">{project.summary}</p>
                     <div className="flex flex-wrap gap-1 mt-1">
-                      {project.tags?.slice(0, 3).map((tag) => (
+                      {(Array.isArray(project.tags) ? project.tags : []).slice(0, 3).map((tag) => (
                         <span key={tag} className="px-2 py-1 rounded-md bg-gray-100 border border-gray-200 text-gray-700 text-[11px]">
                           {tag}
                         </span>

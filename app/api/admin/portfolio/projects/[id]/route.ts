@@ -27,6 +27,7 @@ export async function PUT(request: Request, { params }: ParamsPromise) {
     problem: body.problem ?? null,
     solution: body.solution ?? null,
     outcomes: body.outcomes ?? null,
+    service_line_id: body.service_line_id ?? null,
     tags: Array.isArray(body.tags) ? body.tags : [],
     highlights: Array.isArray(body.highlights) ? body.highlights : [],
   }
