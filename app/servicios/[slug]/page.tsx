@@ -73,7 +73,7 @@ function WhyChooseSection({
 
   return (
     <div className={className ? `bg-black ${className}` : "bg-black"}>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
+      <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-8 items-center">
           <div>
             <h4 className="font-display text-xl sm:text-2xl font-semibold text-white mb-4">¿Por qué elegir nuestro servicio?</h4>
@@ -645,7 +645,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
         </Section>
 
         <section className="bg-gradient-to-r from-[#0B1B33] via-[#12345a] to-[#0B1B33] text-white">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+          <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
             <div className="rounded-2xl border border-white/10 bg-white/5 px-6 py-5 sm:px-8 sm:py-6 text-center shadow-[0_18px_55px_rgba(0,0,0,0.35)]">
               <p className="text-[11px] uppercase tracking-[0.3em] text-white/70 mb-2">Partner oficial</p>
               <div className="flex flex-wrap items-center justify-center gap-3">
@@ -820,7 +820,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
         />
 
         <section id="detalles" className="pt-6 pb-16 bg-gradient-to-b from-[#f5f7fb] via-white to-[#eef2f7]">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-10">
               <div className="relative overflow-hidden rounded-2xl border border-gray-200 bg-gradient-to-r from-[#0b1b33] via-[#12345a] to-[#0b1b33] p-[1px] shadow-lg">
                 <div className="rounded-2xl bg-white/95 p-6 sm:p-7">
@@ -878,7 +878,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
 
           <WhyChooseSection reasons={content.reasons} className="mt-12" />
 
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mt-12">
               <div className="flex items-center justify-between mb-4">
                 <h4 className="font-display text-lg sm:text-xl font-semibold text-black">Roles disponibles</h4>

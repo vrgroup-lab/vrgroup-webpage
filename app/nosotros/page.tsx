@@ -89,7 +89,7 @@ export default async function AboutPage() {
           style={{ backgroundImage: "url(/images/sections/cordillera.png)" }}
         ></div>
         <div className="absolute inset-0 bg-[#0B1B33]/45 z-0"></div>
-        <div className="relative z-10 max-w-6xl mx-auto space-y-10 text-lg leading-relaxed">
+        <div className="relative z-10 max-w-[1340px] mx-auto space-y-10 text-lg leading-relaxed">
           <div className="max-w-4xl mx-auto space-y-4 text-white text-base sm:text-lg font-medium drop-shadow-[0_0_18px_rgba(255,255,255,0.35)]">
             <p>
               Fundada en 2017, VR Group nació con la convicción de que la transformación digital debe ser práctica,

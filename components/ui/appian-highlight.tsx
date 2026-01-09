@@ -38,7 +38,7 @@ export function AppianHighlight() {
 
   return (
     <Section className="bg-[linear-gradient(130deg,#10244e,#1f3d8f,#12a0c6)] py-12 sm:py-14 lg:py-16" variant="dark">
-      <div className="relative overflow-hidden rounded-3xl px-2 py-2">
+      <div className="relative overflow-hidden rounded-3xl">
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-[0.07]">
           <Image
             src="/logos/partners/letter_appian.png"
@@ -50,7 +50,7 @@ export function AppianHighlight() {
           />
         </div>
 
-        <div className="relative z-10 space-y-8 px-4 pb-6 pt-10 lg:pt-6 max-w-6xl mx-auto">
+        <div className="relative z-10 space-y-8 pb-6 pt-10 lg:pt-6">
           <div className="relative flex flex-col items-center text-center gap-3 lg:flex-row lg:items-center lg:justify-center">
             <div className="relative h-32 w-32 overflow-hidden rounded-2xl bg-white/18 backdrop-blur border border-white/25 shadow-[0_20px_50px_rgba(0,0,0,0.35)] lg:absolute lg:left-4 lg:top-2">
               <Image
@@ -68,7 +68,7 @@ export function AppianHighlight() {
                   <Image src="/logos/partners/letter_appian.png" alt="Appian" fill sizes="96px" className="object-contain" />
                 </span>
               </h2>
-              <p className="text-white/85 max-w-3xl mx-auto">
+              <p className="text-white/85 mx-auto">
                 Discovery, delivery y gobierno en Appian/iBPMS con escalabilidad desde el día uno.
               </p>
             </div>

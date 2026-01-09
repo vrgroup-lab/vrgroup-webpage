@@ -8,6 +8,7 @@ export interface ServiceItem {
   slug: string
   title: string
   description: string
+  shortDescription?: string
   icon: LucideIcon
 }
 
@@ -17,6 +18,7 @@ export const servicesData: ServiceItem[] = [
     title: "Experiencia Digital: UX/UI, Web & Mobile",
     description:
       "Diseño UX/UI, desarrollo web y mobile, performance digital y evolución continua de canales medibles en adopción.",
+    shortDescription: "UX/UI, web y mobile con foco en performance.",
     icon: Sparkles,
   },
   {
@@ -24,6 +26,7 @@ export const servicesData: ServiceItem[] = [
     title: "Ingeniería de Software e Integración",
     description:
       "Software Factory para backends, APIs e integraciones con estándares enterprise, CI/CD y equipos Build | Run | Enable.",
+    shortDescription: "Software factory, APIs e integraciones.",
     icon: Layers,
   },
   {
@@ -31,6 +34,7 @@ export const servicesData: ServiceItem[] = [
     title: "Automatización Digital de Procesos (ADP / Appian / RPA)",
     description:
       "Discovery, roadmap, laboratorio de automatización, implementaciones Appian, RPA e iBPMS. Automatización end-to-end con enfoque low-code.",
+    shortDescription: "Appian, RPA e iBPMS end-to-end.",
     icon: Workflow,
   },
   {
@@ -38,6 +42,7 @@ export const servicesData: ServiceItem[] = [
     title: "Gestión, Operaciones, Riesgo & Cumplimiento",
     description:
       "Modelos de gestión, mejora de procesos BPM, control de gestión, riesgos, cumplimiento normativo, auditoría y PMO.",
+    shortDescription: "Riesgo, cumplimiento y control.",
     icon: ShieldCheck,
   },
   {
@@ -45,12 +50,14 @@ export const servicesData: ServiceItem[] = [
     title: "IA Aplicada a Procesos & Agentes Inteligentes",
     description:
       "Diseño e integración de agentes inteligentes para procesos, chatbots corporativos, automatización cognitiva y uso de modelos avanzados dentro de workflows empresariales.",
+    shortDescription: "Agentes, RAG y copilots.",
     icon: Bot,
   },
   {
     slug: "staffing-celulas-agiles",
     title: "Staffing & Células Ágiles",
     description: "Equipos ágiles on-demand para ejecutar y escalar iniciativas digitales con velocidad y gobierno liviano.",
+    shortDescription: "Equipos on-demand para delivery.",
     icon: Users,
   },
 ]
@@ -78,11 +85,11 @@ export function ServicesSection({
 }) {
   return (
     <section className={`py-16 sm:py-20 lg:py-24 ${variantWrapper[variant]}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-12 text-center">
           <p className="text-coral font-semibold text-sm uppercase tracking-[0.12em] mb-2">Servicios</p>
           <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl mb-4">{heading}</h2>
-          <p className={`text-lg max-w-3xl mx-auto ${variantSubtitle[variant]}`}>{subheading}</p>
+          <p className={`text-lg mx-auto ${variantSubtitle[variant]}`}>{subheading}</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -88,17 +88,18 @@ export default function Home() {
         subtitle="De estrategia a producción: arquitectura sólida, seguridad y gobierno claro para entornos críticos."
         subtitleClassName="text-base sm:text-xl leading-relaxed max-w-[22rem] sm:max-w-3xl"
         alignment="center"
-        minHeight="780px"
+        minHeight="calc(100vh + 50px)"
+        className="pt-8 sm:pt-12 lg:pt-16 pb-4 sm:pb-6 lg:pb-8"
         variant="default"
       >
-        <div className="flex flex-col items-center gap-5 mt-8">
+        <div className="flex flex-col items-center gap-6 mt-8">
           <span className="text-xs font-semibold uppercase tracking-[0.18em] text-white/70">
             Atención ejecutiva
           </span>
-          <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row items-center gap-5 w-full sm:w-auto">
             <Link
               href="/contacto"
-              className={`${ctaBase} px-8 border-2 border-transparent text-white bg-gradient-to-r from-[#FF5A5F] via-[#FF7A7F] to-[#FF3C48] shadow-[0_18px_55px_rgba(255,90,95,0.35)] hover:shadow-[0_22px_65px_rgba(255,90,95,0.5)] hover:scale-[1.05] active:scale-[0.99]`}
+              className={`${ctaBase} px-8 border-2 border-transparent text-white bg-[#FF5A5F] hover:bg-[#FF6A6F] shadow-none hover:shadow-none hover:scale-[1.05] active:scale-[0.99]`}
             >
               Agenda una reunión
               <span>→</span>
@@ -111,7 +112,7 @@ export default function Home() {
             </Link>
           </div>
         </div>
-        <div className="mt-10 w-full">
+        <div className="mt-12 w-full">
           <LogoCarousel
             logos={clientLogos}
             className="py-3"

@@ -31,7 +31,7 @@ export function Section({
             {title && (
               <h2 className={`font-display font-bold text-3xl sm:text-4xl lg:text-5xl mb-4 ${headingColor}`}>{title}</h2>
             )}
-            {subtitle && <p className={`text-lg max-w-2xl mx-auto ${subtitleColor}`}>{subtitle}</p>}
+            {subtitle && <p className={`text-lg mx-auto ${subtitleColor}`}>{subtitle}</p>}
           </div>
         )}
         {children}

@@ -63,18 +63,18 @@ export function IAHighlight({ providerLogos = [] }: IAHighlightProps) {
 
   return (
     <Section className="bg-white" variant="light">
-      <div className="max-w-[1260px] mx-auto space-y-8">
+      <div className="space-y-8">
         <div className="flex flex-col items-center text-center gap-3">
           <h2 className="font-display font-bold text-4xl md:text-5xl text-blue-dark flex flex-wrap items-center justify-center gap-2">
             <span className="bg-[linear-gradient(120deg,#0f1729,#1f3d8f,#12a0c6)] bg-clip-text text-transparent">IA</span>
             <span>aplicada y agentes inteligentes</span>
           </h2>
-          <p className="text-gray-600 text-lg md:text-xl max-w-3xl">
+          <p className="text-gray-600 text-lg md:text-xl">
             Capacidades modulares para diseñar, desplegar y operar IA: agentes, RAG, fine-tuning, IA privada, seguridad y adopción con gobierno y métricas.
           </p>
         </div>
 
-        <div className="max-w-6xl mx-auto overflow-x-auto whitespace-nowrap px-1">
+        <div className="w-full overflow-x-auto whitespace-nowrap">
           <div className="inline-flex items-center gap-2 border border-gray-200 rounded-lg p-2 bg-white shadow-sm">
             {capabilities.map((cap) => (
               <button
