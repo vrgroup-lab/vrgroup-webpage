@@ -17,6 +17,7 @@ interface HeroProps {
   style?: CSSProperties
   className?: string
   variant?: "default" | "services"
+  subtitleClassName?: string
 }
 
 export function Hero({
@@ -34,6 +35,7 @@ export function Hero({
   style,
   className = "",
   variant = "default",
+  subtitleClassName = "",
 }: HeroProps) {
   const minH = minHeight ?? "520px"
   return (
@@ -96,7 +98,9 @@ export function Hero({
               {title}
             </h1>
             {subtitle && (
-              <p className="text-white text-lg sm:text-xl max-w-3xl mx-auto opacity-90 drop-shadow">{subtitle}</p>
+              <p className={`text-white text-lg sm:text-xl max-w-3xl mx-auto opacity-90 drop-shadow ${subtitleClassName}`}>
+                {subtitle}
+              </p>
             )}
           </div>
         )}

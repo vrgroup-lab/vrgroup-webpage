@@ -6,6 +6,7 @@ type RotatingWordProps = {
   words: string[]
   fallback?: string
   className?: string
+  containerClassName?: string
   typingMs?: number
   erasingMs?: number
   holdMs?: number
@@ -17,6 +18,7 @@ export function RotatingWord({
   words,
   fallback,
   className = "",
+  containerClassName = "",
   typingMs = 65,
   erasingMs = 40,
   holdMs = 1300,
@@ -26,6 +28,12 @@ export function RotatingWord({
   const wordList = useMemo(() => words.filter(Boolean), [words])
   const fallbackWord = fallback ?? wordList[0] ?? ""
   const initialIndex = Math.max(0, wordList.indexOf(fallbackWord))
+  const longestWord = useMemo(() => {
+    const candidates = [fallbackWord, ...wordList].filter(Boolean) as string[]
+    if (!candidates.length) return ""
+    return candidates.reduce((longest, word) => (word.length > longest.length ? word : longest), candidates[0])
+  }, [fallbackWord, wordList])
+  const maxLen = Math.max(1, longestWord.length)
   const indexRef = useRef(initialIndex)
   const [current, setCurrent] = useState(fallbackWord)
   const [isDeleting, setIsDeleting] = useState(false)
@@ -104,13 +112,16 @@ export function RotatingWord({
   const showCursor = !reduceMotion
 
   return (
-    <span className={`inline-flex items-center ${className}`}>
-      <span>{reduceMotion ? fallbackWord : current}</span>
-      {showCursor ? (
-        <span aria-hidden="true" className="ml-0 inline-block animate-pulse">
-          |
-        </span>
-      ) : null}
+    <span className={`relative inline-block align-baseline ${containerClassName}`} style={{ minWidth: `${maxLen + 1}ch` }}>
+      <span className="invisible block">{longestWord}</span>
+      <span className={`absolute inset-0 inline-flex items-center ${className}`}>
+        <span>{reduceMotion ? fallbackWord : current}</span>
+        {showCursor ? (
+          <span aria-hidden="true" className="ml-0 inline-block animate-pulse">
+            |
+          </span>
+        ) : null}
+      </span>
     </span>
   )
 }

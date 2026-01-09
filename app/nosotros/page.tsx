@@ -1,4 +1,4 @@
-import { Navbar } from "@/components/layout/navbar"
+import { SiteNavbar } from "@/components/layout/site-navbar"
 import { Footer } from "@/components/layout/footer"
 import { HeroRotator } from "@/components/ui/hero-rotator"
 import { Section } from "@/components/ui/section"
@@ -8,8 +8,10 @@ import Link from "next/link"
 import { CheckCircle2, Sparkles, Workflow, Users, Rocket, ShieldCheck, Linkedin } from "lucide-react"
 import { teamMembers } from "@/lib/team"
 import { getHeroImages } from "@/lib/hero-images"
+import { getSiteSettings } from "@/lib/site-settings"
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const siteSettings = await getSiteSettings()
   const pillars = [
     {
       icon: Sparkles,
@@ -37,7 +39,7 @@ export default function AboutPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <SiteNavbar settings={siteSettings} />
 
       <HeroRotator
         title={
@@ -199,56 +201,57 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      {/* Equipo */}
-      <Section
-        title="Equipo directivo y responsables"
-        className="bg-[#0B1B33]"
-        variant="dark"
-        paddingClass="py-14"
-        id="equipo"
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {teamMembers.map((member) => (
-            <div
-              key={member.slug}
-              className="bg-white/5 border border-white/10 rounded-3xl p-5 text-center flex flex-col items-center gap-3 backdrop-blur-sm"
-            >
-              <div className="relative w-24 h-24 rounded-full overflow-hidden bg-white/10">
-                {member.photo ? (
-                  <Image src={member.photo} alt={member.name} fill className="object-cover" />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-3xl font-display text-white/80">
-                    {member.name.charAt(0)}
-                  </div>
-                )}
-              </div>
-              <div className="space-y-1">
-                <h3 className="font-display font-bold text-lg text-white">{member.name}</h3>
-                <p className="text-gray-300 text-xs font-semibold uppercase tracking-wide">{member.role}</p>
-                {member.degree && <p className="text-gray-200 text-sm">{member.degree}</p>}
-              </div>
-              <div className="flex items-center gap-3">
-                <Link
-                  href={`/equipo/${member.slug}`}
-                  className="px-3 py-1.5 rounded-full border border-white/20 text-white text-sm hover:bg-white/10 transition"
-                >
-                  Ver perfil
-                </Link>
-                {member.linkedin && (
+      {siteSettings.showTeamInAbout ? (
+        <Section
+          title="Equipo directivo y responsables"
+          className="bg-[#0B1B33]"
+          variant="dark"
+          paddingClass="py-14"
+          id="equipo"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {teamMembers.map((member) => (
+              <div
+                key={member.slug}
+                className="bg-white/5 border border-white/10 rounded-3xl p-5 text-center flex flex-col items-center gap-3 backdrop-blur-sm"
+              >
+                <div className="relative w-24 h-24 rounded-full overflow-hidden bg-white/10">
+                  {member.photo ? (
+                    <Image src={member.photo} alt={member.name} fill className="object-cover" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-3xl font-display text-white/80">
+                      {member.name.charAt(0)}
+                    </div>
+                  )}
+                </div>
+                <div className="space-y-1">
+                  <h3 className="font-display font-bold text-lg text-white">{member.name}</h3>
+                  <p className="text-gray-300 text-xs font-semibold uppercase tracking-wide">{member.role}</p>
+                  {member.degree && <p className="text-gray-200 text-sm">{member.degree}</p>}
+                </div>
+                <div className="flex items-center gap-3">
                   <Link
-                    href={member.linkedin}
-                    target="_blank"
-                    className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition"
-                    aria-label={`LinkedIn de ${member.name}`}
+                    href={`/equipo/${member.slug}`}
+                    className="px-3 py-1.5 rounded-full border border-white/20 text-white text-sm hover:bg-white/10 transition"
                   >
-                    <Linkedin size={18} />
+                    Ver perfil
                   </Link>
-                )}
+                  {member.linkedin && (
+                    <Link
+                      href={member.linkedin}
+                      target="_blank"
+                      className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition"
+                      aria-label={`LinkedIn de ${member.name}`}
+                    >
+                      <Linkedin size={18} />
+                    </Link>
+                  )}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </Section>
+            ))}
+          </div>
+        </Section>
+      ) : null}
 
       {/* CTA */}
       <CTABanner

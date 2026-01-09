@@ -1,4 +1,4 @@
-import { Navbar } from "@/components/layout/navbar"
+import { SiteNavbar } from "@/components/layout/site-navbar"
 import { Footer } from "@/components/layout/footer"
 import { Section } from "@/components/ui/section"
 import Link from "next/link"
@@ -86,7 +86,7 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <SiteNavbar />
 
       <div className="bg-gray-50 py-12">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">

@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
-import { Navbar } from "@/components/layout/navbar"
+import { SiteNavbar } from "@/components/layout/site-navbar"
 import { Footer } from "@/components/layout/footer"
 import { Section } from "@/components/ui/section"
 import { teamMembers } from "@/lib/team"
@@ -16,7 +16,7 @@ export default async function TeamMemberPage({ params }: { params: Promise<{ slu
 
   return (
     <div className="min-h-screen flex flex-col bg-[#0B1B33] text-white">
-      <Navbar />
+      <SiteNavbar />
 
       <Section paddingClass="pt-28 pb-12 sm:pt-32 sm:pb-16" className="bg-[#0B1B33] flex-1" variant="dark">
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-[280px_1fr] gap-8 items-center">

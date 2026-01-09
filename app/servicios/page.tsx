@@ -1,4 +1,4 @@
-import { Navbar } from "@/components/layout/navbar"
+import { SiteNavbar } from "@/components/layout/site-navbar"
 import { Footer } from "@/components/layout/footer"
 import { Hero } from "@/components/ui/hero"
 import { Section } from "@/components/ui/section"
@@ -8,7 +8,7 @@ import { CTABanner } from "@/components/ui/cta-banner"
 export default function ServicesPage() {
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <SiteNavbar />
 
       <Hero
         title="Servicios VR Group"

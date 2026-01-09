@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation"
-import { Navbar } from "@/components/layout/navbar"
+import { SiteNavbar } from "@/components/layout/site-navbar"
 import { Footer } from "@/components/layout/footer"
 import { supabasePublic } from "@/lib/supabase/public"
 import { ArrowRight, CheckCircle2 } from "lucide-react"
@@ -61,7 +61,7 @@ export default async function PortfolioDetailPage({ params }: { params: Promise<
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-[#0b1b33]">
-      <Navbar />
+      <SiteNavbar />
 
       <main className="flex-1">
         <section className="max-w-[1260px] mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-14 space-y-10">
