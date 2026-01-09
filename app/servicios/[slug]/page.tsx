@@ -1,4 +1,4 @@
-import { Navbar } from "@/components/layout/navbar"
+import { SiteNavbar } from "@/components/layout/site-navbar"
 import { Footer } from "@/components/layout/footer"
 import { Hero } from "@/components/ui/hero"
 import { Section } from "@/components/ui/section"
@@ -6,6 +6,7 @@ import { InteractiveCardCarousel } from "@/components/ui/interactive-card-carous
 import { CTABanner } from "@/components/ui/cta-banner"
 import { getLogosFromFolder } from "@/lib/logos"
 import { supabasePublic } from "@/lib/supabase/public"
+import { getSiteSettings } from "@/lib/site-settings"
 import Link from "next/link"
 import {
   Check,
@@ -551,16 +552,17 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
   const heroBackground = isAppian ? undefined : undefined
   const providerLogos = isIAService ? getLogosFromFolder("ai-providers") : []
   const iaProvidersFallback = ["OpenAI", "Anthropic", "Google Gemini", "Azure OpenAI", "AWS Bedrock", "DeepSeek", "Cohere", "Meta Llama"]
+  const siteSettings = await getSiteSettings()
   const serviceLineSlug = serviceLineByServiceSlug[normalizedSlug] ?? ""
-  const portfolioProjects = await getPortfolioProjects(serviceLineSlug)
-  const portfolioSection = (
+  const portfolioProjects = siteSettings.showPortfolioInServices ? await getPortfolioProjects(serviceLineSlug) : []
+  const portfolioSection = siteSettings.showPortfolioInServices ? (
     <PortfolioProjectsSection projects={portfolioProjects} serviceLineSlug={serviceLineSlug} />
-  )
+  ) : null
 
   if (!content) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Navbar />
+        <SiteNavbar settings={siteSettings} />
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
             <h1 className="text-3xl font-bold mb-4">Servicio no encontrado</h1>
@@ -579,7 +581,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
 
     return (
       <div className="min-h-screen flex flex-col">
-        <Navbar />
+        <SiteNavbar settings={siteSettings} />
 
         <Hero title={content.title} subtitle={content.intro} variant="services" />
 
@@ -806,7 +808,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
   if (isStaffing) {
     return (
       <div className="min-h-screen flex flex-col bg-white text-gray-900">
-        <Navbar />
+        <SiteNavbar settings={siteSettings} />
 
         <Hero
           title={content.title}
@@ -922,7 +924,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
   if (isSoftwareFactory) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Navbar />
+        <SiteNavbar settings={siteSettings} />
 
         <Hero title={content.title} subtitle={content.intro} variant="services" />
 
@@ -1071,7 +1073,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
 
     return (
       <div className="min-h-screen flex flex-col">
-        <Navbar />
+        <SiteNavbar settings={siteSettings} />
 
         <Hero title={content.title} subtitle={content.intro} variant="services" />
 
@@ -1260,7 +1262,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <SiteNavbar settings={siteSettings} />
 
       <Hero title={content.title} subtitle={content.intro} backgroundImage={heroBackground} variant="services" />
 

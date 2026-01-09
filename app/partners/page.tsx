@@ -1,4 +1,4 @@
-import { Navbar } from "@/components/layout/navbar"
+import { SiteNavbar } from "@/components/layout/site-navbar"
 import { Footer } from "@/components/layout/footer"
 import { Section } from "@/components/ui/section"
 import { LogoGrid } from "@/components/ui/logo-grid"
@@ -14,7 +14,7 @@ export default function PartnersPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#050711] text-white">
-      <Navbar />
+      <SiteNavbar />
 
       <Section
         title="Nuestros partners"

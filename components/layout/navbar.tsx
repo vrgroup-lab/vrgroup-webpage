@@ -6,7 +6,16 @@ import { useState, useRef, useEffect } from "react"
 import { Menu, X, ChevronDown } from "lucide-react"
 import { servicesData } from "@/components/ui/services-section"
 
-export function Navbar() {
+type NavbarSettings = {
+  showPortfolioInHeader?: boolean
+  showCareersInHeader?: boolean
+}
+
+type NavbarProps = {
+  settings?: NavbarSettings
+}
+
+export function Navbar({ settings }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [servicesOpen, setServicesOpen] = useState(false)
   const closeTimeout = useRef<NodeJS.Timeout | null>(null)
@@ -36,10 +45,14 @@ export function Navbar() {
     "staffing-celulas-agiles": "Staffing & Células",
   }
 
+  const showPortfolio = settings?.showPortfolioInHeader ?? true
+  const showCareers = settings?.showCareersInHeader ?? false
+
   const navItems = [
     { label: "Servicios", href: "/servicios", hasSub: true },
     { label: "Equipo", href: "/nosotros" },
-    { label: "Portafolio", href: "/portafolio" },
+    ...(showPortfolio ? [{ label: "Portafolio", href: "/portafolio" }] : []),
+    ...(showCareers ? [{ label: "Trabaja con nosotros", href: "/trabaja-con-nosotros" }] : []),
   ]
 
   return (

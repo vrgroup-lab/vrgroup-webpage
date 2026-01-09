@@ -1,4 +1,4 @@
-import { Navbar } from "@/components/layout/navbar"
+import { SiteNavbar } from "@/components/layout/site-navbar"
 import { Footer } from "@/components/layout/footer"
 import { Hero } from "@/components/ui/hero"
 import { Section } from "@/components/ui/section"
@@ -87,15 +87,20 @@ async function getProjects(serviceSlug?: string): Promise<PortfolioProject[]> {
   return data ?? []
 }
 
-export default async function PortfolioPage({ searchParams }: { searchParams?: { servicio?: string | string[] } }) {
-  const rawFilter = searchParams?.servicio
+export default async function PortfolioPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ servicio?: string | string[] }>
+}) {
+  const resolvedSearchParams = searchParams ? await searchParams : undefined
+  const rawFilter = resolvedSearchParams?.servicio
   const serviceFilter = Array.isArray(rawFilter) ? rawFilter[0]?.trim().toLowerCase() : rawFilter?.trim().toLowerCase()
   const normalizedFilter = serviceFilter ? serviceSlugAliases[serviceFilter] ?? serviceFilter : ""
   const projects = await getProjects(normalizedFilter)
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-blue-dark">
-      <Navbar />
+      <SiteNavbar />
 
       <Hero
         title="Nuestro Portafolio"

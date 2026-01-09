@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { LayoutDashboard, Users, BriefcaseBusiness, FolderKanban, Home } from "lucide-react"
+import { LayoutDashboard, Users, BriefcaseBusiness, FolderKanban, Home, Settings } from "lucide-react"
 import Image from "next/image"
 import type { LucideIcon } from "lucide-react"
 
@@ -17,6 +17,7 @@ const navItems: NavItem[] = [
   { label: "Usuarios", href: "/admin/usuarios", icon: Users },
   { label: "Ofertas", href: "/admin/ofertas", icon: BriefcaseBusiness },
   { label: "Portafolio", href: "/admin/portafolio", icon: FolderKanban },
+  { label: "Configuración", href: "/admin/configuracion", icon: Settings },
 ]
 
 export function AdminHeader() {

@@ -1,4 +1,4 @@
-import { Navbar } from "@/components/layout/navbar"
+import { SiteNavbar } from "@/components/layout/site-navbar"
 import { Footer } from "@/components/layout/footer"
 import { Section } from "@/components/ui/section"
 import { LogoGrid } from "@/components/ui/logo-grid"
@@ -14,7 +14,7 @@ export default function ClientsPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f6f7fb] text-[#1C1F26]">
-      <Navbar />
+      <SiteNavbar />
 
       <Section
         title="Nuestros clientes"

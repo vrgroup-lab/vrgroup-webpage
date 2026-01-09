@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server"
 import { getSupabaseAdmin } from "@/lib/supabase/server"
 
-export async function PUT(request: Request, { params }: { params: { id: string } }) {
+export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await params
     const supabase = getSupabaseAdmin()
     const body = await request.json()
     const { full_name, role } = body
@@ -10,7 +11,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     const { error } = await supabase
       .from("user_profiles")
       .update({ full_name, role })
-      .eq("id", params.id)
+      .eq("id", id)
 
     if (error) throw error
     return NextResponse.json({ ok: true })
@@ -19,10 +20,11 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(_request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const { id } = await params
     const supabase = getSupabaseAdmin()
-    const { error } = await supabase.auth.admin.deleteUser(params.id)
+    const { error } = await supabase.auth.admin.deleteUser(id)
     if (error) throw error
     return NextResponse.json({ ok: true })
   } catch (error: any) {
