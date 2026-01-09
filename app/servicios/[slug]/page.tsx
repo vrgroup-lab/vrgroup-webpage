@@ -109,7 +109,7 @@ function WhyChooseSection({
 }
 
 const serviceContent: Record<string, any> = {
-  "transformacion-digital-desarrollo": {
+  "experiencia-digital": {
     title: "Experiencia Digital.",
     intro: "Soluciones integrales web y mobile.",
     offeringsIntro:
@@ -235,7 +235,7 @@ const serviceContent: Record<string, any> = {
       "Medimos performance, SEO y uso real para iterar con datos y mejorar resultados continuamente.",
     ],
   },
-  "soluciones-ti-proyectos": {
+  "software-factory": {
     title: "Ingeniería de Software.",
     intro: "Soluciones integradas y a medida.",
     services: [
@@ -292,7 +292,7 @@ const serviceContent: Record<string, any> = {
       "Operamos con CI/CD y QA continuo para reducir riesgos y acelerar releases.",
     ],
   },
-  "automatizacion-procesos": {
+  "automatizacion-de-procesos": {
     title: "Automatización digital.",
     intro: "Optimiza procesos, impulsa eficiencia.",
     benefits: [
@@ -321,7 +321,7 @@ const serviceContent: Record<string, any> = {
       "Acompañamos el ciclo completo con mejora continua, soporte y roadmap de automatización.",
     ],
   },
-  "gestion-operaciones-riesgo": {
+  "gestion-y-riesgo": {
     title: "Gestión & Riesgo.",
     intro: "Excelencia en procesos clave.",
     benefits: [
@@ -349,7 +349,7 @@ const serviceContent: Record<string, any> = {
       "Implementamos KPIs y reporting ejecutivo para monitorear y corregir a tiempo.",
     ],
   },
-  "ia-agentes-inteligentes": {
+  "ia-y-agentes": {
     title: "IA Aplicada a Procesos.",
     intro: "Agentes inteligentes para mayor eficiencia.",
     benefits: [
@@ -378,7 +378,7 @@ const serviceContent: Record<string, any> = {
       "Integramos agentes en workflows para aumentar productividad y mejorar experiencia.",
     ],
   },
-  "staffing-celulas-agiles": {
+  "staffing-y-celulas": {
     title: "Staffing & Células Ágiles",
     intro: "Soluciones digitales con equipos ágiles a demanda.",
     heroEyebrow: "Staffing digital",
@@ -460,21 +460,27 @@ const serviceContent: Record<string, any> = {
 
 // Aliases para slugs antiguos que puedan seguir enlazados en la UI
 const slugAliases: Record<string, string> = {
-  appian: "automatizacion-procesos",
-  ia: "ia-agentes-inteligentes",
-  transformacion: "transformacion-digital-desarrollo",
-  "soluciones-ti": "soluciones-ti-proyectos",
-  "gestion-riesgo": "gestion-operaciones-riesgo",
-  "analitica-ml": "staffing-celulas-agiles",
-}
-
-const serviceLineByServiceSlug: Record<string, string> = {
+  appian: "automatizacion-de-procesos",
+  ia: "ia-y-agentes",
+  transformacion: "experiencia-digital",
+  "soluciones-ti": "software-factory",
+  "gestion-riesgo": "gestion-y-riesgo",
+  "analitica-ml": "staffing-y-celulas",
   "transformacion-digital-desarrollo": "experiencia-digital",
   "soluciones-ti-proyectos": "software-factory",
   "automatizacion-procesos": "automatizacion-de-procesos",
   "gestion-operaciones-riesgo": "gestion-y-riesgo",
   "ia-agentes-inteligentes": "ia-y-agentes",
   "staffing-celulas-agiles": "staffing-y-celulas",
+}
+
+const serviceLineByServiceSlug: Record<string, string> = {
+  "experiencia-digital": "experiencia-digital",
+  "software-factory": "software-factory",
+  "automatizacion-de-procesos": "automatizacion-de-procesos",
+  "gestion-y-riesgo": "gestion-y-riesgo",
+  "ia-y-agentes": "ia-y-agentes",
+  "staffing-y-celulas": "staffing-y-celulas",
 }
 
 function PortfolioProjectsSection({
@@ -544,11 +550,11 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
   const { slug } = await params
   const normalizedSlug = slugAliases[slug] || slug
   const content = serviceContent[normalizedSlug]
-  const isAppian = normalizedSlug === "automatizacion-procesos"
-  const isIAService = normalizedSlug === "ia-agentes-inteligentes"
-  const isTransformacion = normalizedSlug === "transformacion-digital-desarrollo"
-  const isSoftwareFactory = normalizedSlug === "soluciones-ti-proyectos"
-  const isStaffing = normalizedSlug === "staffing-celulas-agiles"
+  const isAppian = normalizedSlug === "automatizacion-de-procesos"
+  const isIAService = normalizedSlug === "ia-y-agentes"
+  const isTransformacion = normalizedSlug === "experiencia-digital"
+  const isSoftwareFactory = normalizedSlug === "software-factory"
+  const isStaffing = normalizedSlug === "staffing-y-celulas"
   const heroBackground = isAppian ? undefined : undefined
   const providerLogos = isIAService ? getLogosFromFolder("ai-providers") : []
   const iaProvidersFallback = ["OpenAI", "Anthropic", "Google Gemini", "Azure OpenAI", "AWS Bedrock", "DeepSeek", "Cohere", "Meta Llama"]

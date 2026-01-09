@@ -38,12 +38,12 @@ export function Navbar({ settings }: NavbarProps) {
   }, [])
 
   const shortTitles: Record<string, string> = {
-    "transformacion-digital-desarrollo": "Experiencia Digital",
-    "soluciones-ti-proyectos": "Software Factory",
-    "automatizacion-procesos": "Automatización de Procesos",
-    "gestion-operaciones-riesgo": "Gestión y Riesgo",
-    "ia-agentes-inteligentes": "IA & Agentes",
-    "staffing-celulas-agiles": "Staffing & Células",
+    "experiencia-digital": "Experiencia Digital",
+    "software-factory": "Software Factory",
+    "automatizacion-de-procesos": "Automatización de Procesos",
+    "gestion-y-riesgo": "Gestión y Riesgo",
+    "ia-y-agentes": "IA & Agentes",
+    "staffing-y-celulas": "Staffing & Células",
   }
 
   const showPortfolio = settings?.showPortfolioInHeader ?? true

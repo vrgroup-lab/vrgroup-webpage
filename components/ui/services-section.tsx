@@ -14,49 +14,49 @@ export interface ServiceItem {
 
 export const servicesData: ServiceItem[] = [
   {
-    slug: "transformacion-digital-desarrollo",
-    title: "Experiencia Digital: UX/UI, Web & Mobile",
+    slug: "experiencia-digital",
+    title: "Experiencia Digital",
     description:
-      "Diseño UX/UI, desarrollo web y mobile, performance digital y evolución continua de canales medibles en adopción.",
+      "UX/UI, web y mobile con foco en experiencia, performance y evolución continua de canales.",
     shortDescription: "UX/UI, web y mobile con foco en performance.",
     icon: Sparkles,
   },
   {
-    slug: "soluciones-ti-proyectos",
-    title: "Ingeniería de Software e Integración",
+    slug: "software-factory",
+    title: "Software Factory",
     description:
-      "Software Factory para backends, APIs e integraciones con estándares enterprise, CI/CD y equipos Build | Run | Enable.",
-    shortDescription: "Software factory, APIs e integraciones.",
+      "Full-stack, APIs, integraciones y DevOps con estándares enterprise y equipos Build | Run | Enable.",
+    shortDescription: "Full-stack, APIs e integraciones.",
     icon: Layers,
   },
   {
-    slug: "automatizacion-procesos",
-    title: "Automatización Digital de Procesos (ADP / Appian / RPA)",
+    slug: "automatizacion-de-procesos",
+    title: "Automatización de Procesos",
     description:
-      "Discovery, roadmap, laboratorio de automatización, implementaciones Appian, RPA e iBPMS. Automatización end-to-end con enfoque low-code.",
-    shortDescription: "Appian, RPA e iBPMS end-to-end.",
+      "Appian, BPM/low-code y RPA para automatización end-to-end con gobierno, métricas y escalabilidad.",
+    shortDescription: "Appian, BPM/low-code y RPA.",
     icon: Workflow,
   },
   {
-    slug: "gestion-operaciones-riesgo",
-    title: "Gestión, Operaciones, Riesgo & Cumplimiento",
+    slug: "gestion-y-riesgo",
+    title: "Gestión y Riesgo",
     description:
-      "Modelos de gestión, mejora de procesos BPM, control de gestión, riesgos, cumplimiento normativo, auditoría y PMO.",
-    shortDescription: "Riesgo, cumplimiento y control.",
+      "GRC, cumplimiento, continuidad y gobierno para operar con control y resiliencia.",
+    shortDescription: "GRC, cumplimiento y continuidad.",
     icon: ShieldCheck,
   },
   {
-    slug: "ia-agentes-inteligentes",
-    title: "IA Aplicada a Procesos & Agentes Inteligentes",
+    slug: "ia-y-agentes",
+    title: "IA & Agentes",
     description:
-      "Diseño e integración de agentes inteligentes para procesos, chatbots corporativos, automatización cognitiva y uso de modelos avanzados dentro de workflows empresariales.",
+      "Agentes, RAG y copilots para automatización inteligente con seguridad y gobierno.",
     shortDescription: "Agentes, RAG y copilots.",
     icon: Bot,
   },
   {
-    slug: "staffing-celulas-agiles",
-    title: "Staffing & Células Ágiles",
-    description: "Equipos ágiles on-demand para ejecutar y escalar iniciativas digitales con velocidad y gobierno liviano.",
+    slug: "staffing-y-celulas",
+    title: "Staffing y Células",
+    description: "Equipos especializados on-demand para ejecutar y escalar con velocidad y foco.",
     shortDescription: "Equipos on-demand para delivery.",
     icon: Users,
   },
@@ -64,7 +64,7 @@ export const servicesData: ServiceItem[] = [
 
 const variantWrapper: Record<ServiceVariant, string> = {
   light: "bg-white text-[#1C1F26]",
-  dark: "bg-[#050711] text-white",
+  dark: "bg-[radial-gradient(circle_at_top,_#0b1b33,_#05060b_65%)] text-white",
 }
 
 const variantSubtitle: Record<ServiceVariant, string> = {
@@ -77,14 +77,18 @@ export function ServicesSection({
   subheading = "Soluciones especializadas para acelerar tu transformación digital con impacto medible.",
   variant = "light",
   services = servicesData,
+  paddingClass,
 }: {
   heading?: string
   subheading?: string
   variant?: ServiceVariant
   services?: ServiceItem[]
+  paddingClass?: string
 }) {
+  const padding = paddingClass ?? "py-16 sm:py-20 lg:py-24"
+
   return (
-    <section className={`py-16 sm:py-20 lg:py-24 ${variantWrapper[variant]}`}>
+    <section className={`${padding} ${variantWrapper[variant]}`}>
       <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-12 text-center">
           <p className="text-coral font-semibold text-sm uppercase tracking-[0.12em] mb-2">Servicios</p>

@@ -62,7 +62,7 @@ export function IAHighlight({ providerLogos = [] }: IAHighlightProps) {
   const activeCap = capabilities.find((cap) => cap.key === active)
 
   return (
-    <Section className="bg-white" variant="light">
+    <Section className="bg-white" variant="light" paddingClass="py-12 sm:py-14 lg:py-16">
       <div className="space-y-8">
         <div className="flex flex-col items-center text-center gap-3">
           <h2 className="font-display font-bold text-4xl md:text-5xl text-blue-dark flex flex-wrap items-center justify-center gap-2">
@@ -129,7 +129,7 @@ export function IAHighlight({ providerLogos = [] }: IAHighlightProps) {
             </ul>
             <div className="flex flex-col sm:flex-row gap-3 pt-2">
               <Link
-                href="/servicios/ia-agentes-inteligentes"
+                href="/servicios/ia-y-agentes"
                 className="px-5 py-3 rounded-lg bg-blue-900 text-white font-semibold text-center hover:bg-blue-800 transition-colors"
               >
                 Ver servicio de IA
