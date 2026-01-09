@@ -10,6 +10,7 @@ import { ServicesSection } from "@/components/ui/services-section"
 import { CTABanner } from "@/components/ui/cta-banner"
 import { RotatingWord } from "@/components/ui/rotating-word"
 import { getLogosFromFolder } from "@/lib/logos"
+import Image from "next/image"
 import Link from "next/link"
 import { Check, Brain, Workflow, Sparkles } from "lucide-react"
 
@@ -88,17 +89,18 @@ export default function Home() {
         subtitle="De estrategia a producción: arquitectura sólida, seguridad y gobierno claro para entornos críticos."
         subtitleClassName="text-base sm:text-xl leading-relaxed max-w-[22rem] sm:max-w-3xl"
         alignment="center"
-        minHeight="780px"
+        minHeight="calc(100vh + 50px)"
+        className="pt-8 sm:pt-12 lg:pt-16 pb-4 sm:pb-6 lg:pb-8"
         variant="default"
       >
-        <div className="flex flex-col items-center gap-5 mt-8">
+        <div className="flex flex-col items-center gap-6 mt-8">
           <span className="text-xs font-semibold uppercase tracking-[0.18em] text-white/70">
             Atención ejecutiva
           </span>
-          <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row items-center gap-5 w-full sm:w-auto">
             <Link
               href="/contacto"
-              className={`${ctaBase} px-8 border-2 border-transparent text-white bg-gradient-to-r from-[#FF5A5F] via-[#FF7A7F] to-[#FF3C48] shadow-[0_18px_55px_rgba(255,90,95,0.35)] hover:shadow-[0_22px_65px_rgba(255,90,95,0.5)] hover:scale-[1.05] active:scale-[0.99]`}
+              className={`${ctaBase} px-8 border-2 border-transparent text-white bg-[#FF5A5F] hover:bg-[#FF6A6F] shadow-none hover:shadow-none hover:scale-[1.05] active:scale-[0.99]`}
             >
               Agenda una reunión
               <span>→</span>
@@ -111,7 +113,7 @@ export default function Home() {
             </Link>
           </div>
         </div>
-        <div className="mt-10 w-full">
+        <div className="mt-12 w-full">
           <LogoCarousel
             logos={clientLogos}
             className="py-3"
@@ -127,6 +129,7 @@ export default function Home() {
         subtitle="Low-code, IA aplicada y delivery boutique para resultados medibles"
         className="bg-white"
         variant="light"
+        paddingClass="py-12 sm:py-14 lg:py-16"
       >
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 lg:gap-4 xl:gap-5">
           {differentiators.map((item, idx) => {
@@ -158,6 +161,7 @@ export default function Home() {
         heading="Nuestras soluciones para tu negocio"
         subheading="Portafolio completo de VR Group: automatización, IA aplicada, analítica, desarrollo y gobierno operativo."
         variant="dark"
+        paddingClass="py-12 sm:py-14 lg:py-16"
       />
 
       {/* Testimonial / Case Highlight */}
@@ -166,9 +170,10 @@ export default function Home() {
         subtitle="Resultados medibles en automatización, IA y experiencia digital"
         className="bg-white"
         variant="light"
+        paddingClass="py-12 sm:py-14 lg:py-16"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
-          <div className="rounded-2xl bg-gradient-to-r from-[#FF5A5F]/85 to-[#0B1B33]/85 p-8 text-white shadow-xl">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+          <div className="rounded-2xl bg-gradient-to-r from-[#0B1B33] via-[#0a1730] to-[#05060b] p-8 text-white shadow-xl h-full">
             <p className="text-sm uppercase tracking-[0.15em] mb-3 opacity-80">Caso destacado</p>
             <h3 className="font-display text-2xl font-bold mb-3">Automatización de onboarding en banca</h3>
             <p className="text-white/90 mb-4">
@@ -182,33 +187,26 @@ export default function Home() {
               ))}
             </div>
           </div>
-          <div className="rounded-2xl border border-gray-200 p-6 bg-white shadow-sm">
-            <h4 className="font-display text-xl font-bold text-blue-dark mb-3">Lo que dicen</h4>
-            <p className="text-gray-700 mb-4">
-              “VR Group nos ayudó a llevar a producción en semanas, con gobierno claro y mejoras continuas sin fricción.”
-            </p>
-            <p className="text-gray-500 text-sm">Gerente de Operaciones, Banca</p>
+          <div className="rounded-2xl border border-gray-200 bg-white shadow-sm h-full overflow-hidden">
+            <div className="flex flex-col lg:flex-row h-full">
+              <div className="relative w-full h-40 sm:h-48 lg:h-full lg:w-[34%]">
+              <Image
+                src="/images/root/manager.jpg"
+                alt="Gerente de Operaciones"
+                fill
+                sizes="(min-width: 1024px) 280px, 90vw"
+                className="object-cover object-center"
+              />
+              </div>
+              <div className="flex flex-col justify-center gap-3 p-6 lg:w-[66%] lg:p-8">
+                <h4 className="font-display text-xl font-bold text-blue-dark">Lo que dicen</h4>
+                <p className="text-gray-700">
+                  “VR Group nos ayudó a llevar a producción en semanas, con gobierno claro y mejoras continuas sin fricción.”
+                </p>
+                <p className="text-gray-500 text-sm">Gerente de Operaciones, Banca</p>
+              </div>
+            </div>
           </div>
-        </div>
-      </Section>
-
-      <Section className="bg-gradient-to-br from-coral via-coral-dark to-blue-dark relative overflow-hidden">
-        {/* Overlay for better text contrast */}
-        <div className="absolute inset-0 bg-black/15 pointer-events-none"></div>
-
-        <div className="relative z-10 max-w-2xl mx-auto text-center">
-          <h2 className="font-display font-bold text-3xl sm:text-5xl mb-6 text-white drop-shadow-xl">
-            ¿Listo para transformar tu negocio?
-          </h2>
-          <p className="text-lg sm:text-xl mb-8 text-white drop-shadow-lg opacity-95">
-            Contáctanos hoy y descubre cómo podemos ayudarte a alcanzar tus objetivos digitales.
-          </p>
-          <Link
-            href="/contacto"
-            className="inline-flex px-8 py-4 bg-white text-coral rounded-lg font-display font-bold text-lg hover:bg-gray-50 hover:shadow-xl transition-all duration-300"
-          >
-            Solicita una reunión
-          </Link>
         </div>
       </Section>
 

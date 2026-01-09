@@ -73,7 +73,7 @@ function WhyChooseSection({
 
   return (
     <div className={className ? `bg-black ${className}` : "bg-black"}>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
+      <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-8 items-center">
           <div>
             <h4 className="font-display text-xl sm:text-2xl font-semibold text-white mb-4">¿Por qué elegir nuestro servicio?</h4>
@@ -109,7 +109,7 @@ function WhyChooseSection({
 }
 
 const serviceContent: Record<string, any> = {
-  "transformacion-digital-desarrollo": {
+  "experiencia-digital": {
     title: "Experiencia Digital.",
     intro: "Soluciones integrales web y mobile.",
     offeringsIntro:
@@ -235,7 +235,7 @@ const serviceContent: Record<string, any> = {
       "Medimos performance, SEO y uso real para iterar con datos y mejorar resultados continuamente.",
     ],
   },
-  "soluciones-ti-proyectos": {
+  "software-factory": {
     title: "Ingeniería de Software.",
     intro: "Soluciones integradas y a medida.",
     services: [
@@ -292,7 +292,7 @@ const serviceContent: Record<string, any> = {
       "Operamos con CI/CD y QA continuo para reducir riesgos y acelerar releases.",
     ],
   },
-  "automatizacion-procesos": {
+  "automatizacion-de-procesos": {
     title: "Automatización digital.",
     intro: "Optimiza procesos, impulsa eficiencia.",
     benefits: [
@@ -321,7 +321,7 @@ const serviceContent: Record<string, any> = {
       "Acompañamos el ciclo completo con mejora continua, soporte y roadmap de automatización.",
     ],
   },
-  "gestion-operaciones-riesgo": {
+  "gestion-y-riesgo": {
     title: "Gestión & Riesgo.",
     intro: "Excelencia en procesos clave.",
     benefits: [
@@ -349,7 +349,7 @@ const serviceContent: Record<string, any> = {
       "Implementamos KPIs y reporting ejecutivo para monitorear y corregir a tiempo.",
     ],
   },
-  "ia-agentes-inteligentes": {
+  "ia-y-agentes": {
     title: "IA Aplicada a Procesos.",
     intro: "Agentes inteligentes para mayor eficiencia.",
     benefits: [
@@ -378,7 +378,7 @@ const serviceContent: Record<string, any> = {
       "Integramos agentes en workflows para aumentar productividad y mejorar experiencia.",
     ],
   },
-  "staffing-celulas-agiles": {
+  "staffing-y-celulas": {
     title: "Staffing & Células Ágiles",
     intro: "Soluciones digitales con equipos ágiles a demanda.",
     heroEyebrow: "Staffing digital",
@@ -460,21 +460,27 @@ const serviceContent: Record<string, any> = {
 
 // Aliases para slugs antiguos que puedan seguir enlazados en la UI
 const slugAliases: Record<string, string> = {
-  appian: "automatizacion-procesos",
-  ia: "ia-agentes-inteligentes",
-  transformacion: "transformacion-digital-desarrollo",
-  "soluciones-ti": "soluciones-ti-proyectos",
-  "gestion-riesgo": "gestion-operaciones-riesgo",
-  "analitica-ml": "staffing-celulas-agiles",
-}
-
-const serviceLineByServiceSlug: Record<string, string> = {
+  appian: "automatizacion-de-procesos",
+  ia: "ia-y-agentes",
+  transformacion: "experiencia-digital",
+  "soluciones-ti": "software-factory",
+  "gestion-riesgo": "gestion-y-riesgo",
+  "analitica-ml": "staffing-y-celulas",
   "transformacion-digital-desarrollo": "experiencia-digital",
   "soluciones-ti-proyectos": "software-factory",
   "automatizacion-procesos": "automatizacion-de-procesos",
   "gestion-operaciones-riesgo": "gestion-y-riesgo",
   "ia-agentes-inteligentes": "ia-y-agentes",
   "staffing-celulas-agiles": "staffing-y-celulas",
+}
+
+const serviceLineByServiceSlug: Record<string, string> = {
+  "experiencia-digital": "experiencia-digital",
+  "software-factory": "software-factory",
+  "automatizacion-de-procesos": "automatizacion-de-procesos",
+  "gestion-y-riesgo": "gestion-y-riesgo",
+  "ia-y-agentes": "ia-y-agentes",
+  "staffing-y-celulas": "staffing-y-celulas",
 }
 
 function PortfolioProjectsSection({
@@ -544,11 +550,11 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
   const { slug } = await params
   const normalizedSlug = slugAliases[slug] || slug
   const content = serviceContent[normalizedSlug]
-  const isAppian = normalizedSlug === "automatizacion-procesos"
-  const isIAService = normalizedSlug === "ia-agentes-inteligentes"
-  const isTransformacion = normalizedSlug === "transformacion-digital-desarrollo"
-  const isSoftwareFactory = normalizedSlug === "soluciones-ti-proyectos"
-  const isStaffing = normalizedSlug === "staffing-celulas-agiles"
+  const isAppian = normalizedSlug === "automatizacion-de-procesos"
+  const isIAService = normalizedSlug === "ia-y-agentes"
+  const isTransformacion = normalizedSlug === "experiencia-digital"
+  const isSoftwareFactory = normalizedSlug === "software-factory"
+  const isStaffing = normalizedSlug === "staffing-y-celulas"
   const heroBackground = isAppian ? undefined : undefined
   const providerLogos = isIAService ? getLogosFromFolder("ai-providers") : []
   const iaProvidersFallback = ["OpenAI", "Anthropic", "Google Gemini", "Azure OpenAI", "AWS Bedrock", "DeepSeek", "Cohere", "Meta Llama"]
@@ -645,7 +651,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
         </Section>
 
         <section className="bg-gradient-to-r from-[#0B1B33] via-[#12345a] to-[#0B1B33] text-white">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+          <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
             <div className="rounded-2xl border border-white/10 bg-white/5 px-6 py-5 sm:px-8 sm:py-6 text-center shadow-[0_18px_55px_rgba(0,0,0,0.35)]">
               <p className="text-[11px] uppercase tracking-[0.3em] text-white/70 mb-2">Partner oficial</p>
               <div className="flex flex-wrap items-center justify-center gap-3">
@@ -820,7 +826,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
         />
 
         <section id="detalles" className="pt-6 pb-16 bg-gradient-to-b from-[#f5f7fb] via-white to-[#eef2f7]">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-10">
               <div className="relative overflow-hidden rounded-2xl border border-gray-200 bg-gradient-to-r from-[#0b1b33] via-[#12345a] to-[#0b1b33] p-[1px] shadow-lg">
                 <div className="rounded-2xl bg-white/95 p-6 sm:p-7">
@@ -878,7 +884,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
 
           <WhyChooseSection reasons={content.reasons} className="mt-12" />
 
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mt-12">
               <div className="flex items-center justify-between mb-4">
                 <h4 className="font-display text-lg sm:text-xl font-semibold text-black">Roles disponibles</h4>

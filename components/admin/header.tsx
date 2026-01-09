@@ -25,7 +25,7 @@ export function AdminHeader() {
 
   return (
     <header className="w-full bg-white border border-gray-200 shadow-sm rounded-2xl">
-      <div className="max-w-[1260px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
         <Link href="/" className="flex items-center gap-3">
           <div className="relative h-10 w-10">
             <Image src="/logos/brand/logo_vrgroup_cuadrado.png" alt="VR Group" fill className="object-contain" sizes="80px" />

@@ -64,7 +64,7 @@ export default async function PortfolioDetailPage({ params }: { params: Promise<
       <SiteNavbar />
 
       <main className="flex-1">
-        <section className="max-w-[1260px] mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-14 space-y-10">
+        <section className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-14 space-y-10">
           <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-10 items-center">
             <div className="relative overflow-hidden rounded-3xl border border-gray-200 bg-gray-50 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
               {primaryMedia?.url ? (

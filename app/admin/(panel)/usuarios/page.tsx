@@ -80,6 +80,9 @@ export default function AdminUsersPage() {
 
   const deleteUser = async (id: string) => {
     setError(null)
+    if (!window.confirm("¿Seguro que quieres eliminar este usuario? Esta acción no se puede deshacer.")) {
+      return
+    }
     try {
       const res = await fetch(`/api/admin/users/${id}`, { method: "DELETE" })
       const json = await res.json()

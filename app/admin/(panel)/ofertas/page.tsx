@@ -179,6 +179,9 @@ export default function AdminJobsPage() {
 
   const deleteJob = async (id: string) => {
     setError(null)
+    if (!window.confirm("¿Seguro que quieres eliminar esta oferta? Esta acción no se puede deshacer.")) {
+      return
+    }
     try {
       const res = await fetch(`/api/admin/jobs/${id}`, { method: "DELETE" })
       const json = await res.json()

@@ -52,6 +52,9 @@ export default function AdminPortfolioListPage() {
 
   const deleteProject = async (id: string) => {
     setError(null)
+    if (!window.confirm("¿Seguro que quieres eliminar este proyecto? Esta acción no se puede deshacer.")) {
+      return
+    }
     try {
       const res = await fetch(`/api/admin/portfolio/projects/${id}`, { method: "DELETE" })
       const json = await res.json()
