@@ -2,28 +2,53 @@
 
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { BriefcaseBusiness, FolderKanban, Users, Gauge, ArrowRight } from "lucide-react"
+import { BriefcaseBusiness, FolderKanban, MessageCircle, Gauge, ArrowRight } from "lucide-react"
 
 export default function AdminOverviewPage() {
-  const [stats, setStats] = useState({ users: 0, jobsPublished: 0, projectsPublic: 0, loading: true })
+  const [stats, setStats] = useState({ contactsPending: 0, jobsPublished: 0, projectsPublic: 0, loading: true })
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const [usersRes, jobsRes, portfolioRes] = await Promise.all([
-          fetch("/api/admin/users"),
+        const [contactsRes, jobsRes, portfolioRes] = await Promise.all([
+          fetch("/api/admin/contact-submissions"),
           fetch("/api/admin/jobs"),
           fetch("/api/admin/portfolio/projects"),
         ])
-        const [usersJson, jobsJson, portfolioJson] = await Promise.all([usersRes.json(), jobsRes.json(), portfolioRes.json()])
-        const usersCount = Array.isArray(usersJson?.data) ? usersJson.data.length : 0
+        const [contactsJson, jobsJson, portfolioJson] = await Promise.all([
+          contactsRes.json(),
+          jobsRes.json(),
+          portfolioRes.json(),
+        ])
+        const pendingStatuses = new Set(["pendiente", "nuevo", "pending", "por-contactar", "por contactar"])
+        const nonPendingStatuses = new Set([
+          "en-progreso",
+          "en progreso",
+          "contactado",
+          "calificado",
+          "qualified",
+          "cerrado",
+          "closed",
+          "won",
+          "error",
+          "fallido",
+          "failed",
+        ])
+        const contactsPending = Array.isArray(contactsJson?.data)
+          ? contactsJson.data.filter((c: any) => {
+              const status = String(c.status || "").toLowerCase().trim()
+              if (!status) return true
+              if (pendingStatuses.has(status)) return true
+              return !nonPendingStatuses.has(status)
+            }).length
+          : 0
         const jobsPublished = Array.isArray(jobsJson?.data)
           ? jobsJson.data.filter((j: any) => j.status === "published").length
           : 0
         const projectsPublic = Array.isArray(portfolioJson?.data)
           ? portfolioJson.data.filter((p: any) => p.status === "public").length
           : 0
-        setStats({ users: usersCount, jobsPublished, projectsPublic, loading: false })
+        setStats({ contactsPending, jobsPublished, projectsPublic, loading: false })
       } catch (e) {
         setStats((prev) => ({ ...prev, loading: false }))
       }
@@ -33,14 +58,14 @@ export default function AdminOverviewPage() {
 
   const cards = [
     {
-      title: "Usuarios",
-      value: stats.loading ? "—" : stats.users,
-      subtitle: "Cuentas activas",
-      href: "/admin/usuarios",
-      icon: <Users size={18} />,
-      text: "text-blue-900",
-      accent: "text-blue-800",
-      stripe: "#1e3a8a",
+      title: "Leads por contactar",
+      value: stats.loading ? "—" : stats.contactsPending,
+      subtitle: "Pendientes de atención",
+      href: "/admin/contactos",
+      icon: <MessageCircle size={18} />,
+      text: "text-[#0B1B33]",
+      accent: "text-[#0B1B33]",
+      stripe: "#0B1B33",
     },
     {
       title: "Ofertas publicadas",
@@ -70,7 +95,7 @@ export default function AdminOverviewPage() {
         <p className="text-xs uppercase tracking-[0.22em] text-gray-500">Panel</p>
         <h1 className="font-display text-3xl sm:text-4xl font-bold text-gray-900">Administración</h1>
         <p className="text-gray-600 max-w-3xl">
-          Accede a los módulos clave: usuarios, ofertas y portafolio. Más secciones se podrán agregar luego.
+          Accede a los módulos clave: contactos, ofertas y portafolio. Gestiona los leads desde el tablero.
         </p>
       </header>
 

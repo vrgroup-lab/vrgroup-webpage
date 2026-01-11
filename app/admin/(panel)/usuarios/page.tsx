@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { Mail, Plus, ShieldCheck, Trash2, User, UserRoundPen } from "lucide-react"
 import { getSupabaseBrowser } from "@/lib/supabase/client"
+import { ConfirmDialog } from "@/components/admin/confirm-dialog"
 
 type UserProfile = {
   id: string
@@ -21,6 +22,12 @@ export default function AdminUsersPage() {
   const [form, setForm] = useState({ email: "", password: "", full_name: "", role: "editor" })
   const [saving, setSaving] = useState(false)
   const [showForm, setShowForm] = useState(false)
+  const [confirmState, setConfirmState] = useState<{ open: boolean; id: string | null; name: string | null }>({
+    open: false,
+    id: null,
+    name: null,
+  })
+  const [deleting, setDeleting] = useState(false)
 
   const fetchUsers = async () => {
     setLoading(true)
@@ -80,9 +87,7 @@ export default function AdminUsersPage() {
 
   const deleteUser = async (id: string) => {
     setError(null)
-    if (!window.confirm("¿Seguro que quieres eliminar este usuario? Esta acción no se puede deshacer.")) {
-      return
-    }
+    setDeleting(true)
     try {
       const res = await fetch(`/api/admin/users/${id}`, { method: "DELETE" })
       const json = await res.json()
@@ -90,6 +95,8 @@ export default function AdminUsersPage() {
       setUsers((prev) => prev.filter((u) => u.id !== id))
     } catch (err: any) {
       setError(err?.message || "No se pudo eliminar el usuario")
+    } finally {
+      setDeleting(false)
     }
   }
 
@@ -150,7 +157,7 @@ export default function AdminUsersPage() {
                   </select>
                   <button
                     type="button"
-                    onClick={() => deleteUser(user.id)}
+                    onClick={() => setConfirmState({ open: true, id: user.id, name: user.full_name || "este usuario" })}
                     className="text-red-500 hover:text-red-600"
                     title="Eliminar"
                   >
@@ -163,6 +170,20 @@ export default function AdminUsersPage() {
           </div>
         )}
       </section>
+
+      <ConfirmDialog
+        open={confirmState.open}
+        title="Eliminar usuario"
+        description={`¿Seguro que quieres eliminar ${confirmState.name || "este usuario"}? Esta acción no se puede deshacer.`}
+        confirmLabel="Eliminar usuario"
+        onCancel={() => setConfirmState({ open: false, id: null, name: null })}
+        onConfirm={async () => {
+          if (!confirmState.id) return
+          await deleteUser(confirmState.id)
+          setConfirmState({ open: false, id: null, name: null })
+        }}
+        loading={deleting}
+      />
 
       {showForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4">

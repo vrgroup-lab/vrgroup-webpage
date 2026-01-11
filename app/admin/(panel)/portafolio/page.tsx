@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react"
 import Link from "next/link"
 import { FolderKanban, Pencil, Plus, Trash2 } from "lucide-react"
 import { getSupabaseBrowser } from "@/lib/supabase/client"
+import { ConfirmDialog } from "@/components/admin/confirm-dialog"
 
 type MediaPayload = {
   url: string
@@ -30,6 +31,12 @@ export default function AdminPortfolioListPage() {
   const [projects, setProjects] = useState<PortfolioProject[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [confirmState, setConfirmState] = useState<{ open: boolean; id: string | null; title: string | null }>({
+    open: false,
+    id: null,
+    title: null,
+  })
+  const [deleting, setDeleting] = useState(false)
 
   const fetchProjects = async () => {
     setLoading(true)
@@ -52,9 +59,7 @@ export default function AdminPortfolioListPage() {
 
   const deleteProject = async (id: string) => {
     setError(null)
-    if (!window.confirm("¿Seguro que quieres eliminar este proyecto? Esta acción no se puede deshacer.")) {
-      return
-    }
+    setDeleting(true)
     try {
       const res = await fetch(`/api/admin/portfolio/projects/${id}`, { method: "DELETE" })
       const json = await res.json()
@@ -62,6 +67,8 @@ export default function AdminPortfolioListPage() {
       setProjects((prev) => prev.filter((p) => p.id !== id))
     } catch (err: any) {
       setError(err?.message || "No se pudo eliminar el proyecto")
+    } finally {
+      setDeleting(false)
     }
   }
 
@@ -143,7 +150,7 @@ export default function AdminPortfolioListPage() {
                     <Pencil size={14} /> Editar
                   </Link>
                   <button
-                    onClick={() => deleteProject(project.id)}
+                    onClick={() => setConfirmState({ open: true, id: project.id, title: project.title || "este proyecto" })}
                     className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-gray-200 text-gray-700 text-xs font-semibold hover:bg-gray-100 transition"
                   >
                     <Trash2 size={14} /> Eliminar
@@ -159,6 +166,20 @@ export default function AdminPortfolioListPage() {
           )}
         </div>
       </div>
+
+      <ConfirmDialog
+        open={confirmState.open}
+        title="Eliminar proyecto"
+        description={`¿Seguro que quieres eliminar ${confirmState.title || "este proyecto"}? Esta acción no se puede deshacer.`}
+        confirmLabel="Eliminar proyecto"
+        onCancel={() => setConfirmState({ open: false, id: null, title: null })}
+        onConfirm={async () => {
+          if (!confirmState.id) return
+          await deleteProject(confirmState.id)
+          setConfirmState({ open: false, id: null, title: null })
+        }}
+        loading={deleting}
+      />
     </div>
   )
 }

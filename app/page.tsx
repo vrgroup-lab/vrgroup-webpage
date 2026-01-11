@@ -188,17 +188,17 @@ export default function Home() {
             </div>
           </div>
           <div className="rounded-2xl border border-gray-200 bg-white shadow-sm h-full overflow-hidden">
-            <div className="flex flex-col lg:flex-row h-full">
-              <div className="relative w-full h-40 sm:h-48 lg:h-full lg:w-[34%]">
-              <Image
-                src="/images/root/manager.jpg"
-                alt="Gerente de Operaciones"
-                fill
-                sizes="(min-width: 1024px) 280px, 90vw"
-                className="object-cover object-center"
-              />
+            <div className="grid grid-cols-[120px_1fr] sm:grid-cols-[160px_1fr] lg:grid-cols-[34%_1fr] h-full">
+              <div className="relative h-full min-h-[160px] sm:min-h-[180px] bg-gray-100">
+                <Image
+                  src="/images/root/manager.jpg"
+                  alt="Gerente de Operaciones"
+                  fill
+                  sizes="(min-width: 1024px) 280px, 90vw"
+                  className="object-contain object-center"
+                />
               </div>
-              <div className="flex flex-col justify-center gap-3 p-6 lg:w-[66%] lg:p-8">
+              <div className="flex flex-col justify-center gap-3 p-5 sm:p-6 lg:p-8">
                 <h4 className="font-display text-xl font-bold text-blue-dark">Lo que dicen</h4>
                 <p className="text-gray-700">
                   “VR Group nos ayudó a llevar a producción en semanas, con gobierno claro y mejoras continuas sin fricción.”
