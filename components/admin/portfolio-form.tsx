@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import { useRouter } from "next/navigation"
 import { CheckSquare, Image as ImageIcon, Star, Upload, X } from "lucide-react"
 
 type MediaPayload = {
@@ -57,6 +58,7 @@ const mutedButton =
   "px-3 py-1.5 rounded-lg border border-gray-200 text-gray-700 text-xs font-semibold hover:bg-gray-100 transition"
 
 export function PortfolioForm({ projectId }: { projectId?: string }) {
+  const router = useRouter()
   const uploadInputRef = useRef<HTMLInputElement | null>(null)
   const [projects, setProjects] = useState<PortfolioProject[]>([])
   const [serviceLines, setServiceLines] = useState<ServiceLine[]>([])
@@ -85,6 +87,9 @@ export function PortfolioForm({ projectId }: { projectId?: string }) {
     is_primary: false,
   })
   const [showMediaForm, setShowMediaForm] = useState(false)
+  const handleClose = () => {
+    router.push("/admin/portafolio")
+  }
 
   const fetchProjects = async () => {
     setLoading(true)
@@ -320,7 +325,7 @@ export function PortfolioForm({ projectId }: { projectId?: string }) {
           </button>
         </div>
         <button
-          onClick={resetForm}
+          onClick={handleClose}
           className="p-2 rounded-lg bg-white text-gray-600 hover:text-gray-800 border border-gray-200"
           aria-label="Cerrar"
           type="button"
@@ -444,6 +449,13 @@ export function PortfolioForm({ projectId }: { projectId?: string }) {
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 transition disabled:opacity-60"
               >
                 {saving ? "Guardando..." : editingId ? "Actualizar" : "Guardar"}
+              </button>
+              <button
+                type="button"
+                onClick={handleClose}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-200 text-gray-700 text-sm hover:bg-gray-100 transition"
+              >
+                Cancelar
               </button>
               {editingId && (
                 <button

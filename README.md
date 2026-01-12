@@ -1,254 +1,97 @@
 # VR Group Website
 
-Sitio ES/EN para VR Group, consultora boutique en transformación digital, automatización de procesos e IA aplicada.
+Sitio web para VR Group, consultora boutique en automatización, software e IA aplicada.
 
 ## 🚀 Tech Stack
 
-- **Framework**: Next.js 14 (App Router) · TypeScript
-- **Styling**: Tailwind CSS v4
-- **Fonts**: Poppins (headings) · Inter (body)
+- **Framework**: Next.js (App Router) + TypeScript
+- **Styling**: Tailwind CSS
 - **Icons**: Lucide React
-- **Backend**: Supabase (Postgres + RLS, Auth, Storage)
-- **Email**: API mock listo para integrar SendGrid/Resend (ver sección Conexiones)
-- **Analytics/Deploy**: Vercel
+- **Backend**: Supabase (Postgres, Auth, Storage, Edge Functions)
 
 ## 📁 Estructura
 
 ```
 app/
-  layout.tsx                  # Root layout + metadata/icon
-  page.tsx                    # Home
-  servicios/page.tsx          # Grid de servicios
-  servicios/[slug]/page.tsx   # Detalle por servicio
-  nosotros/page.tsx           # Sobre VR Group (hero rotatorio, historia, principios, equipo)
-  contacto/page.tsx           # Form glass, industria select, CTA
-  portafolio/page.tsx         # Portafolio
-  blog/page.tsx               # Blog
-  equipo/[slug]/page.tsx      # Perfil individual de cada miembro
-  api/contact/route.ts        # Mock contacto
-  api/jobs/route.ts           # Mock jobs
-  api/admin/*                 # CRUD admin (portafolio, usuarios, ofertas) contra Supabase
+  page.tsx                      # Home
+  servicios/                    # Landing + detalle por servicio
+  nosotros/                     # About + equipo
+  contacto/                     # Formulario de contacto
+  portafolio/                   # Portafolio
+  admin/(panel)/                # Panel de administración
+  api/admin/                    # CRUD admin (jobs, portafolio, contactos, settings)
 components/
-  layout/ (navbar con dropdown de servicios, footer)
-  ui/ (hero, hero-rotator, section, highlights Appian/IA)
-  forms/ (job application)
+  admin/                        # UI admin (header, dialogos)
+  contact/                      # Formulario de contacto
+  layout/                       # Navbar, footer
+  ui/                           # Secciones, heroes, highlights
 lib/
-  logos.ts         # Lee logos en /public/logos/*
-  hero-images.ts   # Lee imágenes para héroes rotatorios
-  team.ts          # Datos de equipo y slugs
+  supabase/                     # Clientes Supabase (server/browser/public)
 public/
-  logos/brand|clients|partners|services|ai-providers/
-  images/hero/nosotros/*      # Imágenes hero rotatorio “Nosotros”
-  images/appian/*             # Gifs/imágenes Appian
-  locales/es.json, en.json
+  images/                       # Imágenes y gifs
+  logos/                        # Logos de marca, partners, clientes
 ```
-
-## 🎨 Design System
-
-- **Colores**: Coral `#FF5A5F`, Coral Dark `#FF3C48`, Blue Dark `#0B1B33`, Neutral Light `#F8F9FA`, Neutral Dark `#1C1F26`, Gray Medium `#D0D3D8`.
-- **Tipografía**: Poppins (500/600/700) para headings; Inter (400/500/600) para body.
-- **Espaciado**: escala Tailwind (4px, 8px, 12px, 16px, 24px, 32px…).
-
-## 📄 Páginas clave
-
-- **Home**: hero con rotador de imágenes (carpeta `public/images/hero/nosotros`), highlights Appian/IA, métricas, carrusel de clientes.
-- **Servicios**: grid y dropdown con títulos cortos; detalle por slug:
-  - Transformación Digital: bloques de “Qué ofrecemos”, “¿Qué incluye?”, “Tecnologías”, “Capacidades técnicas”, “Casos de uso” + CTA al portafolio.
-  - Automatización/Appian, IA & Agentes, Soluciones TI, Gestión y Riesgo, Analítica & ML con variantes en el mismo template.
-- **Nosotros**: hero rotatorio + stats, historia, principios, especializaciones, equipo (cards) y páginas individuales en `/equipo/[slug]`.
-- **Contacto**: formulario estilo glass con campos ampliados (empresa, industria select, teléfono), pasos y chips de contacto directo.
-- **Portafolio**, **Blog**, **Careers**: listos para contenido.
 
 ## 🔧 Configuración
 
-- `.env.local`: `NEXT_PUBLIC_SITE_URL`, IDs de analytics si aplica.
-- Favicon/Apple: `public/logos/brand/logo_vrgroup_cuadrado.png` definido en `app/layout.tsx`.
-- Hero rotatorio: colocar imágenes en `public/images/hero/nosotros/` (se detectan automáticamente).
+Crear `.env.local`:
 
-## 📧 Formularios
+```
+NEXT_PUBLIC_SITE_URL=https://vrgroup.cl
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+SUPABASE_SERVICE_ROLE_KEY=...
+NEXT_PUBLIC_SUPABASE_FUNCTIONS_BASE=https://<PROJECT_REF>.functions.supabase.co
+```
 
-- `/api/contact` y `/api/jobs` son mocks; integrar SendGrid/Resend/EmailJS añadiendo credenciales y lógica.
-- Form de contacto: empresa, industria (select), email corporativo, teléfono/WhatsApp, asunto, mensaje; feedback de envío.
+## 📧 Formulario de contacto
 
-## 🔌 Conexiones y servicios
+- El frontend **no usa Formspree**.
+- El envío apunta a **Supabase Edge Function** `POST /contact_form`.
+- Endpoint configurado con `NEXT_PUBLIC_SUPABASE_FUNCTIONS_BASE`.
+- El lead se guarda en la tabla `contact_submissions`.
 
-- **Supabase** (backend principal):
-  - **Auth**: `getSupabaseBrowser()` para sesión en cliente; rutas admin usan sesión vigente.
-  - **DB**: tablas `jobs`, `portfolio_projects`, `portfolio_media`, `user_profiles`.
-  - **Storage**: bucket `portfolio` (público) para media de portafolio.
-  - **Admin API**: rutas en `app/api/admin/*` (jobs, portfolio projects/media, upload, usuarios) consumen Supabase con policies activadas.
-- **Email**:
-  - Formularios usan mocks (`/api/contact`, `/api/jobs`). Para enviar correos:
-    - Agrega provider (SendGrid, Resend, EmailJS).
-    - Crea variables en `.env.local` (ej: `SENDGRID_API_KEY`, `RESEND_API_KEY`, `CONTACT_TO`).
-    - Implementa el send en las rutas API correspondientes.
+Payload enviado:
+```
+{
+  "nombre": "string",
+  "empresa": "string | null",
+  "email": "string",
+  "telefono": "string | null",
+  "industria": "string | null",
+  "asunto": "string | null",
+  "mensaje": "string"
+}
+```
 
-## 🌍 Internacionalización
+## 🧭 Admin Panel
 
-- Locales en `public/locales/es.json` y `en.json`. Para i18n avanzado, considerar `next-intl` o `next-i18next`.
+Módulos disponibles:
 
-## 📱 Responsive & Accesibilidad
+- **Overview**: métricas rápidas (leads por contactar, ofertas publicadas, proyectos públicos).
+- **Contactos**: tablero Kanban de leads (`contact_submissions`) con drag & drop y modal de detalle.
+- **Ofertas**: CRUD de `jobs`.
+- **Portafolio**: CRUD de `portfolio_projects` + `portfolio_media`.
+- **Configuración**: toggles de visibilidad del sitio + acceso a **Usuarios**.
 
-- Mobile-first (320px+), tablet (768px+), desktop (1024px+).
-- Semántica, contrastes y focus visibles; usa componentes controlados y ARIA donde corresponde.
+Usuarios:
+- Gestión de usuarios en `/admin/usuarios` (acceso desde Configuración).
+
+## 🗃️ Supabase (tablas clave)
+
+- `contact_submissions` (leads del formulario)
+- `jobs`
+- `portfolio_projects`
+- `portfolio_media`
+- `service_lines`
+- `user_profiles`
+- `site_settings`
 
 ## ▶️ Scripts
 
 ```bash
 npm install
-\`\`\`
-
-3. Run the development server
-\`\`\`bash
 npm run dev
-\`\`\`
-
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
-
-### Build for Production
-\`\`\`bash
-npm run build
-npm start
-\`\`\`
-
-## 🔧 Configuration
-
-### Environment Variables
-Create a `.env.local` file with:
-\`\`\`
-NEXT_PUBLIC_SITE_URL=https://vrgroup.cl
-NEXT_PUBLIC_GA_ID=your-ga-id
-\`\`\`
-
-### Add Analytics
-Update `app/layout.tsx` with your Google Analytics ID for GA4 tracking.
-
-## 📧 Form Integration
-
-The contact and job application forms currently have mock API routes. To enable email sending:
-
-1. Choose an email service (SendGrid, EmailJS, Resend, etc.)
-2. Update `app/api/contact/route.ts` and `app/api/jobs/route.ts`
-3. Add service credentials to environment variables
-
-Example with SendGrid:
-\`\`\`typescript
-import sgMail from '@sendgrid/mail'
-
-sgMail.setApiKey(process.env.SENDGRID_API_KEY!)
-
-await sgMail.send({
-  to: 'contacto@vrgroup.cl',
-  from: 'noreply@vrgroup.cl',
-  subject: `Nuevo contacto: ${subject}`,
-  html: `<p>${message}</p><p>De: ${email}</p>`
-})
-\`\`\`
-
-## 🌍 Internationalization
-
-The site supports Spanish (ES) and English (EN) with locale files in `public/locales/`.
-
-To extend translations:
-1. Add new keys to `es.json` and `en.json`
-2. Use the `t()` function from `lib/i18n.ts`
-
-Current locale setup uses static JSON files. For more advanced i18n, consider migrating to:
-- `next-intl`
-- `next-i18next`
-
-## 📱 Responsive Design
-
-The site is built mobile-first and is fully responsive:
-- Mobile: 320px+
-- Tablet: 768px+
-- Desktop: 1024px+
-
-## ♿ Accessibility
-
-- Semantic HTML elements
-- ARIA labels where needed
-- Color contrast meets WCAG AA standards
-- Keyboard navigation support
-- Focus indicators on interactive elements
-
-## 📊 SEO
-
-- Meta tags on all pages
-- OpenGraph tags for social sharing
-- Sitemap support (ready for next-sitemap)
-- Structured data with schema.org
-- Image optimization with next/image
-
-## 🎯 Performance Targets
-
-- Lighthouse Score: ≥90
-- LCP: <2.5s
-- CLS: <0.1
-- FID: <100ms
-
-Check performance with:
-\`\`\`bash
-npm run build
-npm start
-# Use Chrome DevTools Lighthouse
-\`\`\`
-
-## 📦 Deployment
-
-### Deploy to Vercel (Recommended)
-
-1. Push to GitHub
-2. Connect repository to Vercel
-3. Deploy automatically on push to main
-4. Set environment variables in Vercel dashboard
-
-\`\`\`bash
-vercel deploy
-\`\`\`
-
-## 🔄 CI/CD
-
-GitHub Actions workflows can be added for:
-- Linting and formatting
-- Type checking
-- Tests
-- Build verification
-
-## 🐛 Troubleshooting
-
-### Port already in use
-\`\`\`bash
-lsof -i :3000
-kill -9 <PID>
-\`\`\`
-
-### Clear cache and rebuild
-\`\`\`bash
-rm -rf .next
-npm run dev
-\`\`\`
-
-### TypeScript errors
-\`\`\`bash
-npm run type-check
-\`\`\`
-
-## 📝 License
-
-This project is proprietary to VR Group.
-
-## 📞 Support
-
-For issues or questions, contact: contacto@vrgroup.cl
-
-## 🎓 Additional Resources
-
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Tailwind CSS](https://tailwindcss.com)
-- [TypeScript](https://www.typescriptlang.org)
-
----
-
-Built with ❤️ by VR Group
 ```
+
+Abrir `http://localhost:3000`.

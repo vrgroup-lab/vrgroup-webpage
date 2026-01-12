@@ -1,7 +1,8 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Settings } from "lucide-react"
+import { Settings, Users } from "lucide-react"
+import Link from "next/link"
 
 type SiteSettings = {
   show_portfolio_in_header: boolean
@@ -249,6 +250,24 @@ export default function AdminConfigPage() {
             </div>
           </>
         )}
+      </div>
+
+      <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm">
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-2 text-gray-900 font-semibold">
+            <Users size={18} />
+            Administración de usuarios
+          </div>
+          <Link
+            href="/admin/usuarios"
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+          >
+            Ir a usuarios
+          </Link>
+        </div>
+        <p className="text-sm text-gray-600 mt-2">
+          Gestiona accesos, roles y permisos desde aquí.
+        </p>
       </div>
     </div>
   )

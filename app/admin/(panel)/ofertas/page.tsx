@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { BriefcaseBusiness, Globe2, MapPin, PenLine, Plus, Tags, Trash2 } from "lucide-react"
 import { getSupabaseBrowser } from "@/lib/supabase/client"
+import { ConfirmDialog } from "@/components/admin/confirm-dialog"
 
 type Job = {
   id: string
@@ -43,6 +44,12 @@ export default function AdminJobsPage() {
   const [saving, setSaving] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [showForm, setShowForm] = useState(false)
+  const [confirmState, setConfirmState] = useState<{ open: boolean; id: string | null; title: string | null }>({
+    open: false,
+    id: null,
+    title: null,
+  })
+  const [deleting, setDeleting] = useState(false)
   const [form, setForm] = useState({
     slug: "",
     title: "",
@@ -179,9 +186,7 @@ export default function AdminJobsPage() {
 
   const deleteJob = async (id: string) => {
     setError(null)
-    if (!window.confirm("¿Seguro que quieres eliminar esta oferta? Esta acción no se puede deshacer.")) {
-      return
-    }
+    setDeleting(true)
     try {
       const res = await fetch(`/api/admin/jobs/${id}`, { method: "DELETE" })
       const json = await res.json()
@@ -189,6 +194,8 @@ export default function AdminJobsPage() {
       setJobs((prev) => prev.filter((job) => job.id !== id))
     } catch (err: any) {
       setError(err?.message || "No se pudo eliminar la oferta")
+    } finally {
+      setDeleting(false)
     }
   }
 
@@ -275,7 +282,7 @@ export default function AdminJobsPage() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => deleteJob(job.id)}
+                    onClick={() => setConfirmState({ open: true, id: job.id, title: job.title || "esta oferta" })}
                     className="text-red-500 hover:text-red-600"
                     title="Eliminar"
                   >
@@ -288,6 +295,20 @@ export default function AdminJobsPage() {
           </div>
         )}
       </section>
+
+      <ConfirmDialog
+        open={confirmState.open}
+        title="Eliminar oferta"
+        description={`¿Seguro que quieres eliminar ${confirmState.title || "esta oferta"}? Esta acción no se puede deshacer.`}
+        confirmLabel="Eliminar oferta"
+        onCancel={() => setConfirmState({ open: false, id: null, title: null })}
+        onConfirm={async () => {
+          if (!confirmState.id) return
+          await deleteJob(confirmState.id)
+          setConfirmState({ open: false, id: null, title: null })
+        }}
+        loading={deleting}
+      />
 
       {showForm && (
         <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 backdrop-blur-sm px-4 py-8 overflow-y-auto">
