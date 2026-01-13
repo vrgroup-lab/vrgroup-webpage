@@ -2,7 +2,7 @@ import { SiteNavbar } from "@/components/layout/site-navbar"
 import { Footer } from "@/components/layout/footer"
 import { Hero } from "@/components/ui/hero"
 import { Section } from "@/components/ui/section"
-import { InteractiveCardCarousel } from "@/components/ui/interactive-card-carousel"
+import { OfferingsSection } from "@/components/ui/offerings-section"
 import { CTABanner } from "@/components/ui/cta-banner"
 import { getLogosFromFolder } from "@/lib/logos"
 import { supabasePublic } from "@/lib/supabase/public"
@@ -13,9 +13,6 @@ import {
   ArrowRight,
   TrendingUp,
   Wrench,
-  Square,
-  Circle,
-  Triangle,
   ArrowRightFromLine,
   Zap,
 } from "lucide-react"
@@ -238,13 +235,16 @@ const serviceContent: Record<string, any> = {
   "software-factory": {
     title: "Ingeniería de Software.",
     intro: "Soluciones integradas y a medida.",
+    offeringsIntro: "Diseñamos, construimos y operamos backends, APIs e integraciones con estándares enterprise y entregas continuas.",
     services: [
       { title: "Arquitectura & Diseño de Solución", description: "Decisiones técnicas, seguridad, escalabilidad y costos." },
       { title: "Backends & APIs", description: "Lógica de negocio, microservicios cuando aplica y contratos claros." },
       { title: "Integración de Sistemas", description: "APIs, middleware, eventos y resiliencia ante fallas." },
+      {
+        title: "Infraestructura & Cloud",
+        description: "Arquitectura cloud, seguridad, redes y observabilidad para ambientes críticos con alta disponibilidad.",
+      },
       { title: "Modernización & Refactor", description: "Desacople, performance y reducción de deuda técnica." },
-      { title: "DevSecOps & QA continuo", description: "CI/CD, pruebas, seguridad y monitoreo." },
-      { title: "Equipos / Staffing TI", description: "Células para build | run | enable con roles clave." },
     ],
     benefits: [
       "Soluciones productivas con resiliencia y seguridad enterprise.",
@@ -295,6 +295,22 @@ const serviceContent: Record<string, any> = {
   "automatizacion-de-procesos": {
     title: "Automatización digital.",
     intro: "Optimiza procesos, impulsa eficiencia.",
+    offeringsIntro:
+      "Appian es nuestro core. Equipo dedicado y certificado para discovery, diseño y delivery en la plataforma. Integramos RPA, Data Fabric y APIs para automatizar procesos end-to-end con gobierno y operación continua.",
+    offeringsCards: [
+      {
+        title: "Core Appian.",
+        description: "Equipo dedicado y certificado, con experiencia en casos complejos y entregas enterprise.",
+      },
+      {
+        title: "Delivery low-code.",
+        description: "Apps y procesos en semanas con componentes reutilizables y mejores prácticas Appian.",
+      },
+      {
+        title: "Data Fabric & integraciones.",
+        description: "Unificamos datos y conectamos sistemas con Appian Data Fabric, RPA y APIs.",
+      },
+    ],
     benefits: [
       "Time-to-market acelerado con Appian low-code.",
       "Reducción de TAT y costos operativos con automatización end-to-end.",
@@ -324,6 +340,8 @@ const serviceContent: Record<string, any> = {
   "gestion-y-riesgo": {
     title: "Gestión & Riesgo.",
     intro: "Excelencia en procesos clave.",
+    offeringsIntro:
+      "Diseñamos modelos de gestión, control y cumplimiento para operar procesos críticos con trazabilidad, métricas accionables y gobierno claro.",
     benefits: [
       "Modelos operativos alineados a la estrategia",
       "Control y mitigación de riesgos clave",
@@ -352,6 +370,8 @@ const serviceContent: Record<string, any> = {
   "ia-y-agentes": {
     title: "IA Aplicada a Procesos.",
     intro: "Agentes inteligentes para mayor eficiencia.",
+    offeringsIntro:
+      "Diseñamos agentes, copilots y workflows inteligentes conectados a datos empresariales con seguridad, evaluación continua y adopción guiada.",
     benefits: [
       "Agentes integrados a sistemas y datos empresariales",
       "Automatización cognitiva de tareas repetitivas",
@@ -382,6 +402,8 @@ const serviceContent: Record<string, any> = {
     title: "Staffing & Células Ágiles",
     intro: "Soluciones digitales con equipos ágiles a demanda.",
     heroEyebrow: "Staffing digital",
+    offeringsIntro:
+      "Proveemos células ágiles y talento especializado para activar, escalar o reforzar iniciativas digitales sin fricción. Equipos listos para integrarse a tu operación con onboarding express, gobierno liviano y herramientas ágiles que aseguran entrega continua y calidad.",
     pillars: [
       {
         title: "Equipos ágiles.",
@@ -582,6 +604,8 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
     )
   }
 
+  const offeringsEyebrow = content.offeringsEyebrow ?? content.heroEyebrow ?? "Propuesta de valor"
+
   if (isAppian) {
     const useCases = content.useCases ?? []
 
@@ -591,64 +615,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
 
         <Hero title={content.title} subtitle={content.intro} variant="services" />
 
-        <Section
-          className="relative bg-gradient-to-br from-white via-[#f6f8fc] to-[#e8edfa] overflow-hidden"
-          variant="light"
-          paddingClass="py-8 sm:py-10 lg:py-12"
-        >
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute -left-32 -top-32 w-80 h-80 rounded-full bg-coral/10 blur-3xl"></div>
-            <div className="absolute -right-24 -bottom-24 w-72 h-72 rounded-full bg-[#0B1B33]/10 blur-3xl"></div>
-          </div>
-          <div className="relative max-w-5xl mx-auto">
-            <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <span className="text-[11px] uppercase tracking-[0.3em] text-gray-500">Automatización</span>
-                <span className="h-1 w-6 rounded-full bg-coral/70"></span>
-              </div>
-              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-400">Appian Core</span>
-            </div>
-            <h2 className="font-display text-2xl sm:text-3xl font-semibold text-[#0b1b33]">¿Qué ofrecemos?</h2>
-            <p className="mt-4 text-gray-700 leading-relaxed text-sm sm:text-base">
-              Appian es nuestro core. Equipo dedicado y certificado para discovery, diseño y delivery en la plataforma. Integramos RPA, Data Fabric y
-              APIs para automatizar procesos end-to-end con gobierno y operación continua.
-            </p>
-          </div>
-        </Section>
-
-        <Section className="bg-white" variant="light" paddingClass="py-6 sm:py-8 lg:py-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              {
-                title: "Core Appian.",
-                description: "Equipo dedicado y certificado, con experiencia en casos complejos y entregas enterprise.",
-                shape: "square",
-              },
-              {
-                title: "Delivery low-code.",
-                description: "Apps y procesos en semanas con componentes reutilizables y mejores prácticas Appian.",
-                shape: "circle",
-              },
-              {
-                title: "Data Fabric & integraciones.",
-                description: "Unificamos datos y conectamos sistemas con Appian Data Fabric, RPA y APIs.",
-                shape: "triangle",
-              },
-            ].map((item) => (
-              <div key={item.title} className="rounded-2xl border border-gray-200 bg-gray-50 p-5 flex flex-col gap-4">
-                <div className="w-full aspect-[4/3] rounded-xl bg-gray-200 flex items-center justify-center">
-                  {item.shape === "square" && <Square size={48} className="text-gray-400" />}
-                  {item.shape === "circle" && <Circle size={48} className="text-gray-400" />}
-                  {item.shape === "triangle" && <Triangle size={52} className="text-gray-400" />}
-                </div>
-                <div>
-                  <h3 className="font-display font-semibold text-lg text-[#0b1b33] mb-1">{item.title}</h3>
-                  <p className="text-gray-700 text-sm leading-relaxed">{item.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Section>
+        <OfferingsSection eyebrow={offeringsEyebrow} intro={content.offeringsIntro} items={content.offeringsCards ?? []} />
 
         <section className="bg-gradient-to-r from-[#0B1B33] via-[#12345a] to-[#0B1B33] text-white">
           <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
@@ -825,48 +792,15 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
           variant="services"
         />
 
-        <section id="detalles" className="pt-6 pb-16 bg-gradient-to-b from-[#f5f7fb] via-white to-[#eef2f7]">
+        <OfferingsSection eyebrow={offeringsEyebrow} intro={content.offeringsIntro} items={content.pillars} />
+
+        <section className="bg-white py-10 sm:py-12">
           <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-10">
-              <div className="relative overflow-hidden rounded-2xl border border-gray-200 bg-gradient-to-r from-[#0b1b33] via-[#12345a] to-[#0b1b33] p-[1px] shadow-lg">
-                <div className="rounded-2xl bg-white/95 p-6 sm:p-7">
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="font-display text-xl sm:text-2xl font-semibold text-[#0b1b33]">¿Qué ofrecemos?</h3>
-                    <span className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">Talento ágil</span>
-                  </div>
-                  <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
-                    Proveemos células ágiles y talento especializado para activar, escalar o reforzar iniciativas digitales sin fricción.
-                    Equipos listos para integrarse a tu operación con onboarding express, gobierno liviano y herramientas ágiles que aseguran entrega
-                    continua y calidad.
-                  </p>
-                </div>
-              </div>
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="font-display text-lg sm:text-xl font-semibold text-black">Diferenciadores clave</h4>
+              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">Staffing on-demand</span>
             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {content.pillars.map((item: any) => (
-                <div key={item.title} className="rounded-2xl bg-gray-100 p-5 sm:p-6 flex flex-col gap-4">
-                  <div className="w-full aspect-[4/3] rounded-xl bg-gray-200 flex items-center justify-center overflow-hidden">
-                    {item.image ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
-                    ) : (
-                      <>
-                        {item.shape === "square" && <Square size={48} className="text-gray-400" />}
-                        {item.shape === "circle" && <Circle size={48} className="text-gray-400" />}
-                        {item.shape === "triangle" && <Triangle size={52} className="text-gray-400" />}
-                      </>
-                    )}
-                  </div>
-                  <div>
-                    <h3 className="font-display font-semibold text-lg text-black mb-1">{item.title}</h3>
-                    <p className="text-gray-600 text-sm leading-relaxed">{item.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {content.differentiators.map((diff: any) => {
                 const Icon = diff.icon
                 return (
@@ -881,33 +815,30 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
               })}
             </div>
           </div>
+        </section>
 
-          <WhyChooseSection reasons={content.reasons} className="mt-12" />
+        <WhyChooseSection reasons={content.reasons} className="mt-12" />
 
+        <section className="bg-white py-10 sm:py-12">
           <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mt-12">
-              <div className="flex items-center justify-between mb-4">
-                <h4 className="font-display text-lg sm:text-xl font-semibold text-black">Roles disponibles</h4>
-                <span className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">Staffing on-demand</span>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {content.profiles.map((profile: any, idx: number) => (
-                  <div
-                    key={profile.name}
-                    className="group relative h-48 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden"
-                  >
-                    <div className="absolute inset-0 rounded-xl transition-all duration-500 group-hover:translate-y-[-100%] p-4 flex flex-col items-center justify-center gap-3">
-                      <div className="h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 text-lg">
-                        {idx + 1}
-                      </div>
-                      <p className="font-display font-semibold text-center text-gray-900 text-sm sm:text-base">{profile.name}</p>
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="font-display text-lg sm:text-xl font-semibold text-black">Roles disponibles</h4>
+              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">Staffing on-demand</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {content.profiles.map((profile: any, idx: number) => (
+                <div key={profile.name} className="group relative h-48 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                  <div className="absolute inset-0 rounded-xl transition-all duration-500 group-hover:translate-y-[-100%] p-4 flex flex-col items-center justify-center gap-3">
+                    <div className="h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 text-lg">
+                      {idx + 1}
                     </div>
-                    <div className="absolute inset-0 rounded-xl bg-white border border-gray-200 p-4 flex items-center justify-center text-center text-sm text-gray-700 leading-relaxed translate-y-full transition-all duration-500 group-hover:translate-y-0">
-                      <p>{profile.description}</p>
-                    </div>
+                    <p className="font-display font-semibold text-center text-gray-900 text-sm sm:text-base">{profile.name}</p>
                   </div>
-                ))}
-              </div>
+                  <div className="absolute inset-0 rounded-xl bg-white border border-gray-200 p-4 flex items-center justify-center text-center text-sm text-gray-700 leading-relaxed translate-y-full transition-all duration-500 group-hover:translate-y-0">
+                    <p>{profile.description}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -934,21 +865,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
 
         <Hero title={content.title} subtitle={content.intro} variant="services" />
 
-        <Section
-          title="¿Qué ofrecemos?"
-          subtitle="Diseñamos, construimos y operamos backends, APIs e integraciones con estándares enterprise y entregas continuas."
-          className="bg-white"
-          variant="light"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {content.services.map((service: any) => (
-              <div key={service.title} className="rounded-2xl border border-gray-200 bg-gray-50 p-5 shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all">
-                <h3 className="font-display font-semibold text-lg text-blue-dark mb-2">{service.title}</h3>
-                <p className="text-gray-700 text-sm leading-relaxed">{service.description}</p>
-              </div>
-            ))}
-          </div>
-        </Section>
+        <OfferingsSection eyebrow={offeringsEyebrow} intro={content.offeringsIntro} items={content.services} />
 
         <Section
           title="Beneficios principales"
@@ -1083,20 +1000,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
 
         <Hero title={content.title} subtitle={content.intro} variant="services" />
 
-        <Section
-          title="¿Qué ofrecemos?"
-          subtitle={content.offeringsIntro}
-          className="relative bg-gradient-to-br from-white via-[#f6f8fc] to-[#e8edfa] overflow-hidden"
-          variant="light"
-        >
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute -left-32 -top-32 w-80 h-80 rounded-full bg-coral/10 blur-3xl"></div>
-            <div className="absolute -right-24 -bottom-24 w-72 h-72 rounded-full bg-[#0B1B33]/10 blur-3xl"></div>
-          </div>
-          <div className="relative">
-            <InteractiveCardCarousel items={showcaseItems} accent="#FF5A5F" />
-          </div>
-        </Section>
+        <OfferingsSection eyebrow={offeringsEyebrow} intro={content.offeringsIntro} items={showcaseItems} cardVariant="title-only" />
 
         <Section
           title="¿Qué incluye el servicio?"
@@ -1291,23 +1195,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
       </Section>
 
       {/* Services Offered */}
-      <Section
-        title="¿Qué ofrecemos?"
-        className={isAppian ? "bg-[#0e2049]" : "bg-gray-50"}
-        variant={isAppian ? "dark" : "light"}
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {content.services.map((service: any, idx: number) => (
-            <div
-              key={idx}
-              className={`rounded-xl p-6 border ${isAppian ? "bg-white/5 border-white/15 text-white" : "bg-white border-gray-200"}`}
-            >
-              <h3 className="font-display font-bold text-lg mb-2">{service.title}</h3>
-              <p className={`${isAppian ? "text-white/80" : "text-gray-600"}`}>{service.description}</p>
-            </div>
-          ))}
-        </div>
-      </Section>
+      <OfferingsSection eyebrow={offeringsEyebrow} intro={content.offeringsIntro} items={content.services} />
 
       <WhyChooseSection reasons={content.reasons} className="mt-12" />
 
