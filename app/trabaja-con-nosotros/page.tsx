@@ -102,22 +102,31 @@ export default async function CareersPage() {
       <SiteNavbar />
 
       <Hero
-        title="Trabaja con nosotros"
-        subtitle="Somos un equipo boutique en crecimiento. Si te apasiona la innovación y la transformación digital, esta es tu oportunidad."
+        title="Construye productos con impacto real"
+        subtitle="Equipos boutique, autonomía y aprendizaje continuo."
         backgroundVideo="/videos/hero/mixkit-open-office-space-914-full-hd.mp4"
         minHeight="calc(100vh + 50px)"
       >
         <div className="mt-8 flex flex-col lg:flex-row items-center gap-6 justify-center">
-          <div className="bg-white/10 border border-white/15 backdrop-blur-lg rounded-3xl px-6 py-5 text-white shadow-2xl flex flex-col gap-3 w-full max-w-xl">
-            <div className="grid grid-cols-3 gap-4 text-center">
+          <div className="bg-white/10 border border-white/15 backdrop-blur-lg rounded-3xl px-5 py-4 text-white shadow-2xl flex flex-col gap-3 w-full max-w-xl">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center">
               {[
-                { value: "2017", label: "Fundada" },
-                { value: "150+", label: "Proyectos" },
-                { value: "75+", label: "Personas" },
+                {
+                  title: "Plan de crecimiento",
+                  subtitle: "Mentoring y feedback.",
+                },
+                {
+                  title: "Proyectos desafiantes",
+                  subtitle: "IA, automatización, digital.",
+                },
+                {
+                  title: "Cultura de calidad",
+                  subtitle: "Buenas prácticas y delivery.",
+                },
               ].map((item) => (
-                <div key={item.label} className="space-y-1">
-                  <div className="text-2xl sm:text-3xl font-display font-bold">{item.value}</div>
-                  <p className="text-sm text-white/80">{item.label}</p>
+                <div key={item.title} className="space-y-1.5">
+                  <div className="text-base font-display font-semibold">{item.title}</div>
+                  <p className="text-sm text-white/80">{item.subtitle}</p>
                 </div>
               ))}
             </div>
@@ -149,22 +158,22 @@ export default async function CareersPage() {
               <Link
                 key={job.id}
                 href={`/trabaja-con-nosotros/${job.slug}`}
-                className="rounded-2xl bg-white border border-gray-200 p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all"
+                className="rounded-2xl bg-[#0B0F1A] border border-white/10 p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all"
               >
-                <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
+                <div className="flex items-center justify-between text-xs text-white/60 mb-2">
                   {badgeMeta("seniority", job.seniority) ? (
                     (() => {
                       const meta = badgeMeta("seniority", job.seniority)!
                       const palette = badgePalette[meta.palette]
                       const Icon = meta.Icon
                       return (
-                        <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full border text-xs font-semibold ${palette.light}`}>
+                        <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full border text-xs font-semibold ${palette.dark}`}>
                           <Icon size={12} /> {meta.label}
                         </span>
                       )
                     })()
                   ) : (
-                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-gray-100 text-gray-700 border border-gray-200">
+                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-white/10 text-white/85 border border-white/15">
                       {job.seniority || "Abierto"}
                     </span>
                   )}
@@ -172,10 +181,10 @@ export default async function CareersPage() {
                     <Clock size={12} /> {job.created_at ? format(new Date(job.created_at), "d MMM", { locale: es }) : ""}
                   </span>
                 </div>
-                <h3 className="font-display font-bold text-lg text-blue-dark mb-3">{job.title}</h3>
-                <div className="flex flex-wrap gap-2 text-xs text-gray-600 mb-3">
+                <h3 className="font-display font-bold text-lg text-white mb-3">{job.title}</h3>
+                <div className="flex flex-wrap gap-2 text-xs text-white/70 mb-3">
                   {job.location && (
-                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-gray-100 border border-gray-200">
+                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-white/10 border border-white/15">
                       <MapPin size={12} /> {job.location}
                     </span>
                   )}
@@ -184,7 +193,7 @@ export default async function CareersPage() {
                     const palette = badgePalette[meta.palette]
                     const Icon = meta.Icon
                     return (
-                      <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full border text-xs ${palette.light}`}>
+                      <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full border text-xs ${palette.dark}`}>
                         <Icon size={12} /> {meta.label}
                       </span>
                     )
@@ -194,13 +203,13 @@ export default async function CareersPage() {
                     const palette = badgePalette[meta.palette]
                     const Icon = meta.Icon
                     return (
-                      <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full border text-xs ${palette.light}`}>
+                      <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full border text-xs ${palette.dark}`}>
                         <Icon size={12} /> {meta.label}
                       </span>
                     )
                   })()}
                 </div>
-                <div className="inline-flex items-center gap-2 text-coral font-semibold text-sm">
+                <div className="inline-flex items-center gap-2 text-white font-semibold text-sm">
                   Ver detalles →
                 </div>
               </Link>

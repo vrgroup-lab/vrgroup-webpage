@@ -74,14 +74,15 @@ export function SubservicesGrid({
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={item.image}
-                    alt={item.title}
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                ) : (
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#0B1B33] via-[#12264d] to-[#1f3d8f]" />
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0B1B33]/90 via-[#0B1B33]/45 to-transparent" />
-              <div className="relative z-10 flex h-full flex-col justify-end p-4 sm:p-5">
+                  alt={item.title}
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 [filter:saturate(0.85)_contrast(1.05)_brightness(0.92)_hue-rotate(-8deg)]"
+                />
+              ) : (
+                <div className="absolute inset-0 bg-gradient-to-br from-[#0B1B33] via-[#12264d] to-[#1f3d8f]" />
+              )}
+              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(11,18,32,0)_40%,rgba(11,18,32,0.78)_100%)]" />
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(11,18,32,0)_55%,rgba(11,18,32,0.35)_100%)]" />
+              <div className="relative z-10 flex h-full flex-col justify-end p-4 sm:p-5 lg:max-w-[70%]">
                 <h3 className="font-display text-lg sm:text-xl font-semibold text-white">{item.title}</h3>
                 {item.description && <p className="mt-2 text-xs sm:text-sm text-white/80 leading-relaxed">{item.description}</p>}
               </div>
