@@ -57,7 +57,7 @@ export default async function AboutPage() {
               {[
                 { value: "2017", label: "Fundada" },
                 { value: "150+", label: "Proyectos" },
-                { value: "58", label: "Colaboradores" },
+                { value: "75+", label: "Personas" },
               ].map((item) => (
                 <div key={item.label} className="space-y-1">
                   <div className="text-2xl sm:text-3xl font-display font-bold">{item.value}</div>

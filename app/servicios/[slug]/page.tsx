@@ -71,28 +71,25 @@ function WhyChooseSection({
 
   return (
     <div className={className ? `bg-black ${className}` : "bg-black"}>
-      <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-8 items-center">
-          <div>
+      <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.35fr_0.65fr] gap-8 items-stretch min-h-[360px] lg:min-h-[460px]">
+          <div className="flex flex-col justify-center py-10 sm:py-12">
             <h4 className="font-display text-xl sm:text-2xl font-semibold text-white mb-4">¿Por qué elegir nuestro servicio?</h4>
             <div className="space-y-4 text-white/90">
               {reasons.map((paragraph) => (
-                <p key={paragraph} className="text-sm leading-relaxed">
-                  {paragraph}
-                </p>
+                <div key={paragraph} className="flex items-start gap-3">
+                  <span className="mt-2 h-2.5 w-2.5 rounded-full bg-white flex-shrink-0" />
+                  <p className="text-sm leading-relaxed">{paragraph}</p>
+                </div>
               ))}
             </div>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 via-white/0 to-white/10 p-3 sm:p-4 shadow-[0_24px_60px_rgba(0,0,0,0.45)]">
-            <div className="aspect-[4/3] w-full rounded-xl border border-white/10 overflow-hidden bg-white/5">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/images/why-choose/corporate.jpg"
-                alt="Equipo corporativo"
-                className="h-full w-full object-cover"
-              />
-            </div>
-          </div>
+          <div
+            className="h-full min-h-[360px] lg:min-h-[460px] bg-cover bg-center self-stretch"
+            style={{ backgroundImage: "url(/images/why-choose/corporate.jpg)", backgroundPosition: "70% center" }}
+            aria-label="Equipo corporativo"
+            role="img"
+          />
         </div>
         {highlights?.length ? (
           <div className="mt-8 pt-6 border-t border-white/10">
@@ -996,25 +993,13 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
 
         {portfolioSection}
 
-        <Section className="relative overflow-hidden text-white bg-gradient-to-br from-[#0B1B33] via-[#10254d] to-[#FF5A5F]">
-          <div className="absolute -left-16 -top-16 w-64 h-64 bg-white/10 blur-3xl rounded-full pointer-events-none"></div>
-          <div className="absolute right-10 bottom-10 w-40 h-40 bg-coral/20 blur-3xl rounded-full pointer-events-none"></div>
-          <div className="relative max-w-3xl mx-auto text-center space-y-5">
-            <h2 className="font-display font-bold text-3xl sm:text-4xl leading-snug">
-              ¿Listo para lanzar o evolucionar tu canal digital?
-            </h2>
-            <p className="text-lg sm:text-xl opacity-90">
-              Conversemos tu caso y te compartimos un plan con próximos pasos, hitos y métricas accionables.
-            </p>
-            <Link
-              href="/contacto"
-              className="inline-flex px-8 py-3 bg-white text-coral rounded-lg font-display font-semibold hover:bg-gray-100 transition-colors items-center gap-2 shadow-lg shadow-black/20"
-            >
-              Solicita una reunión
-              <ArrowRight size={20} />
-            </Link>
-          </div>
-        </Section>
+        <CTABanner
+          eyebrow="Contacto"
+          title="¿Listo para lanzar o evolucionar tu canal digital?"
+          subtitle="Conversemos tu caso y te compartimos un plan con próximos pasos, hitos y métricas accionables."
+          buttonLabel="Solicita una reunión"
+          buttonHref="/contacto"
+        />
 
         <Footer />
       </div>
