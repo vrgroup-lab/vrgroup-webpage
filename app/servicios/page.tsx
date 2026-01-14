@@ -19,7 +19,7 @@ export default function ServicesPage() {
 
       <CTABanner
         eyebrow="Contacto"
-        title="🛠️ Diseñemos la solución que necesitas"
+        title="Diseñemos la solución que necesitas"
         subtitle="Cuéntanos tu reto y armamos un plan a medida con entrega a producción."
         buttonLabel="Solicita una consulta"
         buttonHref="/contacto"

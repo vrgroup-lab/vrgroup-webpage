@@ -13,7 +13,6 @@ import {
   Globe2,
   BriefcaseBusiness,
   Clock,
-  Tags,
   Clock3,
   Wifi,
   Building2,
@@ -103,165 +102,122 @@ export default async function CareersPage() {
       <SiteNavbar />
 
       <Hero
-        title="🚀 Trabaja con nosotros"
+        title="Trabaja con nosotros"
         subtitle="Somos un equipo boutique en crecimiento. Si te apasiona la innovación y la transformación digital, esta es tu oportunidad."
-      />
+        backgroundVideo="/videos/hero/mixkit-open-office-space-914-full-hd.mp4"
+        minHeight="calc(100vh + 50px)"
+      >
+        <div className="mt-8 flex flex-col lg:flex-row items-center gap-6 justify-center">
+          <div className="bg-white/10 border border-white/15 backdrop-blur-lg rounded-3xl px-6 py-5 text-white shadow-2xl flex flex-col gap-3 w-full max-w-xl">
+            <div className="grid grid-cols-3 gap-4 text-center">
+              {[
+                { value: "2017", label: "Fundada" },
+                { value: "150+", label: "Proyectos" },
+                { value: "75+", label: "Personas" },
+              ].map((item) => (
+                <div key={item.label} className="space-y-1">
+                  <div className="text-2xl sm:text-3xl font-display font-bold">{item.value}</div>
+                  <p className="text-sm text-white/80">{item.label}</p>
+                </div>
+              ))}
+            </div>
+            <div className="pt-3 mt-1 border-t border-white/15 flex justify-center">
+              <Link
+                href="#posiciones"
+                className="inline-flex items-center gap-2 rounded-full bg-white text-[#0B1B33] px-5 py-2 text-sm font-semibold hover:bg-gray-100 transition-colors"
+              >
+                Ver posiciones abiertas
+              </Link>
+            </div>
+          </div>
+        </div>
+      </Hero>
 
       <Section
         title="Posiciones Abiertas"
         subtitle="Explora roles abiertos y postula por LinkedIn o nuestro formulario."
         className="bg-white"
+        id="posiciones"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-5">
-          <div className="rounded-2xl bg-gray-50 border border-gray-200 p-4 text-blue-dark space-y-3 shadow-sm">
-            <div className="flex items-center gap-2 text-sm font-semibold">
-              <BriefcaseBusiness size={16} /> Filtros
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {jobs.length === 0 ? (
+            <div className="md:col-span-2 rounded-2xl border border-dashed border-gray-300 bg-white p-6 text-center text-gray-600">
+              No hay posiciones publicadas en este momento. Vuelve pronto o envíanos tu CV.
             </div>
-            <div className="text-xs text-gray-600">Total: {jobs.length} empleo(s) publicado(s)</div>
-            <div className="space-y-2 text-sm text-gray-700">
-              <div className="rounded-xl bg-white border border-gray-200 px-3 py-2 flex items-center justify-between">
-                <span>Departamento</span>
-                <span className="text-xs text-gray-500">Todos</span>
-              </div>
-              <div className="rounded-xl bg-white border border-gray-200 px-3 py-2 flex items-center justify-between">
-                <span>Ubicación</span>
-                <span className="text-xs text-gray-500">Todas</span>
-              </div>
-              <div className="rounded-xl bg-white border border-gray-200 px-3 py-2 flex items-center justify-between">
-                <span>Tipo</span>
-                <span className="text-xs text-gray-500">Todos</span>
-              </div>
-              <div className="rounded-xl bg-white border border-gray-200 px-3 py-2 flex items-center justify-between">
-                <span>Nivel</span>
-                <span className="text-xs text-gray-500">Todos</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {jobs.length === 0 ? (
-              <div className="md:col-span-2 rounded-2xl border border-dashed border-gray-300 bg-white p-6 text-center text-gray-600">
-                No hay posiciones publicadas en este momento. Vuelve pronto o envíanos tu CV.
-              </div>
-            ) : (
-              jobs.map((job) => (
-                <Link
-                  key={job.id}
-                  href={`/trabaja-con-nosotros/${job.slug}`}
-                  className="rounded-2xl bg-white border border-gray-200 p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all"
-                >
-                  <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
-                    {badgeMeta("seniority", job.seniority) ? (
-                      (() => {
-                        const meta = badgeMeta("seniority", job.seniority)!
-                        const palette = badgePalette[meta.palette]
-                        const Icon = meta.Icon
-                        return (
-                          <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full border text-xs font-semibold ${palette.light}`}>
-                            <Icon size={12} /> {meta.label}
-                          </span>
-                        )
-                      })()
-                    ) : (
-                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-gray-100 text-gray-700 border border-gray-200">
-                        {job.seniority || "Abierto"}
-                      </span>
-                    )}
-                    <span className="inline-flex items-center gap-1">
-                      <Clock size={12} /> {job.created_at ? format(new Date(job.created_at), "d MMM", { locale: es }) : ""}
+          ) : (
+            jobs.map((job) => (
+              <Link
+                key={job.id}
+                href={`/trabaja-con-nosotros/${job.slug}`}
+                className="rounded-2xl bg-white border border-gray-200 p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all"
+              >
+                <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
+                  {badgeMeta("seniority", job.seniority) ? (
+                    (() => {
+                      const meta = badgeMeta("seniority", job.seniority)!
+                      const palette = badgePalette[meta.palette]
+                      const Icon = meta.Icon
+                      return (
+                        <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full border text-xs font-semibold ${palette.light}`}>
+                          <Icon size={12} /> {meta.label}
+                        </span>
+                      )
+                    })()
+                  ) : (
+                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-gray-100 text-gray-700 border border-gray-200">
+                      {job.seniority || "Abierto"}
                     </span>
-                  </div>
-                  <h3 className="font-display font-bold text-lg text-blue-dark mb-2">{job.title}</h3>
-                  {job.summary && (
-                    <p className="text-gray-700 mb-3 text-sm leading-relaxed line-clamp-4 whitespace-pre-line">{job.summary}</p>
                   )}
-                  <div className="flex flex-wrap gap-2 text-xs text-gray-600 mb-3">
-                    {job.location && (
-                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-gray-100 border border-gray-200">
-                        <MapPin size={12} /> {job.location}
+                  <span className="inline-flex items-center gap-1">
+                    <Clock size={12} /> {job.created_at ? format(new Date(job.created_at), "d MMM", { locale: es }) : ""}
+                  </span>
+                </div>
+                <h3 className="font-display font-bold text-lg text-blue-dark mb-3">{job.title}</h3>
+                <div className="flex flex-wrap gap-2 text-xs text-gray-600 mb-3">
+                  {job.location && (
+                    <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-gray-100 border border-gray-200">
+                      <MapPin size={12} /> {job.location}
+                    </span>
+                  )}
+                  {badgeMeta("modality", job.modality) && (() => {
+                    const meta = badgeMeta("modality", job.modality)!
+                    const palette = badgePalette[meta.palette]
+                    const Icon = meta.Icon
+                    return (
+                      <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full border text-xs ${palette.light}`}>
+                        <Icon size={12} /> {meta.label}
                       </span>
-                    )}
-                    {badgeMeta("modality", job.modality) && (() => {
-                      const meta = badgeMeta("modality", job.modality)!
-                      const palette = badgePalette[meta.palette]
-                      const Icon = meta.Icon
-                      return (
-                        <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full border text-xs ${palette.light}`}>
-                          <Icon size={12} /> {meta.label}
-                        </span>
-                      )
-                    })()}
-                    {badgeMeta("employment", job.employment_type) && (() => {
-                      const meta = badgeMeta("employment", job.employment_type)!
-                      const palette = badgePalette[meta.palette]
-                      const Icon = meta.Icon
-                      return (
-                        <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full border text-xs ${palette.light}`}>
-                          <Icon size={12} /> {meta.label}
-                        </span>
-                      )
-                    })()}
-                  </div>
-                  {job.tags?.length ? (
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      {job.tags.slice(0, 3).map((tag) => (
-                        <span key={tag} className="px-3 py-1 rounded-full bg-gray-100 text-gray-700 border border-gray-200">
-                          {tag}
-                        </span>
-                      ))}
-                      {job.tags.length > 3 && (
-                        <span className="px-3 py-1 rounded-full bg-gray-50 text-gray-700 border border-gray-200">
-                          +{job.tags.length - 3} más
-                        </span>
-                      )}
-                    </div>
-                  ) : null}
-                  <div className="inline-flex items-center gap-2 text-coral font-semibold text-sm">
-                    Ver detalles →
-                  </div>
-                </Link>
-              ))
-            )}
-          </div>
+                    )
+                  })()}
+                  {badgeMeta("employment", job.employment_type) && (() => {
+                    const meta = badgeMeta("employment", job.employment_type)!
+                    const palette = badgePalette[meta.palette]
+                    const Icon = meta.Icon
+                    return (
+                      <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full border text-xs ${palette.light}`}>
+                        <Icon size={12} /> {meta.label}
+                      </span>
+                    )
+                  })()}
+                </div>
+                <div className="inline-flex items-center gap-2 text-coral font-semibold text-sm">
+                  Ver detalles →
+                </div>
+              </Link>
+            ))
+          )}
         </div>
       </Section>
 
-      <Section className="relative overflow-hidden text-white">
-        <div
-          className="absolute inset-0"
-          aria-hidden="true"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 18% 22%, rgba(255,90,95,0.22), transparent 38%), radial-gradient(circle at 82% 18%, rgba(56,189,248,0.18), transparent 34%), radial-gradient(circle at 50% 78%, rgba(255,90,95,0.12), transparent 42%), linear-gradient(135deg, #0b1224 0%, #0a0f1f 40%, #0b1224 100%)",
-          }}
-        />
-        <div
-          className="absolute inset-0 opacity-[0.12]"
-      aria-hidden="true"
-      style={{
-        backgroundImage:
-          "linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)",
-        backgroundSize: "80px 80px",
-      }}
-    />
-    <div className="relative max-w-3xl mx-auto text-center space-y-4">
-      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white/90 text-xs font-semibold shadow-sm backdrop-blur">
-        <Sparkles size={14} /> Únete a VR Group
-      </div>
-      <h2 className="font-display font-bold text-3xl sm:text-4xl leading-tight">¿Tu posición ideal no está listada?</h2>
-      <p className="text-lg sm:text-xl opacity-95 leading-relaxed">
-        Envíanos tu CV y cuéntanos por qué te gustaría unirte a VR Group. Siempre estamos buscando talento.
-      </p>
-      <Link
-        href="/contacto"
-        className="inline-flex px-8 py-3 bg-white text-coral rounded-xl font-display font-semibold shadow-[0_18px_38px_rgba(0,0,0,0.25)] hover:bg-gray-100 transition-colors"
-      >
-        Enviar candidatura
-      </Link>
-    </div>
-  </Section>
+      <CTABanner
+        eyebrow="Talento"
+        title="¿Tu posición ideal no está listada?"
+        subtitle="Envíanos tu CV y cuéntanos por qué te gustaría unirte a VR Group. Siempre estamos buscando talento."
+        buttonLabel="Enviar candidatura"
+        buttonHref="/contacto"
+      />
 
-  <Footer />
-</div>
+      <Footer />
+    </div>
   )
 }

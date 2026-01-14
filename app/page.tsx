@@ -80,7 +80,7 @@ export default function Home() {
                   "crecimiento",
                 ]}
                 fallback="operación"
-                className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF7A7F] via-[#FF5A5F] to-[#FF3C48]"
+                className="text-transparent bg-clip-text bg-gradient-to-r from-[#7aa2ff] via-[#3c6fff] to-[#1f3d8f]"
                 containerClassName="whitespace-nowrap"
               />
             </span>
@@ -100,14 +100,14 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row items-center gap-5 w-full sm:w-auto">
             <Link
               href="/contacto"
-              className={`${ctaBase} px-8 border-2 border-transparent text-white bg-[#FF5A5F] hover:bg-[#FF6A6F] shadow-none hover:shadow-none hover:scale-[1.05] active:scale-[0.99]`}
+              className={`${ctaBase} border-2 border-transparent text-white bg-[#FF5A5F] hover:bg-[#FF6A6F] shadow-none hover:shadow-none hover:scale-[1.05] active:scale-[0.99]`}
             >
               Agenda una reunión
               <span>→</span>
             </Link>
             <Link
               href="/servicios"
-              className={`${ctaBase} px-8 bg-white text-[#0B1B33] hover:bg-gray-100 hover:scale-[1.05] active:scale-[0.99]`}
+              className={`${ctaBase} bg-white text-[#0B1B33] hover:bg-gray-100 hover:scale-[1.05] active:scale-[0.99]`}
             >
               Explora nuestros servicios
             </Link>
@@ -116,7 +116,7 @@ export default function Home() {
         <div className="mt-12 w-full">
           <LogoCarousel
             logos={clientLogos}
-            className="py-3"
+            className="py-0"
             logoClassName="brightness-0 invert opacity-80"
             showFades={false}
           />
@@ -195,7 +195,7 @@ export default function Home() {
                   alt="Gerente de Operaciones"
                   fill
                   sizes="(min-width: 1024px) 280px, 90vw"
-                  className="object-contain object-center"
+                  className="object-cover object-center"
                 />
               </div>
               <div className="flex flex-col justify-center gap-3 p-5 sm:p-6 lg:p-8">
@@ -212,7 +212,7 @@ export default function Home() {
 
       <CTABanner
         eyebrow="Contacto"
-        title="🚀 Hablemos de tu próximo release"
+        title="Hablemos de tu próximo release"
         subtitle="Agenda una reunión y revisamos cómo escalar tu operación con arquitectura, automatización e IA."
         buttonLabel="Agenda una reunión"
         buttonHref="/contacto"

@@ -209,7 +209,7 @@ export default async function PortfolioPage({
 
       <CTABanner
         eyebrow="Portafolio"
-        title="📂 ¿Tu proyecto es el siguiente?"
+        title="¿Tu proyecto es el siguiente?"
         subtitle="Conversemos cómo llevar tu operación a producción con arquitectura, automatización y datos."
         buttonLabel="Iniciar proyecto"
         buttonHref="/contacto"

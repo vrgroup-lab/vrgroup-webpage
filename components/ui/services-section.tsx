@@ -25,7 +25,7 @@ export const servicesData: ServiceItem[] = [
     slug: "software-factory",
     title: "Software Factory",
     description:
-      "Full-stack, APIs, integraciones y DevOps con estándares enterprise y equipos Build | Run | Enable.",
+      "Full-stack, APIs, integraciones y DevOps con estándares enterprise y operación confiable.",
     shortDescription: "Full-stack, APIs e integraciones.",
     icon: Layers,
   },

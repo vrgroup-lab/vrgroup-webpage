@@ -66,8 +66,8 @@ export function SubservicesGrid({
             <div
               key={`${item.title}-${idx}`}
               className={cn(
-                "group relative overflow-hidden border border-gray-200 bg-gray-100 shadow-[0_20px_50px_rgba(15,23,42,0.18)] aspect-[4/3]",
-                items.length === 5 && idx === 4 && "sm:col-span-2 sm:aspect-[16/3]",
+                "group relative overflow-hidden border border-gray-200 bg-gray-100 shadow-[0_20px_50px_rgba(15,23,42,0.18)] aspect-[16/9]",
+                items.length === 5 && idx === 4 && "sm:col-span-2 sm:aspect-[32/5]",
               )}
             >
               {item.image ? (

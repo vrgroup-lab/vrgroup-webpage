@@ -1,6 +1,5 @@
 import Link from "next/link"
 import type { ReactNode } from "react"
-import { ArrowRight } from "lucide-react"
 
 type CTABannerProps = {
   eyebrow?: string
@@ -12,7 +11,7 @@ type CTABannerProps = {
 
 export function CTABanner({ eyebrow, title, subtitle, buttonLabel, buttonHref }: CTABannerProps) {
   return (
-    <section className="relative overflow-hidden bg-[linear-gradient(180deg,#FF5A5F_0%,#ff7a7f_15%,#0b0b0b_45%,#000_100%)] text-white">
+    <section className="relative overflow-hidden rounded-t-3xl bg-[linear-gradient(180deg,#0b2f5f_0%,#0b1b33_55%,#000_100%)] text-white -mt-5">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-14 text-center space-y-4">
         {eyebrow && (
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-xs font-semibold uppercase tracking-[0.16em]">
@@ -24,10 +23,9 @@ export function CTABanner({ eyebrow, title, subtitle, buttonLabel, buttonHref }:
         <div className="flex justify-center pt-2">
           <Link
             href={buttonHref}
-            className="inline-flex items-center gap-2 px-6 sm:px-7 py-3 rounded-xl bg-white text-black font-semibold shadow-[0_14px_30px_rgba(0,0,0,0.25)] hover:translate-y-[-1px] transition"
+            className="inline-flex items-center px-4 py-1.5 rounded-md bg-white text-black text-sm font-semibold shadow-[0_12px_24px_rgba(0,0,0,0.22)] hover:translate-y-[-1px] transition"
           >
             {buttonLabel}
-            <ArrowRight size={18} />
           </Link>
         </div>
       </div>
