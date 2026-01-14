@@ -103,30 +103,30 @@ export default async function CareersPage() {
 
       <Hero
         title="Construye productos con impacto real"
-        subtitle="Únete a equipos boutique, con estándares altos, autonomía y aprendizaje continuo."
+        subtitle="Equipos boutique, autonomía y aprendizaje continuo."
         backgroundVideo="/videos/hero/mixkit-open-office-space-914-full-hd.mp4"
         minHeight="calc(100vh + 50px)"
       >
         <div className="mt-8 flex flex-col lg:flex-row items-center gap-6 justify-center">
-          <div className="bg-white/10 border border-white/15 backdrop-blur-lg rounded-3xl px-6 py-5 text-white shadow-2xl flex flex-col gap-3 w-full max-w-2xl">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+          <div className="bg-white/10 border border-white/15 backdrop-blur-lg rounded-3xl px-5 py-4 text-white shadow-2xl flex flex-col gap-3 w-full max-w-xl">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center">
               {[
                 {
                   title: "Plan de crecimiento",
-                  subtitle: "Rutas por rol + feedback frecuente + mentoring.",
+                  subtitle: "Mentoring y feedback.",
                 },
                 {
                   title: "Proyectos desafiantes",
-                  subtitle: "Transformación digital, automatización e IA en clientes reales.",
+                  subtitle: "IA, automatización, digital.",
                 },
                 {
                   title: "Cultura de calidad",
-                  subtitle: "Buenas prácticas, revisiones, documentación y entregas sin fricción.",
+                  subtitle: "Buenas prácticas y delivery.",
                 },
               ].map((item) => (
-                <div key={item.title} className="space-y-2">
-                  <div className="text-base sm:text-lg font-display font-semibold">{item.title}</div>
-                  <p className="text-sm text-white/80 leading-relaxed">{item.subtitle}</p>
+                <div key={item.title} className="space-y-1.5">
+                  <div className="text-base font-display font-semibold">{item.title}</div>
+                  <p className="text-sm text-white/80">{item.subtitle}</p>
                 </div>
               ))}
             </div>
