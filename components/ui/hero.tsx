@@ -8,6 +8,7 @@ interface HeroProps {
   eyebrow?: ReactNode
   children?: ReactNode
   backgroundImage?: string
+  backgroundVideo?: string
   overlayImage?: string
   overlayClassName?: string
   overlayPosition?: string
@@ -26,6 +27,7 @@ export function Hero({
   eyebrow,
   children,
   backgroundImage,
+  backgroundVideo,
   overlayImage,
   overlayClassName = "opacity-30 mix-blend-screen",
   overlayPosition = "center",
@@ -42,7 +44,7 @@ export function Hero({
     <section
       className={`relative flex items-center justify-center overflow-hidden ${className}`}
       style={
-        backgroundImage
+        backgroundImage && !backgroundVideo
           ? {
               backgroundImage: `url(${backgroundImage})`,
               backgroundSize,
@@ -53,8 +55,18 @@ export function Hero({
           : { minHeight: minH, ...style }
       }
     >
-      {backgroundImage ? (
-        // Overlay azul suave para contraste sin opacar la foto
+      {backgroundVideo ? (
+        <video
+          className="absolute inset-0 w-full h-full object-cover"
+          src={backgroundVideo}
+          autoPlay
+          muted
+          loop
+          playsInline
+        />
+      ) : null}
+      {backgroundImage || backgroundVideo ? (
+        // Overlay azul suave para contraste sin opacar la foto/video
         <div className="absolute inset-0 bg-[#01042d]/55"></div>
       ) : (
         <>

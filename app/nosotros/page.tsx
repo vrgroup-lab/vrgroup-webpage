@@ -49,7 +49,7 @@ export default async function AboutPage() {
         }
         subtitle="Desde 2017 acompañamos a organizaciones públicas y privadas a diseñar, construir y escalar capacidades tecnológicas con impacto real en sus operaciones."
         images={heroBackgrounds}
-        minHeight="820px"
+        minHeight="calc(100vh + 50px)"
       >
         <div className="mt-6 flex flex-col lg:flex-row items-center gap-6 justify-center">
           <div className="bg-white/10 border border-white/15 backdrop-blur-lg rounded-3xl px-6 py-5 text-white shadow-2xl flex flex-col gap-3 w-full max-w-xl">
@@ -256,7 +256,7 @@ export default async function AboutPage() {
       {/* CTA */}
       <CTABanner
         eyebrow="Contacto"
-        title="🤝 ¿Listo para impulsar tu organización?"
+        title="¿Listo para impulsar tu organización?"
         subtitle="Conversemos y diseñemos juntos la próxima etapa de tu estrategia digital."
         buttonLabel="Hablemos"
         buttonHref="/contacto"

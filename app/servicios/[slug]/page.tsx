@@ -84,8 +84,13 @@ function WhyChooseSection({
             </div>
           </div>
           <div className="rounded-2xl border border-white/10 bg-gradient-to-br from-white/5 via-white/0 to-white/10 p-3 sm:p-4 shadow-[0_24px_60px_rgba(0,0,0,0.45)]">
-            <div className="aspect-[4/3] w-full rounded-xl border border-dashed border-white/20 bg-white/5 flex items-center justify-center">
-              <span className="text-[11px] uppercase tracking-[0.3em] text-white/60">Imagen</span>
+            <div className="aspect-[4/3] w-full rounded-xl border border-white/10 overflow-hidden bg-white/5">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/why-choose/corporate.jpg"
+                alt="Equipo corporativo"
+                className="h-full w-full object-cover"
+              />
             </div>
           </div>
         </div>
@@ -166,6 +171,11 @@ const unifiedProcess = [
   },
 ]
 
+const reasonP1 =
+  "Partimos por entender objetivos, contexto y restricciones para definir una solución clara, priorizada y medible, alineada a resultados de negocio."
+const reasonP3 =
+  "Operamos con rigor y profesionalismo: especialistas, gobierno claro, documentación y métricas para ejecutar y evolucionar sin fricción, sosteniendo resultados en el tiempo."
+
 const engineeringSubservices = [
   {
     title: "Arquitectura & Diseño de Solución",
@@ -195,10 +205,26 @@ const engineeringSubservices = [
 ]
 
 const gestionYRiesgoSubservices = [
-  { title: "Control de gestión", description: "Indicadores, seguimiento y control interno." },
-  { title: "Gestión de riesgos y cumplimiento", description: "Riesgos clave y cumplimiento normativo." },
-  { title: "Auditoría y fortalecimiento de controles", description: "Revisión, ajustes y evidencias trazables." },
-  { title: "PMO y gobernanza de iniciativas", description: "Seguimiento ejecutivo cuando se requiere." },
+  {
+    title: "Control de gestión",
+    description: "Indicadores, seguimiento y control interno.",
+    image: "/images/subservices/kpi.jpg",
+  },
+  {
+    title: "Gestión de riesgos y cumplimiento",
+    description: "Riesgos clave y cumplimiento normativo.",
+    image: "/images/subservices/risk.png",
+  },
+  {
+    title: "Auditoría y fortalecimiento de controles",
+    description: "Revisión, ajustes y evidencias trazables.",
+    image: "/images/subservices/audit.jpg",
+  },
+  {
+    title: "PMO y gobernanza de iniciativas",
+    description: "Seguimiento ejecutivo cuando se requiere.",
+    image: "/images/subservices/pmo.jpg",
+  },
 ]
 
 const iaAgentesSubservices = [
@@ -313,9 +339,9 @@ const serviceContent: Record<string, any> = {
       ...unifiedProcess,
     ],
     reasons: [
-      "Diseñamos canales digitales con foco en usuarios y objetivos de negocio, para maximizar adopción y conversión.",
-      "Entregamos rápido con design systems, componentes reutilizables y un roadmap priorizado por impacto.",
-      "Medimos performance, SEO y uso real para iterar con datos y mejorar resultados continuamente.",
+      reasonP1,
+      "Diseñamos y construimos canales web y mobile con foco en UX/UI, performance y analítica, optimizando adopción, conversión y evolución continua del producto.",
+      reasonP3,
     ],
   },
   "software-factory": {
@@ -360,9 +386,9 @@ const serviceContent: Record<string, any> = {
       ...unifiedProcess,
     ],
     reasons: [
-      "Definimos arquitectura y estándares desde el inicio para asegurar performance, seguridad y escalabilidad.",
-      "Construimos APIs e integraciones con observabilidad y documentación clara para operar sin fricción.",
-      "Operamos con CI/CD y QA continuo para reducir riesgos y acelerar releases.",
+      reasonP1,
+      "Desarrollamos backends, APIs e integraciones con estándares enterprise, CI/CD y observabilidad, asegurando escalabilidad, mantenibilidad y operación confiable.",
+      reasonP3,
     ],
   },
   "automatizacion-de-procesos": {
@@ -404,9 +430,9 @@ const serviceContent: Record<string, any> = {
       ...unifiedProcess,
     ],
     reasons: [
-      "Appian es nuestro core: contamos con un equipo dedicado y certificado que vive la plataforma día a día.",
-      "Implementamos Appian con gobierno, CI/CD y estándares para escalar sin deuda técnica.",
-      "Acompañamos el ciclo completo con mejora continua, soporte y roadmap de automatización.",
+      reasonP1,
+      "Implementamos automatización end-to-end con Appian, BPM/low-code y RPA, incorporando gobierno, trazabilidad y métricas para escalar con control y sin deuda técnica.",
+      reasonP3,
     ],
   },
   "gestion-y-riesgo": {
@@ -420,35 +446,30 @@ const serviceContent: Record<string, any> = {
       "Cumplimiento normativo con evidencias",
       "Dashboards de gestión y reporting ejecutivo",
     ],
-    services: withSubserviceImages(gestionYRiesgoSubservices, 2),
+    services: gestionYRiesgoSubservices,
     process: [
       ...unifiedProcess,
     ],
     reasons: [
-      "Alineamos procesos y controles a la estrategia para mejorar la gestión y la toma de decisiones.",
-      "Diseñamos matrices de riesgo y evidencia trazable para cumplimiento y auditoría.",
-      "Implementamos KPIs y reporting ejecutivo para monitorear y corregir a tiempo.",
+      reasonP1,
+      "Implementamos marcos de GRC, cumplimiento y continuidad con controles, evidencias y reporting ejecutivo para fortalecer resiliencia operacional y toma de decisiones.",
+      reasonP3,
     ],
   },
   "ia-y-agentes": {
-    title: "IA Aplicada a Procesos.",
+    title: "Inteligencia Artificial Aplicada.",
     intro: "Agentes inteligentes para mayor eficiencia.",
     offeringsIntro:
       "Diseñamos agentes, copilots y workflows inteligentes conectados a datos empresariales con seguridad, evaluación continua y adopción guiada.",
-    benefits: [
-      "Agentes integrados a sistemas y datos empresariales",
-      "Automatización cognitiva de tareas repetitivas",
-      "Governance, seguridad y trazabilidad de prompts",
-      "Mejora de experiencia para clientes y equipos",
-    ],
+    benefits: [],
     services: withSubserviceImages(iaAgentesSubservices, 3),
     process: [
       ...unifiedProcess,
     ],
     reasons: [
-      "Aterrizamos casos de uso con datos reales e integración a sistemas críticos.",
-      "Aplicamos guardrails, seguridad y métricas para un uso responsable y confiable.",
-      "Integramos agentes en workflows para aumentar productividad y mejorar experiencia.",
+      reasonP1,
+      "Diseñamos e integramos agentes, copilots y RAG conectados a tus datos y sistemas, con seguridad, guardrails y gobierno; además, capacitamos a tus equipos para adopción efectiva y uso responsable.",
+      reasonP3,
     ],
   },
   "staffing-y-celulas": {
@@ -526,9 +547,9 @@ const serviceContent: Record<string, any> = {
       },
     ],
     reasons: [
-      "Seleccionamos profesionales que se adaptan a tu cultura y objetivos, formando equipos cohesionados que impulsan la innovación y aceleran resultados.",
-      "Acompañamos desde la definición de perfiles hasta la puesta en marcha, gestionando la evolución y resolución de obstáculos para que el talento siempre esté alineado con tus metas.",
-      "Reducimos el tiempo de contratación y minimizamos riesgos, ofreciendo flexibilidad contractual y la posibilidad de escalar según la demanda de tu negocio.",
+      reasonP1,
+      "Conformamos equipos on-demand alineados a tu cultura y objetivos, con onboarding y gestión de capacidad para acelerar ejecución y escalar según demanda.",
+      reasonP3,
     ],
   },
 }
@@ -630,7 +651,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
   const isTransformacion = normalizedSlug === "experiencia-digital"
   const isSoftwareFactory = normalizedSlug === "software-factory"
   const isStaffing = normalizedSlug === "staffing-y-celulas"
-  const showBenefits = normalizedSlug !== "gestion-y-riesgo"
+  const showBenefits = normalizedSlug !== "gestion-y-riesgo" && normalizedSlug !== "ia-y-agentes"
   const heroBackground = isAppian ? undefined : undefined
   const providerLogos = isIAService ? getLogosFromFolder("ai-providers") : []
   const iaProvidersFallback = ["OpenAI", "Anthropic", "Google Gemini", "Azure OpenAI", "AWS Bedrock", "DeepSeek", "Cohere", "Meta Llama"]
@@ -793,7 +814,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
 
         <CTABanner
           eyebrow="Contacto"
-          title="🤝 ¿Listo para implementar esta solución?"
+          title="¿Listo para implementar esta solución?"
           subtitle="Agendemos una sesión para revisar tu caso y activar un plan con entrega a producción."
           buttonLabel="Agenda una reunión"
           buttonHref="/contacto"
@@ -879,7 +900,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
 
         <CTABanner
           eyebrow="Contacto"
-          title="🤝 ¿Listo para armar tu célula ágil?"
+          title="¿Listo para armar tu célula ágil?"
           subtitle="Cuéntanos perfiles, plazos y objetivos. Te proponemos un equipo en días."
           buttonLabel="Agenda una reunión"
           buttonHref="/contacto"
@@ -928,7 +949,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
 
         <CTABanner
           eyebrow="Contacto"
-          title="🧱 ¿Listo para construir tu software con nosotros?"
+          title="¿Listo para construir tu software con nosotros?"
           subtitle="Cuéntanos tu objetivo y diseñamos un plan de desarrollo con hitos claros, calidad y entrega continua."
           buttonLabel="Solicita una reunión"
           buttonHref="/contacto"
@@ -980,10 +1001,10 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
           <div className="absolute right-10 bottom-10 w-40 h-40 bg-coral/20 blur-3xl rounded-full pointer-events-none"></div>
           <div className="relative max-w-3xl mx-auto text-center space-y-5">
             <h2 className="font-display font-bold text-3xl sm:text-4xl leading-snug">
-              ¿Listo para lanzar o evolucionar tu canal digital? 🚀
+              ¿Listo para lanzar o evolucionar tu canal digital?
             </h2>
             <p className="text-lg sm:text-xl opacity-90">
-              Conversemos tu caso y te compartimos un plan con próximos pasos, hitos y métricas accionables. 📈
+              Conversemos tu caso y te compartimos un plan con próximos pasos, hitos y métricas accionables.
             </p>
             <Link
               href="/contacto"
@@ -1199,7 +1220,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
       {/* CTA Section */}
       <CTABanner
         eyebrow="Contacto"
-        title="🤝 ¿Listo para implementar esta solución?"
+        title="¿Listo para implementar esta solución?"
         subtitle="Agendemos una sesión para revisar tu caso y activar un plan con entrega a producción."
         buttonLabel="Agenda una reunión"
         buttonHref="/contacto"

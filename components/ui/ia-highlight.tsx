@@ -69,20 +69,22 @@ export function IAHighlight({ providerLogos = [] }: IAHighlightProps) {
             <span className="bg-[linear-gradient(120deg,#0f1729,#1f3d8f,#12a0c6)] bg-clip-text text-transparent">IA</span>
             <span>aplicada y agentes inteligentes</span>
           </h2>
-          <p className="text-gray-600 text-lg md:text-xl">
-            Capacidades modulares para diseñar, desplegar y operar IA: agentes, RAG, fine-tuning, IA privada, seguridad y adopción con gobierno y métricas.
+          <p className="text-gray-600 text-lg md:text-xl max-w-4xl leading-relaxed">
+            Capacidades modulares para diseñar, desplegar y operar IA.
+            <br className="hidden md:block" />
+            Agentes, RAG, fine-tuning, IA privada, seguridad y adopción con gobierno y métricas.
           </p>
         </div>
 
-        <div className="w-full overflow-x-auto whitespace-nowrap">
-          <div className="inline-flex items-center gap-2 border border-gray-200 rounded-lg p-2 bg-white shadow-sm">
+        <div className="w-full rounded-lg border border-gray-200 bg-white shadow-sm">
+          <div className="flex items-center gap-2 p-2 overflow-x-auto">
             {capabilities.map((cap) => (
               <button
                 key={cap.key}
                 onClick={() => setActive(cap.key)}
                 onMouseEnter={() => setActive(cap.key)}
                 onFocus={() => setActive(cap.key)}
-                className={`px-4 sm:px-5 py-2 rounded-lg text-sm sm:text-base font-semibold transition-all border ${
+                className={`whitespace-nowrap px-4 sm:px-5 py-2 rounded-lg text-sm sm:text-base font-semibold transition-all border ${
                   active === cap.key
                     ? "border-transparent bg-[linear-gradient(120deg,#0f1729,#1f3d8f,#12a0c6)] text-white shadow-[0_8px_20px_rgba(18,160,198,0.3)]"
                     : "border-gray-200 text-[#0f1729] bg-white hover:bg-gray-50"
@@ -103,7 +105,7 @@ export function IAHighlight({ providerLogos = [] }: IAHighlightProps) {
                 alt={activeCap.title}
                 fill
                 sizes="(min-width: 1024px) 640px, 100vw"
-                className="object-contain"
+                className="object-cover"
               />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center text-gray-500 text-sm">
@@ -113,10 +115,6 @@ export function IAHighlight({ providerLogos = [] }: IAHighlightProps) {
           </div>
 
           <div className="rounded-3xl border border-gray-200 bg-white p-6 space-y-3 shadow-sm min-h-[420px] h-full flex flex-col justify-between">
-            <div className="flex items-center gap-2">
-              <span className="px-3 py-1 rounded-full bg-blue-50 text-blue-900 text-xs font-semibold">Capability</span>
-              <span className="text-sm text-gray-500">Vista previa</span>
-            </div>
             <h3 className="font-display text-2xl font-bold text-blue-dark">{activeCap?.title ?? "Selecciona una opción"}</h3>
             <p className="text-gray-600">{activeCap?.desc ?? "Elige una capability para ver más detalles."}</p>
             <ul className="space-y-2">
