@@ -2,7 +2,8 @@ import { SiteNavbar } from "@/components/layout/site-navbar"
 import { Footer } from "@/components/layout/footer"
 import { Hero } from "@/components/ui/hero"
 import { Section } from "@/components/ui/section"
-import { InteractiveCardCarousel } from "@/components/ui/interactive-card-carousel"
+import { OfferingsSection } from "@/components/ui/offerings-section"
+import { SubservicesGrid } from "@/components/ui/subservices-grid"
 import { CTABanner } from "@/components/ui/cta-banner"
 import { getLogosFromFolder } from "@/lib/logos"
 import { supabasePublic } from "@/lib/supabase/public"
@@ -13,9 +14,6 @@ import {
   ArrowRight,
   TrendingUp,
   Wrench,
-  Square,
-  Circle,
-  Triangle,
   ArrowRightFromLine,
   Zap,
 } from "lucide-react"
@@ -108,34 +106,135 @@ function WhyChooseSection({
   )
 }
 
+const subserviceImagePool = [
+  "/images/subservices/uxui.png",
+  "/images/subservices/web.png",
+  "/images/subservices/mobile.jpg",
+  "/images/subservices/performance.jpg",
+]
+
+const withSubserviceImages = (items: { title: string; description: string }[], offset = 0) =>
+  items.map((item, idx) => ({
+    ...item,
+    image: subserviceImagePool[(idx + offset) % subserviceImagePool.length],
+  }))
+
+const experienceDigitalSubservices = [
+  {
+    title: "UX/UI y Research",
+    description: "Journeys, prototipos navegables y validación con usuarios para reducir riesgo y acelerar adopción.",
+  },
+  {
+    title: "Diseño y Desarrollo Web",
+    description: "Sitios públicos, portales privados e intranets rápidos, accesibles y listos para medir conversión.",
+  },
+  {
+    title: "Diseño y Desarrollo Mobile",
+    description: "Apps iOS/Android con React Native o Ionic, publicación en stores y monitoreo in-app.",
+  },
+  {
+    title: "Performance Digital & Analítica",
+    description: "SEO, tagging, dashboards y experimentación continua para mejorar velocidad y conversión.",
+  },
+]
+
+const unifiedProcess = [
+  {
+    step: "01",
+    title: "Discovery",
+    description: "Objetivos, alcance, usuarios y viabilidad; definición de criterios de éxito.",
+  },
+  {
+    step: "02",
+    title: "Diseño",
+    description: "Experiencia/arquitectura, blueprint técnico-funcional, datos e integraciones.",
+  },
+  {
+    step: "03",
+    title: "Build",
+    description: "Desarrollo, implementación y QA con estándares, pruebas y quality gates.",
+  },
+  {
+    step: "04",
+    title: "Lanzamiento",
+    description: "Salida a producción, pruebas finales e integración (UAT), estabilización y soporte inicial (hypercare).",
+  },
+  {
+    step: "05",
+    title: "Evolución",
+    description: "Operación, métricas (KPIs/SLAs), optimización continua y nuevos releases.",
+  },
+]
+
+const engineeringSubservices = [
+  {
+    title: "Arquitectura & Diseño de Solución",
+    description: "Decisiones técnicas, seguridad, escalabilidad y costos.",
+    image: "/images/subservices/architecture.png",
+  },
+  {
+    title: "Backends & APIs",
+    description: "Lógica de negocio, microservicios cuando aplica y contratos claros.",
+    image: "/images/subservices/backend.jpg",
+  },
+  {
+    title: "Integración de Sistemas",
+    description: "APIs, middleware, eventos y resiliencia ante fallas.",
+    image: "/images/subservices/integration.jpg",
+  },
+  {
+    title: "Infraestructura & Cloud",
+    description: "Arquitectura cloud, seguridad, redes y observabilidad para ambientes críticos con alta disponibilidad.",
+    image: "/images/subservices/cloud.jpg",
+  },
+  {
+    title: "Modernización & Refactor",
+    description: "Desacople, performance y reducción de deuda técnica.",
+    image: "/images/subservices/refactor.jpg",
+  },
+]
+
+const gestionYRiesgoSubservices = [
+  { title: "Control de gestión", description: "Indicadores, seguimiento y control interno." },
+  { title: "Gestión de riesgos y cumplimiento", description: "Riesgos clave y cumplimiento normativo." },
+  { title: "Auditoría y fortalecimiento de controles", description: "Revisión, ajustes y evidencias trazables." },
+  { title: "PMO y gobernanza de iniciativas", description: "Seguimiento ejecutivo cuando se requiere." },
+]
+
+const iaAgentesSubservices = [
+  {
+    title: "Agentes, chatbots y copilots",
+    description: "Asistentes por rol (ventas, soporte, operaciones) con límites, aprobaciones y traspaso a humano.",
+  },
+  {
+    title: "Workflows con IA",
+    description: "Pasos de IA en procesos para clasificar, enrutar, extraer y validar, con revisión humana cuando aplica.",
+  },
+  {
+    title: "Integración en sistemas",
+    description: "APIs, conectores y middleware; tools para agentes (MCP) y auditoría en sistemas corporativos.",
+  },
+  {
+    title: "Búsqueda empresarial & RAG",
+    description: "Respuestas desde conocimiento interno con permisos, vigencia de fuentes y citas verificables.",
+  },
+  {
+    title: "Prompt engineering y evaluación",
+    description: "Prompts versionados, pruebas de calidad y control de regresión para mantener resultados estables.",
+  },
+  {
+    title: "Adopción operativa y cambio",
+    description: "Capacitación, guías de uso, roles y monitoreo para pasar de piloto a operación.",
+  },
+]
+
 const serviceContent: Record<string, any> = {
   "experiencia-digital": {
     title: "Experiencia Digital.",
     intro: "Soluciones integrales web y mobile.",
     offeringsIntro:
       "Combinamos research, UX/UI, desarrollo web/mobile y performance digital para entregar canales que se lanzan rápido, se usan sin fricción y evolucionan con datos.",
-    showcase: [
-      {
-        title: "UX/UI y Research",
-        description: "Journeys, prototipos navegables y validación con usuarios para reducir riesgo y acelerar adopción.",
-        tags: ["Research", "Wireframes", "Prototipos", "Testing"],
-      },
-      {
-        title: "Diseño y Desarrollo Web",
-        description: "Sitios públicos, portales privados e intranets rápidos, accesibles y listos para medir conversión.",
-        tags: ["Next.js", "React", "SEO técnico", "Core Web Vitals"],
-      },
-      {
-        title: "Diseño y Desarrollo Mobile",
-        description: "Apps iOS/Android con React Native o Ionic, publicación en stores y monitoreo in-app.",
-        tags: ["React Native", "Ionic", "UX mobile", "App Stores"],
-      },
-      {
-        title: "Performance Digital & Analítica",
-        description: "SEO, tagging, dashboards y experimentación continua para mejorar velocidad y conversión.",
-        tags: ["GA4", "GTM", "SEO", "A/B testing"],
-      },
-    ],
+    services: withSubserviceImages(experienceDigitalSubservices, 0),
     benefits: [
       "Experiencias intuitivas y consistentes en cada canal.",
       "Performance web/mobile optimizada para velocidad y estabilidad.",
@@ -145,18 +244,6 @@ const serviceContent: Record<string, any> = {
       "Implementaciones alineadas a negocio con UX validado.",
       "QA, accesibilidad y seguridad considerados desde el diseño.",
       "SEO y analítica configurados desde el lanzamiento.",
-    ],
-    services: [
-      {
-        title: "Diseño UX/UI y experiencia",
-        description: "Flujos, pantallas, contenido y research con usuarios para validar la propuesta digital.",
-      },
-      { title: "Desarrollo Web & Frontend", description: "Sitios públicos/privados, intranets, landings y ecommerce con React/Next.js." },
-      { title: "Desarrollo Mobile", description: "Apps iOS/Android con React Native o Ionic; experiencia móvil y publicación en stores." },
-      {
-        title: "Evolución, Performance & Calidad",
-        description: "Nuevas funcionalidades, optimización de velocidad, estabilidad, accesibilidad y SEO.",
-      },
     ],
     specializations: [
       "Experiencia digital y desarrollo de proyectos",
@@ -223,11 +310,7 @@ const serviceContent: Record<string, any> = {
       { title: "Replatforming web / PWA", desc: "Migración a stack moderno con rendimiento y offline cuando aplica." },
     ],
     process: [
-      { step: "01", title: "Discovery & Research", description: "Objetivos, usuarios y definición de experiencia" },
-      { step: "02", title: "UX/UI & Prototipo", description: "Wireframes, prototipos y validación con usuarios" },
-      { step: "03", title: "Build Web/Mobile", description: "Implementación frontend/mobile consumiendo APIs existentes" },
-      { step: "04", title: "Lanzamiento & Medición", description: "Go-live con SEO, analítica y performance instrumentada" },
-      { step: "05", title: "Evolución Continua", description: "Backlog, releases y optimización guiada por métricas" },
+      ...unifiedProcess,
     ],
     reasons: [
       "Diseñamos canales digitales con foco en usuarios y objetivos de negocio, para maximizar adopción y conversión.",
@@ -238,14 +321,8 @@ const serviceContent: Record<string, any> = {
   "software-factory": {
     title: "Ingeniería de Software.",
     intro: "Soluciones integradas y a medida.",
-    services: [
-      { title: "Arquitectura & Diseño de Solución", description: "Decisiones técnicas, seguridad, escalabilidad y costos." },
-      { title: "Backends & APIs", description: "Lógica de negocio, microservicios cuando aplica y contratos claros." },
-      { title: "Integración de Sistemas", description: "APIs, middleware, eventos y resiliencia ante fallas." },
-      { title: "Modernización & Refactor", description: "Desacople, performance y reducción de deuda técnica." },
-      { title: "DevSecOps & QA continuo", description: "CI/CD, pruebas, seguridad y monitoreo." },
-      { title: "Equipos / Staffing TI", description: "Células para build | run | enable con roles clave." },
-    ],
+    offeringsIntro: "Diseñamos, construimos y operamos backends, APIs e integraciones con estándares enterprise y entregas continuas.",
+    services: engineeringSubservices,
     benefits: [
       "Soluciones productivas con resiliencia y seguridad enterprise.",
       "Entregas frecuentes con CI/CD, pruebas y control de cambios.",
@@ -280,11 +357,7 @@ const serviceContent: Record<string, any> = {
       { title: "Enable", desc: "Acompañamiento y coaching a tu equipo para acelerar delivery." },
     ],
     process: [
-      { step: "01", title: "Discovery & Arquitectura", description: "Alcance, riesgos y decisiones técnicas clave" },
-      { step: "02", title: "Diseño Técnico", description: "Modelos de datos, APIs y estándares de desarrollo" },
-      { step: "03", title: "Build & QA", description: "Implementación con pruebas y quality gates" },
-      { step: "04", title: "Integración & UAT", description: "Conexión a sistemas, validación y hardening" },
-      { step: "05", title: "Operación & Mejora", description: "SLAs, observabilidad y optimización continua" },
+      ...unifiedProcess,
     ],
     reasons: [
       "Definimos arquitectura y estándares desde el inicio para asegurar performance, seguridad y escalabilidad.",
@@ -293,8 +366,27 @@ const serviceContent: Record<string, any> = {
     ],
   },
   "automatizacion-de-procesos": {
-    title: "Automatización digital.",
+    title: "Automatización de procesos.",
     intro: "Optimiza procesos, impulsa eficiencia.",
+    offeringsIntro:
+      "Appian es nuestro core. Equipo dedicado y certificado para discovery, diseño y delivery en la plataforma. Integramos RPA, Data Fabric y APIs para automatizar procesos end-to-end con gobierno y operación continua.",
+    offeringsCards: [
+      {
+        title: "Diseño de automatización",
+        description: "Blueprint funcional, definición de integraciones y arquitectura de procesos.",
+        image: "/images/subservices/design_process.png",
+      },
+      {
+        title: "Implementación BPM/low-code",
+        description: "Ejecución en Appian como referencia, con calidad, pruebas y gobierno de cambios.",
+        image: "/images/subservices/automatizacion.png",
+      },
+      {
+        title: "Monitoreo y mejora continua",
+        description: "Operación, métricas y optimización iterativa de procesos automatizados.",
+        image: "/images/subservices/monitoring.jpg",
+      },
+    ],
     benefits: [
       "Time-to-market acelerado con Appian low-code.",
       "Reducción de TAT y costos operativos con automatización end-to-end.",
@@ -309,11 +401,7 @@ const serviceContent: Record<string, any> = {
       { title: "Servicios Gestionados", description: "Soporte, mejoras y operación continua." },
     ],
     process: [
-      { step: "01", title: "Discovery", description: "Assessment y selección de procesos" },
-      { step: "02", title: "Diseño", description: "Arquitectura y blueprint de automatización" },
-      { step: "03", title: "Build", description: "Configuración, desarrollo y QA" },
-      { step: "04", title: "Hypercare", description: "Acompañamiento post go-live" },
-      { step: "05", title: "Optimización", description: "Monitoreo y mejora continua" },
+      ...unifiedProcess,
     ],
     reasons: [
       "Appian es nuestro core: contamos con un equipo dedicado y certificado que vive la plataforma día a día.",
@@ -324,24 +412,17 @@ const serviceContent: Record<string, any> = {
   "gestion-y-riesgo": {
     title: "Gestión & Riesgo.",
     intro: "Excelencia en procesos clave.",
+    offeringsIntro:
+      "Diseñamos modelos de gestión, control y cumplimiento para operar procesos críticos con trazabilidad, métricas accionables y gobierno claro.",
     benefits: [
       "Modelos operativos alineados a la estrategia",
       "Control y mitigación de riesgos clave",
       "Cumplimiento normativo con evidencias",
       "Dashboards de gestión y reporting ejecutivo",
     ],
-    services: [
-      { title: "Modelos de Gestión y BPM", description: "Rediseño y optimización de procesos." },
-      { title: "Risk & Compliance", description: "Matriz de riesgos, controles y monitoreo." },
-      { title: "Auditoría y Control Interno", description: "Revisión de controles y SOX-ready." },
-      { title: "PMO & Gobierno", description: "Oficina de proyectos y seguimiento integral." },
-    ],
+    services: withSubserviceImages(gestionYRiesgoSubservices, 2),
     process: [
-      { step: "01", title: "Diagnóstico", description: "Assessment de madurez y brechas" },
-      { step: "02", title: "Roadmap", description: "Plan de acción y quick wins" },
-      { step: "03", title: "Implementación", description: "Ejecución y adopción en equipos" },
-      { step: "04", title: "Control", description: "KPIs, riesgos y cumplimiento" },
-      { step: "05", title: "Optimización", description: "Ciclos de mejora y auditoría" },
+      ...unifiedProcess,
     ],
     reasons: [
       "Alineamos procesos y controles a la estrategia para mejorar la gestión y la toma de decisiones.",
@@ -352,25 +433,17 @@ const serviceContent: Record<string, any> = {
   "ia-y-agentes": {
     title: "IA Aplicada a Procesos.",
     intro: "Agentes inteligentes para mayor eficiencia.",
+    offeringsIntro:
+      "Diseñamos agentes, copilots y workflows inteligentes conectados a datos empresariales con seguridad, evaluación continua y adopción guiada.",
     benefits: [
       "Agentes integrados a sistemas y datos empresariales",
       "Automatización cognitiva de tareas repetitivas",
       "Governance, seguridad y trazabilidad de prompts",
       "Mejora de experiencia para clientes y equipos",
     ],
-    services: [
-      { title: "Diseño de Agentes & Copilots", description: "Discovery, casos de uso y UX conversacional." },
-      { title: "Chatbots Corporativos", description: "Bots multicanal con contexto de negocio." },
-      { title: "Integración en Workflows", description: "Orquestación con procesos y sistemas core." },
-      { title: "Evaluación y Monitoreo", description: "Guardrails, métricas y mejora de modelos." },
-      { title: "Adopción & Training", description: "Capacitación y change management." },
-    ],
+    services: withSubserviceImages(iaAgentesSubservices, 3),
     process: [
-      { step: "01", title: "Discovery", description: "Identificación de casos y viabilidad" },
-      { step: "02", title: "Prototipo", description: "MVP funcional y validación rápida" },
-      { step: "03", title: "Integración", description: "Conexión a datos y sistemas" },
-      { step: "04", title: "Validación", description: "Seguridad, compliance y guardrails" },
-      { step: "05", title: "Escalado", description: "Despliegue y monitoreo continuo" },
+      ...unifiedProcess,
     ],
     reasons: [
       "Aterrizamos casos de uso con datos reales e integración a sistemas críticos.",
@@ -382,6 +455,8 @@ const serviceContent: Record<string, any> = {
     title: "Staffing & Células Ágiles",
     intro: "Soluciones digitales con equipos ágiles a demanda.",
     heroEyebrow: "Staffing digital",
+    offeringsIntro:
+      "Proveemos células ágiles y talento especializado para activar, escalar o reforzar iniciativas digitales sin fricción. Equipos listos para integrarse a tu operación con onboarding express, gobierno liviano y herramientas ágiles que aseguran entrega continua y calidad.",
     pillars: [
       {
         title: "Equipos ágiles.",
@@ -555,6 +630,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
   const isTransformacion = normalizedSlug === "experiencia-digital"
   const isSoftwareFactory = normalizedSlug === "software-factory"
   const isStaffing = normalizedSlug === "staffing-y-celulas"
+  const showBenefits = normalizedSlug !== "gestion-y-riesgo"
   const heroBackground = isAppian ? undefined : undefined
   const providerLogos = isIAService ? getLogosFromFolder("ai-providers") : []
   const iaProvidersFallback = ["OpenAI", "Anthropic", "Google Gemini", "Azure OpenAI", "AWS Bedrock", "DeepSeek", "Cohere", "Meta Llama"]
@@ -582,6 +658,8 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
     )
   }
 
+  const offeringsEyebrow = content.offeringsEyebrow ?? content.heroEyebrow ?? "Servicios"
+
   if (isAppian) {
     const useCases = content.useCases ?? []
 
@@ -591,174 +669,89 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
 
         <Hero title={content.title} subtitle={content.intro} variant="services" />
 
-        <Section
-          className="relative bg-gradient-to-br from-white via-[#f6f8fc] to-[#e8edfa] overflow-hidden"
-          variant="light"
-          paddingClass="py-8 sm:py-10 lg:py-12"
-        >
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute -left-32 -top-32 w-80 h-80 rounded-full bg-coral/10 blur-3xl"></div>
-            <div className="absolute -right-24 -bottom-24 w-72 h-72 rounded-full bg-[#0B1B33]/10 blur-3xl"></div>
-          </div>
-          <div className="relative max-w-5xl mx-auto">
-            <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center gap-3">
-                <span className="text-[11px] uppercase tracking-[0.3em] text-gray-500">Automatización</span>
-                <span className="h-1 w-6 rounded-full bg-coral/70"></span>
-              </div>
-              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-400">Appian Core</span>
-            </div>
-            <h2 className="font-display text-2xl sm:text-3xl font-semibold text-[#0b1b33]">¿Qué ofrecemos?</h2>
-            <p className="mt-4 text-gray-700 leading-relaxed text-sm sm:text-base">
-              Appian es nuestro core. Equipo dedicado y certificado para discovery, diseño y delivery en la plataforma. Integramos RPA, Data Fabric y
-              APIs para automatizar procesos end-to-end con gobierno y operación continua.
-            </p>
-          </div>
-        </Section>
+        <SubservicesGrid intro={content.offeringsIntro} items={content.offeringsCards ?? []} />
 
-        <Section className="bg-white" variant="light" paddingClass="py-6 sm:py-8 lg:py-10">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              {
-                title: "Core Appian.",
-                description: "Equipo dedicado y certificado, con experiencia en casos complejos y entregas enterprise.",
-                shape: "square",
-              },
-              {
-                title: "Delivery low-code.",
-                description: "Apps y procesos en semanas con componentes reutilizables y mejores prácticas Appian.",
-                shape: "circle",
-              },
-              {
-                title: "Data Fabric & integraciones.",
-                description: "Unificamos datos y conectamos sistemas con Appian Data Fabric, RPA y APIs.",
-                shape: "triangle",
-              },
-            ].map((item) => (
-              <div key={item.title} className="rounded-2xl border border-gray-200 bg-gray-50 p-5 flex flex-col gap-4">
-                <div className="w-full aspect-[4/3] rounded-xl bg-gray-200 flex items-center justify-center">
-                  {item.shape === "square" && <Square size={48} className="text-gray-400" />}
-                  {item.shape === "circle" && <Circle size={48} className="text-gray-400" />}
-                  {item.shape === "triangle" && <Triangle size={52} className="text-gray-400" />}
-                </div>
-                <div>
-                  <h3 className="font-display font-semibold text-lg text-[#0b1b33] mb-1">{item.title}</h3>
-                  <p className="text-gray-700 text-sm leading-relaxed">{item.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Section>
-
-        <section className="bg-gradient-to-r from-[#0B1B33] via-[#12345a] to-[#0B1B33] text-white">
-          <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-            <div className="rounded-2xl border border-white/10 bg-white/5 px-6 py-5 sm:px-8 sm:py-6 text-center shadow-[0_18px_55px_rgba(0,0,0,0.35)]">
-              <p className="text-[11px] uppercase tracking-[0.3em] text-white/70 mb-2">Partner oficial</p>
-              <div className="flex flex-wrap items-center justify-center gap-3">
-                <span className="font-display text-2xl sm:text-3xl font-semibold text-white">Somos partners</span>
+        <section className="bg-white pb-8">
+          <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-6 items-center rounded-2xl border border-blue-800/40 bg-[#0B2A5B] px-6 py-6 text-white shadow-[0_20px_50px_rgba(11,42,91,0.35)]">
+              <div className="space-y-3">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/logos/partners/letter_appian.png" alt="Appian" className="h-9 sm:h-10 object-contain" />
-                <span className="font-display text-2xl sm:text-3xl font-semibold text-white">, pioneros en Chile.</span>
+                <img src="/logos/partners/letter_appian.png" alt="Appian" className="h-7 sm:h-8 object-contain" />
+                <h3 className="font-display text-lg sm:text-xl font-semibold">Plataforma líder en automatización de procesos</h3>
+                <p className="text-sm text-white/85 leading-relaxed">
+                  Implementamos Appian como referencia para orquestar procesos end-to-end con gobierno, trazabilidad y escalabilidad.
+                </p>
               </div>
-              <p className="mt-2 text-sm text-white/85">
-                Lideramos implementaciones y equipos dedicados para acelerar la adopción de Appian en empresas de alto impacto.
-              </p>
-              <a
-                href="https://appian.com/es"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 text-xs font-semibold text-white/90 hover:text-coral transition-colors mt-3"
-              >
-                Conocer más sobre Appian
-                <ArrowRight size={14} />
-              </a>
+              <div className="flex lg:justify-end">
+                <a
+                  href="https://appian.com/es"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-white hover:text-coral transition-colors"
+                >
+                  Conocer más sobre Appian
+                  <ArrowRight size={14} />
+                </a>
+              </div>
             </div>
           </div>
         </section>
 
         <Section className="bg-white" variant="light" paddingClass="py-8 sm:py-10 lg:py-12">
-          <div className="max-w-4xl mx-auto mb-6 text-center">
-            <p className="text-xs uppercase tracking-[0.3em] text-gray-500 mb-2">BPMN</p>
-            <h3 className="font-display text-lg sm:text-xl font-semibold text-[#0b1b33]">Automatización con modelos BPMN</h3>
-            <details className="group mt-3 text-sm text-gray-600">
-              <summary className="flex items-center justify-center gap-2 cursor-pointer list-none font-semibold text-coral">
-                Leer descripción
-                <span className="text-xs group-open:rotate-90 transition-transform">→</span>
-              </summary>
-              <p className="mt-3 leading-relaxed">
-                Modelamos procesos en BPMN dentro de Appian para visualizar flujos, detectar cuellos de botella y acelerar la automatización con reglas
-                claras y reutilizables.
-              </p>
-            </details>
-          </div>
-          <div className="rounded-3xl overflow-hidden border border-gray-200 shadow-[0_18px_55px_rgba(0,0,0,0.12)]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/appian/process-automation-animation.gif"
-              alt="Automatización en acción"
-              className="w-full h-full object-cover"
-            />
-          </div>
-        </Section>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="space-y-4">
+              <div className="text-center lg:text-left">
+                <p className="text-xs uppercase tracking-[0.3em] text-gray-500 mb-2">BPMN</p>
+                <h3 className="font-display text-lg sm:text-xl font-semibold text-[#0b1b33]">Automatización con modelos BPMN</h3>
+                <details className="group mt-3 text-sm text-gray-600">
+                  <summary className="flex items-center justify-center lg:justify-start gap-2 cursor-pointer list-none font-semibold text-coral">
+                    Leer descripción
+                    <span className="text-xs group-open:rotate-90 transition-transform">→</span>
+                  </summary>
+                  <p className="mt-3 leading-relaxed">
+                    Modelamos procesos en BPMN dentro de Appian para visualizar flujos, detectar cuellos de botella y acelerar la automatización con reglas
+                    claras y reutilizables.
+                  </p>
+                </details>
+              </div>
+              <div className="rounded-3xl overflow-hidden border border-gray-200 shadow-[0_18px_55px_rgba(0,0,0,0.12)]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/appian/process-automation-animation.gif"
+                  alt="Automatización en acción"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
 
-        <Section className="bg-white" variant="light" paddingClass="py-8 sm:py-10 lg:py-12">
-          <div className="max-w-4xl mx-auto mb-6 text-center">
-            <p className="text-xs uppercase tracking-[0.3em] text-gray-500 mb-2">Data Fabric</p>
-            <h3 className="font-display text-lg sm:text-xl font-semibold text-[#0b1b33]">Gobierno y unificación de datos</h3>
-            <details className="group mt-3 text-sm text-gray-600">
-              <summary className="flex items-center justify-center gap-2 cursor-pointer list-none font-semibold text-coral">
-                Leer descripción
-                <span className="text-xs group-open:rotate-90 transition-transform">→</span>
-              </summary>
-              <p className="mt-3 leading-relaxed">
-                Appian Data Fabric unifica fuentes de datos para asegurar gobernanza, consistencia y una automatización correcta de procesos sin duplicar
-                información.
-              </p>
-            </details>
-          </div>
-          <div className="rounded-3xl overflow-hidden border border-gray-200 shadow-[0_18px_55px_rgba(0,0,0,0.12)]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/appian/data-fabric-animation.gif"
-              alt="Appian Data Fabric en acción"
-              className="w-full h-full object-cover"
-            />
+            <div className="space-y-4">
+              <div className="text-center lg:text-left">
+                <p className="text-xs uppercase tracking-[0.3em] text-gray-500 mb-2">Data Fabric</p>
+                <h3 className="font-display text-lg sm:text-xl font-semibold text-[#0b1b33]">Gobierno y unificación de datos</h3>
+                <details className="group mt-3 text-sm text-gray-600">
+                  <summary className="flex items-center justify-center lg:justify-start gap-2 cursor-pointer list-none font-semibold text-coral">
+                    Leer descripción
+                    <span className="text-xs group-open:rotate-90 transition-transform">→</span>
+                  </summary>
+                  <p className="mt-3 leading-relaxed">
+                    Appian Data Fabric unifica fuentes de datos para asegurar gobernanza, consistencia y una automatización correcta de procesos sin duplicar
+                    información.
+                  </p>
+                </details>
+              </div>
+              <div className="rounded-3xl overflow-hidden border border-gray-200 shadow-[0_18px_55px_rgba(0,0,0,0.12)]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/appian/data-fabric-animation.gif"
+                  alt="Appian Data Fabric en acción"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </div>
           </div>
         </Section>
 
         <WhyChooseSection reasons={content.reasons} highlights={content.benefits} className="mt-6" />
-
-        <Section className="bg-white" variant="light" paddingClass="py-8 sm:py-10 lg:py-12">
-          <div className="max-w-4xl mx-auto space-y-3">
-            <h3 className="font-display text-lg font-semibold text-[#0b1b33]">De la detección al éxito</h3>
-            <p className="text-gray-700 text-sm leading-relaxed">
-              Comenzamos con discovery para identificar procesos críticos y objetivos claros. Nos enfocamos en comprender tus desafíos y alinearlos con tus
-              metas.
-            </p>
-            <p className="text-gray-700 text-sm leading-relaxed">
-              Diseñamos soluciones personalizadas integrando automatización, IA y optimización digital para un despliegue eficiente y sin fricciones.
-            </p>
-            <p className="text-gray-700 text-sm leading-relaxed">
-              Monitoreamos y mejoramos continuamente lo implementado para que el valor se multiplique y se mantenga en el tiempo.
-            </p>
-          </div>
-        </Section>
-
-        <Section
-          title="¿Qué incluye el servicio?"
-          subtitle="Desde discovery y laboratorio de automatización hasta operación y mejora continua."
-          className="bg-gray-50"
-          variant="light"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-            {content.services.map((service: any) => (
-              <div key={service.title} className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all">
-                <h3 className="font-display font-semibold text-lg text-blue-dark mb-2">{service.title}</h3>
-                <p className="text-gray-700 text-sm leading-relaxed">{service.description}</p>
-              </div>
-            ))}
-          </div>
-        </Section>
 
         {useCases.length > 0 && (
           <Section title="Casos y ejemplos" className="bg-white" variant="light">
@@ -775,8 +768,8 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
 
         <Section title="Nuestro proceso" className="bg-gray-50" variant="light">
           <div className="relative">
-            <div className="pointer-events-none hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-coral/60 transform -translate-x-1/2"></div>
-            <div className="pointer-events-none md:hidden absolute left-6 top-6 bottom-6 w-px bg-coral/60"></div>
+            <div className="pointer-events-none hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-coral transform -translate-x-1/2"></div>
+            <div className="pointer-events-none md:hidden absolute left-6 top-6 bottom-6 w-0.5 bg-coral"></div>
             <div className="space-y-12">
               {content.process.map((item: any, idx: number) => (
                 <div key={item.title} className={`flex gap-6 items-start ${idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}>
@@ -812,6 +805,12 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
   }
 
   if (isStaffing) {
+    const staffingItems = (content.pillars ?? []).map((pillar: any) => ({
+      title: pillar.title,
+      description: pillar.description,
+      image: pillar.image,
+    }))
+
     return (
       <div className="min-h-screen flex flex-col bg-white text-gray-900">
         <SiteNavbar settings={siteSettings} />
@@ -825,48 +824,15 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
           variant="services"
         />
 
-        <section id="detalles" className="pt-6 pb-16 bg-gradient-to-b from-[#f5f7fb] via-white to-[#eef2f7]">
+        <SubservicesGrid intro={content.offeringsIntro} items={staffingItems} />
+
+        <section className="bg-white py-10 sm:py-12">
           <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mb-10">
-              <div className="relative overflow-hidden rounded-2xl border border-gray-200 bg-gradient-to-r from-[#0b1b33] via-[#12345a] to-[#0b1b33] p-[1px] shadow-lg">
-                <div className="rounded-2xl bg-white/95 p-6 sm:p-7">
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="font-display text-xl sm:text-2xl font-semibold text-[#0b1b33]">¿Qué ofrecemos?</h3>
-                    <span className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">Talento ágil</span>
-                  </div>
-                  <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
-                    Proveemos células ágiles y talento especializado para activar, escalar o reforzar iniciativas digitales sin fricción.
-                    Equipos listos para integrarse a tu operación con onboarding express, gobierno liviano y herramientas ágiles que aseguran entrega
-                    continua y calidad.
-                  </p>
-                </div>
-              </div>
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="font-display text-lg sm:text-xl font-semibold text-black">Diferenciadores clave</h4>
+              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">Staffing on-demand</span>
             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {content.pillars.map((item: any) => (
-                <div key={item.title} className="rounded-2xl bg-gray-100 p-5 sm:p-6 flex flex-col gap-4">
-                  <div className="w-full aspect-[4/3] rounded-xl bg-gray-200 flex items-center justify-center overflow-hidden">
-                    {item.image ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
-                    ) : (
-                      <>
-                        {item.shape === "square" && <Square size={48} className="text-gray-400" />}
-                        {item.shape === "circle" && <Circle size={48} className="text-gray-400" />}
-                        {item.shape === "triangle" && <Triangle size={52} className="text-gray-400" />}
-                      </>
-                    )}
-                  </div>
-                  <div>
-                    <h3 className="font-display font-semibold text-lg text-black mb-1">{item.title}</h3>
-                    <p className="text-gray-600 text-sm leading-relaxed">{item.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {content.differentiators.map((diff: any) => {
                 const Icon = diff.icon
                 return (
@@ -881,33 +847,30 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
               })}
             </div>
           </div>
+        </section>
 
-          <WhyChooseSection reasons={content.reasons} className="mt-12" />
+        <WhyChooseSection reasons={content.reasons} className="mt-12" />
 
+        <section className="bg-white py-10 sm:py-12">
           <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="mt-12">
-              <div className="flex items-center justify-between mb-4">
-                <h4 className="font-display text-lg sm:text-xl font-semibold text-black">Roles disponibles</h4>
-                <span className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">Staffing on-demand</span>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {content.profiles.map((profile: any, idx: number) => (
-                  <div
-                    key={profile.name}
-                    className="group relative h-48 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden"
-                  >
-                    <div className="absolute inset-0 rounded-xl transition-all duration-500 group-hover:translate-y-[-100%] p-4 flex flex-col items-center justify-center gap-3">
-                      <div className="h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 text-lg">
-                        {idx + 1}
-                      </div>
-                      <p className="font-display font-semibold text-center text-gray-900 text-sm sm:text-base">{profile.name}</p>
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="font-display text-lg sm:text-xl font-semibold text-black">Roles disponibles</h4>
+              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">Staffing on-demand</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {content.profiles.map((profile: any, idx: number) => (
+                <div key={profile.name} className="group relative h-48 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                  <div className="absolute inset-0 rounded-xl transition-all duration-500 group-hover:translate-y-[-100%] p-4 flex flex-col items-center justify-center gap-3">
+                    <div className="h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 text-lg">
+                      {idx + 1}
                     </div>
-                    <div className="absolute inset-0 rounded-xl bg-white border border-gray-200 p-4 flex items-center justify-center text-center text-sm text-gray-700 leading-relaxed translate-y-full transition-all duration-500 group-hover:translate-y-0">
-                      <p>{profile.description}</p>
-                    </div>
+                    <p className="font-display font-semibold text-center text-gray-900 text-sm sm:text-base">{profile.name}</p>
                   </div>
-                ))}
-              </div>
+                  <div className="absolute inset-0 rounded-xl bg-white border border-gray-200 p-4 flex items-center justify-center text-center text-sm text-gray-700 leading-relaxed translate-y-full transition-all duration-500 group-hover:translate-y-0">
+                    <p>{profile.description}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -934,101 +897,14 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
 
         <Hero title={content.title} subtitle={content.intro} variant="services" />
 
-        <Section
-          title="¿Qué ofrecemos?"
-          subtitle="Diseñamos, construimos y operamos backends, APIs e integraciones con estándares enterprise y entregas continuas."
-          className="bg-white"
-          variant="light"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {content.services.map((service: any) => (
-              <div key={service.title} className="rounded-2xl border border-gray-200 bg-gray-50 p-5 shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all">
-                <h3 className="font-display font-semibold text-lg text-blue-dark mb-2">{service.title}</h3>
-                <p className="text-gray-700 text-sm leading-relaxed">{service.description}</p>
-              </div>
-            ))}
-          </div>
-        </Section>
-
-        <Section
-          title="Beneficios principales"
-          className="bg-gray-50"
-          variant="light"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {content.benefits.map((benefit: string) => (
-              <div key={benefit} className="flex gap-3 items-start rounded-xl bg-white border border-gray-200 px-4 py-3 shadow-sm">
-                <div className="w-8 h-8 rounded-full bg-[#FF5A5F]/10 text-[#FF5A5F] flex items-center justify-center mt-1">
-                  <Check size={16} />
-                </div>
-                <p className="text-gray-700">{benefit}</p>
-              </div>
-            ))}
-          </div>
-        </Section>
+        <SubservicesGrid intro={content.offeringsIntro} items={content.services} />
 
         <WhyChooseSection reasons={content.reasons} className="mt-12" />
 
-        <Section
-          title="Qué incluye normalmente"
-          className="bg-white"
-          variant="light"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {content.includes.map((item: string) => (
-              <div key={item} className="rounded-2xl bg-gray-50 border border-gray-200 p-4 shadow-sm flex gap-3 items-start">
-                <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mt-0.5">
-                  <Check size={16} />
-                </div>
-                <p className="text-gray-800 text-sm">{item}</p>
-              </div>
-            ))}
-          </div>
-        </Section>
-
-        <Section title="Entregables típicos" className="bg-gray-50" variant="light">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {content.deliverables.map((item: string) => (
-              <div key={item} className="rounded-2xl bg-white border border-gray-200 p-5 shadow-sm flex gap-3">
-                <div className="w-8 h-8 rounded-full bg-[#0B1B33]/10 text-[#0B1B33] flex items-center justify-center mt-0.5">
-                  <Check size={16} />
-                </div>
-                <p className="text-gray-800 text-sm leading-relaxed">{item}</p>
-              </div>
-            ))}
-          </div>
-        </Section>
-
-        <Section title="Modalidades de trabajo" className="bg-white" variant="light">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {content.modalities.map((item: any) => (
-              <div key={item.title} className="rounded-2xl border border-gray-200 bg-gradient-to-br from-white to-gray-50 p-5 shadow-sm">
-                <h3 className="font-display font-semibold text-lg text-blue-dark mb-2">{item.title}</h3>
-                <p className="text-gray-700 text-sm leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </Section>
-
-        <Section
-          title="Casos y ejemplos"
-          className="bg-gradient-to-br from-[#0B1B33] via-[#0D1933] to-[#0B1B33]"
-          variant="dark"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {content.useCases.map((item: any) => (
-              <div key={item.title} className="rounded-2xl border border-white/10 bg-white/5 p-4 shadow-lg backdrop-blur">
-                <h4 className="font-display font-semibold text-lg text-white mb-2">{item.title}</h4>
-                <p className="text-gray-200 text-sm leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </Section>
-
         <Section title="Nuestro proceso" className="bg-gray-50" variant="light">
           <div className="relative">
-            <div className="pointer-events-none hidden md:block absolute left-1/2 top-6 bottom-6 w-px bg-coral/60 transform -translate-x-1/2"></div>
-            <div className="pointer-events-none md:hidden absolute left-6 top-6 bottom-6 w-px bg-coral/60"></div>
+            <div className="pointer-events-none hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-coral transform -translate-x-1/2"></div>
+            <div className="pointer-events-none md:hidden absolute left-6 top-6 bottom-6 w-0.5 bg-coral"></div>
             <div className="space-y-12">
               {content.process.map((item: any, idx: number) => (
                 <div key={item.title} className={`flex gap-6 items-start ${idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}>
@@ -1050,21 +926,13 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
 
         {portfolioSection}
 
-        <Section className="bg-gradient-to-r from-coral to-blue-dark text-white">
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="font-display font-bold text-3xl mb-4">¿Listo para escalar tu fábrica de software?</h2>
-            <p className="text-lg mb-8 opacity-90">
-              Conversemos tu roadmap y te proponemos un modelo Build | Run | Enable con hitos claros.
-            </p>
-            <Link
-              href="/contacto"
-              className="inline-flex px-8 py-3 bg-white text-coral rounded-lg font-display font-semibold hover:bg-gray-100 transition-colors items-center gap-2"
-            >
-              Solicita una reunión
-              <ArrowRight size={20} />
-            </Link>
-          </div>
-        </Section>
+        <CTABanner
+          eyebrow="Contacto"
+          title="🧱 ¿Listo para construir tu software con nosotros?"
+          subtitle="Cuéntanos tu objetivo y diseñamos un plan de desarrollo con hitos claros, calidad y entrega continua."
+          buttonLabel="Solicita una reunión"
+          buttonHref="/contacto"
+        />
 
         <Footer />
       </div>
@@ -1072,154 +940,20 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
   }
 
   if (isTransformacion) {
-    const technologies = content.technologiesCards ?? content.technologies?.map((name: string) => ({ name }))
-    const showcaseItems =
-      content.showcase?.filter((item: any) => !item.title.toLowerCase().includes("células") && !item.title.toLowerCase().includes("staffing")) ??
-      []
-
     return (
       <div className="min-h-screen flex flex-col">
         <SiteNavbar settings={siteSettings} />
 
         <Hero title={content.title} subtitle={content.intro} variant="services" />
 
-        <Section
-          title="¿Qué ofrecemos?"
-          subtitle={content.offeringsIntro}
-          className="relative bg-gradient-to-br from-white via-[#f6f8fc] to-[#e8edfa] overflow-hidden"
-          variant="light"
-        >
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute -left-32 -top-32 w-80 h-80 rounded-full bg-coral/10 blur-3xl"></div>
-            <div className="absolute -right-24 -bottom-24 w-72 h-72 rounded-full bg-[#0B1B33]/10 blur-3xl"></div>
-          </div>
-          <div className="relative">
-            <InteractiveCardCarousel items={showcaseItems} accent="#FF5A5F" />
-          </div>
-        </Section>
-
-        <Section
-          title="¿Qué incluye el servicio?"
-          subtitle="Desde research y prototipos hasta lanzamiento medible y evolución continua del canal."
-          className="bg-gray-50"
-          variant="light"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {content.includesPillars.map((block: any) => (
-              <div key={block.title} className="rounded-2xl bg-white border border-gray-200 p-5 shadow-sm">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="h-10 w-10 rounded-xl bg-[#FF5A5F]/10 text-[#FF5A5F] flex items-center justify-center font-display font-semibold">
-                    {block.title.slice(0, 2).toUpperCase()}
-                  </div>
-                  <h3 className="font-display font-semibold text-lg text-blue-dark">{block.title}</h3>
-                </div>
-                <ul className="space-y-2 text-sm text-gray-700">
-                  {block.items.map((item: string) => (
-                    <li key={item} className="flex gap-2">
-                      <Check size={16} className="text-emerald-500 mt-0.5 flex-shrink-0" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </Section>
-
-        <Section title="Beneficios principales" className="bg-white" variant="light">
-          <details className="group rounded-2xl border border-gray-200 bg-gray-50 p-5 shadow-sm">
-            <summary className="flex items-center justify-between cursor-pointer list-none">
-              <span className="font-display font-semibold text-blue-dark">Ver beneficios</span>
-              <span className="text-sm text-coral group-open:rotate-90 transition-transform">→</span>
-            </summary>
-            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
-              {content.benefits.map((benefit: string) => (
-                <div
-                  key={benefit}
-                  className="flex gap-3 items-start rounded-xl bg-white border border-gray-200 px-4 py-3 shadow-sm"
-                >
-                  <div className="w-8 h-8 rounded-full bg-[#FF5A5F]/10 text-[#FF5A5F] flex items-center justify-center mt-1">
-                    <Check size={16} />
-                  </div>
-                  <p className="text-gray-700">{benefit}</p>
-                </div>
-              ))}
-            </div>
-          </details>
-        </Section>
+        <SubservicesGrid intro={content.offeringsIntro} items={content.services} />
 
         <WhyChooseSection reasons={content.reasons} className="mt-12" />
 
-        <Section title="Áreas de especialización" className="bg-white" variant="light">
-          <div className="flex flex-wrap gap-3 justify-center">
-            {content.specializations.map((item: string) => (
-              <span
-                key={item}
-                className="px-4 py-2 rounded-full bg-gray-100 text-blue-dark font-semibold text-sm border border-gray-200 shadow-sm"
-              >
-                {item}
-              </span>
-            ))}
-          </div>
-        </Section>
-
-        <Section title="Tecnologías que dominamos" className="bg-gray-50" variant="light">
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {technologies?.map((tech: any) => {
-              const name = tech.name ?? tech
-              const hint = tech.hint ?? ""
-              const initials = name.slice(0, 2).toUpperCase()
-              const logo = tech.logo as string | undefined
-              return (
-                <div key={name} className="rounded-2xl bg-white border border-gray-200 p-4 shadow-sm flex items-center gap-3">
-                  {logo ? (
-                    <div className="h-12 w-12 rounded-full border border-gray-200 bg-white flex items-center justify-center overflow-hidden">
-                      <img src={logo} alt={name} className="h-9 w-9 object-contain" />
-                    </div>
-                  ) : (
-                    <div className="h-12 w-12 rounded-full bg-gradient-to-br from-[#0B1B33] to-[#FF5A5F] text-white flex items-center justify-center font-bold text-sm">
-                      {initials}
-                    </div>
-                  )}
-                  <div>
-                    <p className="font-display font-semibold text-blue-dark leading-tight">{name}</p>
-                    {hint && <p className="text-xs text-gray-500">{hint}</p>}
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        </Section>
-
-        <Section
-          title="Casos de uso típicos"
-          subtitle="Ejemplos de cómo llevamos canal y experiencia a producción con métricas."
-          className="bg-gradient-to-br from-[#0B1B33] via-[#0D1933] to-[#0B1B33]"
-          variant="dark"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {content.useCases.map((item: any) => (
-              <div key={item.title} className="rounded-2xl border border-white/10 bg-white/5 p-4 shadow-lg backdrop-blur">
-                <h4 className="font-display font-semibold text-lg text-white mb-2">{item.title}</h4>
-                <p className="text-gray-200 text-sm leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-          <div className="text-center mt-8">
-            <Link
-              href="/portafolio?servicio=transformacion-digital"
-              className="inline-flex items-center gap-2 text-white font-semibold hover:text-coral transition-colors"
-            >
-              Ver casos del portafolio
-              <ArrowRight size={16} />
-            </Link>
-          </div>
-        </Section>
-
         <Section title="Nuestro proceso" className="bg-gray-50" variant="light">
           <div className="relative">
-            <div className="pointer-events-none hidden md:block absolute left-1/2 top-6 bottom-6 w-px bg-coral/60 transform -translate-x-1/2"></div>
-            <div className="pointer-events-none md:hidden absolute left-6 top-6 bottom-6 w-px bg-coral/60"></div>
+            <div className="pointer-events-none hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-coral transform -translate-x-1/2"></div>
+            <div className="pointer-events-none md:hidden absolute left-6 top-6 bottom-6 w-0.5 bg-coral"></div>
             <div className="space-y-12">
               {content.process.map((item: any, idx: number) => (
                 <div key={item.title} className={`flex gap-6 items-start ${idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"}`}>
@@ -1273,41 +1007,27 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
       <Hero title={content.title} subtitle={content.intro} backgroundImage={heroBackground} variant="services" />
 
       {/* Benefits Section */}
-      <Section
-        title="Beneficios principales"
-        className={isAppian ? "bg-[linear-gradient(130deg,#10244e,#1f3d8f,#12a0c6)]" : "bg-white"}
-        variant={isAppian ? "dark" : "light"}
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {content.benefits.map((benefit: string, idx: number) => (
-            <div key={idx} className="flex gap-3 items-start">
-              <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1 ${isAppian ? "bg-white/20" : "bg-coral"}`}>
-                <Check size={16} className={`${isAppian ? "text-white" : "text-white"}`} />
+      {showBenefits && (
+        <Section
+          title="Beneficios principales"
+          className={isAppian ? "bg-[linear-gradient(130deg,#10244e,#1f3d8f,#12a0c6)]" : "bg-white"}
+          variant={isAppian ? "dark" : "light"}
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {content.benefits.map((benefit: string, idx: number) => (
+              <div key={idx} className="flex gap-3 items-start">
+                <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-1 ${isAppian ? "bg-white/20" : "bg-coral"}`}>
+                  <Check size={16} className={`${isAppian ? "text-white" : "text-white"}`} />
+                </div>
+                <p className={`${isAppian ? "text-white/90" : "text-gray-700"}`}>{benefit}</p>
               </div>
-              <p className={`${isAppian ? "text-white/90" : "text-gray-700"}`}>{benefit}</p>
-            </div>
-          ))}
-        </div>
-      </Section>
+            ))}
+          </div>
+        </Section>
+      )}
 
       {/* Services Offered */}
-      <Section
-        title="¿Qué ofrecemos?"
-        className={isAppian ? "bg-[#0e2049]" : "bg-gray-50"}
-        variant={isAppian ? "dark" : "light"}
-      >
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {content.services.map((service: any, idx: number) => (
-            <div
-              key={idx}
-              className={`rounded-xl p-6 border ${isAppian ? "bg-white/5 border-white/15 text-white" : "bg-white border-gray-200"}`}
-            >
-              <h3 className="font-display font-bold text-lg mb-2">{service.title}</h3>
-              <p className={`${isAppian ? "text-white/80" : "text-gray-600"}`}>{service.description}</p>
-            </div>
-          ))}
-        </div>
-      </Section>
+      <SubservicesGrid intro={content.offeringsIntro} items={content.services} />
 
       <WhyChooseSection reasons={content.reasons} className="mt-12" />
 
@@ -1448,8 +1168,9 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
         <div className="relative">
           {/* Timeline line */}
           <div
-            className={`hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 ${isAppian ? "bg-white/30" : "bg-coral"} transform -translate-x-1/2`}
+            className={`hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 ${isAppian ? "bg-white/40" : "bg-coral"} transform -translate-x-1/2`}
           ></div>
+          <div className={`pointer-events-none md:hidden absolute left-6 top-6 bottom-6 w-0.5 ${isAppian ? "bg-white/40" : "bg-coral"}`}></div>
 
           <div className="space-y-12">
             {content.process.map((item: any, idx: number) => (
