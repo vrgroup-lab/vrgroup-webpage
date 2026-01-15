@@ -80,7 +80,7 @@ export default function Home() {
                   "crecimiento",
                 ]}
                 fallback="operación"
-                className="text-transparent bg-clip-text bg-gradient-to-r from-[#7aa2ff] via-[#3c6fff] to-[#1f3d8f]"
+                className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff7a7f] via-[#ff5a5f] to-[#ff3c48]"
                 containerClassName="whitespace-nowrap"
               />
             </span>

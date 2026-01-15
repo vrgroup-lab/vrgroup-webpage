@@ -7,7 +7,7 @@ import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 import { supabasePublic } from "@/lib/supabase/public"
 
-export const dynamic = "force-dynamic"
+export const dynamic = "force-static"
 
 type PortfolioMedia = {
   url: string

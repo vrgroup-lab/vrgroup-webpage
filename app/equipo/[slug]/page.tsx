@@ -7,6 +7,12 @@ import { Section } from "@/components/ui/section"
 import { teamMembers } from "@/lib/team"
 import { Linkedin } from "lucide-react"
 
+export const dynamic = "force-static"
+
+export async function generateStaticParams() {
+  return teamMembers.map((member) => ({ slug: member.slug }))
+}
+
 export default async function TeamMemberPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
   const member = teamMembers.find((m) => m.slug === slug)

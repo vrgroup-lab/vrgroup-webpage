@@ -20,7 +20,12 @@ import {
 import { format } from "date-fns"
 import { es } from "date-fns/locale"
 
-export const revalidate = 60
+export const dynamic = "force-static"
+export const revalidate = 0
+
+export async function generateStaticParams() {
+  return []
+}
 
 const badgePalette = {
   emerald: { light: "bg-emerald-50 text-emerald-700 border-emerald-200", dark: "bg-emerald-500/10 text-emerald-100 border-emerald-400/40" },

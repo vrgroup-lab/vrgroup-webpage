@@ -6,6 +6,8 @@ import { ArrowRight, CheckCircle2 } from "lucide-react"
 import Link from "next/link"
 import { PortfolioGallery } from "@/components/ui/portfolio-gallery"
 
+export const dynamic = "force-static"
+
 type Media = {
   url: string
   alt_text?: string | null
@@ -28,6 +30,20 @@ type Project = {
   highlights: string[]
   portfolio_media?: Media[]
   service_lines?: { id: string; slug: string; name: string } | null
+}
+
+export async function generateStaticParams() {
+  const { data, error } = await supabasePublic
+    .from("portfolio_projects")
+    .select("slug")
+    .eq("status", "public")
+
+  if (error || !data) {
+    return []
+  }
+
+  const uniqueSlugs = Array.from(new Set(data.map((item) => item.slug).filter(Boolean)))
+  return uniqueSlugs.map((slug) => ({ slug }))
 }
 
 async function getProject(slug: string): Promise<Project | null> {

@@ -1,7 +1,6 @@
 import "server-only"
 
 import { getSupabaseAdmin } from "@/lib/supabase/server"
-import { unstable_noStore } from "next/cache"
 
 export type SiteSettings = {
   showPortfolioInHeader: boolean
@@ -19,7 +18,6 @@ export const defaultSiteSettings: SiteSettings = {
 
 export async function getSiteSettings(): Promise<SiteSettings> {
   try {
-    if (typeof unstable_noStore === "function") unstable_noStore()
     const supabase = getSupabaseAdmin()
     const { data, error } = await supabase
       .from("site_settings")

@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server"
 import { getSupabaseAdmin } from "@/lib/supabase/server"
 
+export const dynamic = "force-static"
+export const revalidate = 0
+
+
 const defaultSettings = {
   show_portfolio_in_header: true,
   show_portfolio_in_services: true,

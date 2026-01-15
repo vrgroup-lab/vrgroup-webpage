@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server"
 import { getSupabaseAdmin } from "@/lib/supabase/server"
 
+export const dynamic = "force-static"
+export const revalidate = 0
+
+
 const requiredProjectFields = ["slug", "title", "status", "display_order", "tags", "highlights", "client_display"]
 const allowedStatuses = ["draft", "public", "hidden"] as const
 

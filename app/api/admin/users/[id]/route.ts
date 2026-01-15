@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server"
 import { getSupabaseAdmin } from "@/lib/supabase/server"
 
+export const dynamic = "force-static"
+export const revalidate = 0
+
+
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
@@ -30,4 +34,8 @@ export async function DELETE(_request: Request, { params }: { params: Promise<{ 
   } catch (error: any) {
     return NextResponse.json({ error: error.message || "Error al eliminar usuario" }, { status: 400 })
   }
+}
+
+export async function generateStaticParams() {
+  return []
 }

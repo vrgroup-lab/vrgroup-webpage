@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server"
 import { getSupabaseAdmin } from "@/lib/supabase/server"
 
+export const dynamic = "force-static"
+export const revalidate = 0
+
+
 type ParamsPromise = { params: Promise<{ id: string }> }
 const allowedStatuses = ["draft", "public", "hidden"] as const
 
@@ -78,4 +82,8 @@ export async function DELETE(request: Request, { params }: ParamsPromise) {
   }
 
   return NextResponse.json({ ok: true })
+}
+
+export async function generateStaticParams() {
+  return []
 }

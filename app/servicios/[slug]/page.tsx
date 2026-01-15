@@ -18,6 +18,8 @@ import {
   Zap,
 } from "lucide-react"
 
+export const dynamic = "force-static"
+
 interface ServiceDetailPageProps {
   params: Promise<{
     slug: string
@@ -637,6 +639,10 @@ function PortfolioProjectsSection({
       </div>
     </Section>
   )
+}
+
+export async function generateStaticParams() {
+  return Object.keys(serviceContent).map((slug) => ({ slug }))
 }
 
 export default async function ServiceDetailPage({ params }: ServiceDetailPageProps) {
