@@ -21,6 +21,16 @@ npm run dev:admin
 ```
 
 Levanta la app dinamica en modo desarrollo desde `apps/admin`, por defecto en `http://localhost:3001`.
+La ruta `/` redirige automaticamente a `/login` o `/admin` segun la sesion.
+
+Antes de correrlo, `apps/admin/.env.local` debe existir con:
+
+```bash
+NEXT_PUBLIC_SITE_URL=http://localhost:3001
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+SUPABASE_SERVICE_ROLE_KEY=...
+```
 
 ```bash
 npm run build:web
