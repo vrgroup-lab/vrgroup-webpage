@@ -1,122 +1,23 @@
-# vrgroup-web
+# vrgroup-platform
 
-Sitio de marketing estático para VR Group construido con Next.js App Router y `output: "export"`.
+Monorepo de VR Group con dos aplicaciones separadas por responsabilidad:
 
-## Estado del repo
+- `apps/web`: sitio de marketing estático con `output: "export"`
+- `apps/admin`: app fullstack para empleos, leads y backoffice
 
-- El árbol activo contiene solo el sitio público.
-- El snapshot histórico completo quedó en `_legacy/` como referencia local.
-- El admin fullstack y las API routes se separarán en un repo independiente: `vrgroup-admin`.
+## Estado actual
 
-## Stack
+- `apps/web` contiene el sitio público activo y funcional.
+- `migration/legacy-snapshot` conserva el snapshot histórico para migrar capacidades al admin.
+- `apps/admin` es un scaffold inicial para comenzar la migración controlada sin contaminar `web`.
 
-- Next.js + TypeScript
-- Tailwind CSS
-- Lucide React
-- Supabase público para contenido estático y Edge Functions externas para formularios
-
-## Estructura activa
-
-```text
-app/
-  page.tsx
-  clientes/
-  contacto/
-  equipo/
-  nosotros/
-  partners/
-  servicios/
-components/
-  contact/
-  layout/
-  ui/
-lib/
-  hero-images.ts
-  logos.ts
-  site-config.ts
-  team.ts
-  utils.ts
-  supabase/public.ts
-public/
-  images/
-  logos/
-  videos/
-```
-
-## Variables de entorno
-
-Crear `.env.local`:
+## Scripts raíz
 
 ```bash
-NEXT_PUBLIC_SITE_URL=https://vrgroup.cl
-NEXT_PUBLIC_SUPABASE_URL=...
-NEXT_PUBLIC_SUPABASE_ANON_KEY=...
-NEXT_PUBLIC_SUPABASE_FUNCTIONS_BASE=https://<PROJECT_REF>.functions.supabase.co
+npm run dev:web
+npm run dev:admin
+npm run build:web
+npm run build:admin
+npm run lint:web
+npm run typecheck:web
 ```
-
-## Scripts
-
-```bash
-npm install
-npm run optimize-images
-npm run dev
-npm run build
-npm run typecheck
-npm run lint
-npm run perf
-```
-
-`npm run build` ejecuta `prebuild`, que convierte PNG/JPG/JPEG a WebP bajo `public/images/optimized/`. El sitio usa `images.unoptimized` en Next.js porque los assets ya llegan preoptimizados para `output: "export"`.
-
-`npm run typecheck` usa `next typegen` antes de `tsc --noEmit`, para que la validación no dependa de haber corrido un build completo previamente.
-
-## Medición de performance
-
-Hay un runner automático de Lighthouse para auditar el export estático local y sobrescribir reportes en cada ejecución.
-
-Instalación:
-
-```bash
-npm install
-```
-
-Ejecución completa:
-
-```bash
-npm run perf
-```
-
-Ese comando:
-
-- ejecuta `npm run build`
-- levanta un servidor local sobre `out/`
-- corre Lighthouse sobre rutas principales del sitio
-- reemplaza el contenido de `reports/lighthouse/`
-
-Si ya tienes `out/` generado y solo quieres rerun de auditoría:
-
-```bash
-npm run perf:lighthouse
-```
-
-Archivos generados:
-
-- `reports/lighthouse/index.html`
-- `reports/lighthouse/index.json`
-- `reports/lighthouse/clientes.html`
-- `reports/lighthouse/clientes.json`
-- `reports/lighthouse/contacto.html`
-- `reports/lighthouse/contacto.json`
-- `reports/lighthouse/nosotros.html`
-- `reports/lighthouse/nosotros.json`
-- `reports/lighthouse/partners.html`
-- `reports/lighthouse/partners.json`
-- `reports/lighthouse/servicios.html`
-- `reports/lighthouse/servicios.json`
-- `reports/lighthouse/equipo-marco-bertolini.html`
-- `reports/lighthouse/equipo-marco-bertolini.json`
-- `reports/lighthouse/servicios-experiencia-digital.html`
-- `reports/lighthouse/servicios-experiencia-digital.json`
-- `reports/lighthouse/summary.json`
-
-El resumen en consola y `summary.json` incluye scores y métricas clave como `FCP`, `LCP`, `Speed Index`, `TBT` y `CLS`.

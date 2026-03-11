@@ -2,16 +2,19 @@
 
 # dependencies
 /node_modules
-/_legacy
 .DS_Store
 
 # next.js
 /.next/
 /out/
+/apps/*/.next/
+/apps/*/out/
 
 # production
 /build
 /reports/lighthouse/
+/apps/*/reports/lighthouse/
+/migration/legacy-snapshot/
 
 # debug
 npm-debug.log*
