@@ -22,12 +22,6 @@ export default function Home() {
     containIntrinsicSize: "1000px",
   }
 
-  const stats = [
-    { value: 8, suffix: "+", label: "Años de trayectoria" },
-    { value: 150, suffix: "+", label: "Proyectos en producción" },
-    { value: 58, suffix: "", label: "Colaboradores expertos" },
-  ]
-
   const differentiators = [
     {
       title: "Appian & low-code de clase mundial",
@@ -60,7 +54,7 @@ export default function Home() {
 
       {/* Hero Section */}
       <Hero
-        eyebrow="Consultoría Tecnologíca"
+        eyebrow="Consultoría Tecnológica"
         title={
           <>
             <span className="block text-3xl sm:text-5xl lg:text-6xl leading-[1.1]">

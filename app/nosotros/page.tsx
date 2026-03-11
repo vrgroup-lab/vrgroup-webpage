@@ -3,11 +3,8 @@ import { Footer } from "@/components/layout/footer"
 import { HeroRotator } from "@/components/ui/hero-rotator"
 import { Section } from "@/components/ui/section"
 import { CTABanner } from "@/components/ui/cta-banner"
-import Image from "next/image"
-import Link from "next/link"
-import { CheckCircle2, Sparkles, Workflow, Users, Rocket, ShieldCheck, Linkedin } from "lucide-react"
-import { toBackgroundImage, toOptimizedAssetPath } from "@/lib/assets"
-import { teamMembers } from "@/lib/team"
+import { CheckCircle2, Sparkles, Workflow, Users, Rocket, ShieldCheck } from "lucide-react"
+import { toBackgroundImage } from "@/lib/assets"
 import { getHeroImages } from "@/lib/hero-images"
 import { externalCareersUrl, marketingSiteSettings } from "@/lib/site-config"
 
@@ -58,7 +55,7 @@ export default function AboutPage() {
               {[
                 { value: "2017", label: "Fundada" },
                 { value: "150+", label: "Proyectos" },
-                { value: "75+", label: "Personas" },
+                { value: "75", label: "Colaboradores" },
               ].map((item) => (
                 <div key={item.label} className="space-y-1">
                   <div className="text-2xl sm:text-3xl font-display font-bold">{item.value}</div>
@@ -96,7 +93,7 @@ export default function AboutPage() {
               Fundada en 2017, VR Group nació con la convicción de que la transformación digital debe ser práctica,
               medible y centrada en las personas. A lo largo de estos años, hemos ejecutado más de 150 proyectos,
               impulsado la modernización tecnológica de múltiples industrias y construido un equipo multidisciplinario
-              de más de 50 especialistas en consultoría, desarrollo, automatización e inteligencia artificial.
+              de 75 colaboradores en consultoría, desarrollo, automatización e inteligencia artificial.
             </p>
             <p>
               Hoy acompañamos a compañías en Chile y Latinoamérica a evolucionar sus procesos, adoptar tecnologías de
@@ -139,7 +136,7 @@ export default function AboutPage() {
           {[
             { value: "8", suffix: " años", desc: "Impulsando modernización tecnológica desde 2017." },
             { value: "150+", suffix: " proyectos", desc: "Transformación digital, automatización y consultoría." },
-            { value: "58", suffix: " colaboradores", desc: "Equipo multidisciplinario senior y boutique." },
+            { value: "75", suffix: " colaboradores", desc: "Equipo multidisciplinario senior y boutique." },
           ].map((stat) => (
             <div key={stat.value} className="rounded-2xl bg-white/5 border border-white/10 p-6">
               <div className="font-display text-4xl sm:text-5xl font-bold text-coral mb-2">
@@ -201,58 +198,6 @@ export default function AboutPage() {
           </div>
         </div>
       </Section>
-
-      {siteSettings.showTeamInAbout ? (
-        <Section
-          title="Equipo directivo y responsables"
-          className="bg-[#0B1B33]"
-          variant="dark"
-          paddingClass="py-14"
-          id="equipo"
-        >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {teamMembers.map((member) => (
-              <div
-                key={member.slug}
-                className="bg-white/5 border border-white/10 rounded-3xl p-5 text-center flex flex-col items-center gap-3 backdrop-blur-sm"
-              >
-                <div className="relative w-24 h-24 rounded-full overflow-hidden bg-white/10">
-                  {member.photo ? (
-                    <Image src={toOptimizedAssetPath(member.photo)} alt={member.name} fill className="object-cover" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-3xl font-display text-white/80">
-                      {member.name.charAt(0)}
-                    </div>
-                  )}
-                </div>
-                <div className="space-y-1">
-                  <h3 className="font-display font-bold text-lg text-white">{member.name}</h3>
-                  <p className="text-gray-300 text-xs font-semibold uppercase tracking-wide">{member.role}</p>
-                  {member.degree && <p className="text-gray-200 text-sm">{member.degree}</p>}
-                </div>
-                <div className="flex items-center gap-3">
-                  <Link
-                    href={`/equipo/${member.slug}`}
-                    className="px-3 py-1.5 rounded-full border border-white/20 text-white text-sm hover:bg-white/10 transition"
-                  >
-                    Ver perfil
-                  </Link>
-                  {member.linkedin && (
-                    <Link
-                      href={member.linkedin}
-                      target="_blank"
-                      className="w-9 h-9 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white/10 transition"
-                      aria-label={`LinkedIn de ${member.name}`}
-                    >
-                      <Linkedin size={18} />
-                    </Link>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </Section>
-      ) : null}
 
       {/* CTA */}
       <CTABanner

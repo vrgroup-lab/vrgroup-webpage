@@ -61,10 +61,14 @@ npm install
 npm run optimize-images
 npm run dev
 npm run build
+npm run typecheck
+npm run lint
 npm run perf
 ```
 
 `npm run build` ejecuta `prebuild`, que convierte PNG/JPG/JPEG a WebP bajo `public/images/optimized/`. El sitio usa `images.unoptimized` en Next.js porque los assets ya llegan preoptimizados para `output: "export"`.
+
+`npm run typecheck` usa `next typegen` antes de `tsc --noEmit`, para que la validación no dependa de haber corrido un build completo previamente.
 
 ## Medición de performance
 

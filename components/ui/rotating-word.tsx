@@ -62,9 +62,13 @@ export function RotatingWord({
 
   useEffect(() => {
     indexRef.current = Math.max(0, wordList.indexOf(fallbackWord))
-    setCurrent(fallbackWord)
-    setIsDeleting(false)
     hasStartedRef.current = false
+    const frameId = window.requestAnimationFrame(() => {
+      setCurrent(fallbackWord)
+      setIsDeleting(false)
+    })
+
+    return () => window.cancelAnimationFrame(frameId)
   }, [fallbackWord, wordList])
 
   useEffect(() => {

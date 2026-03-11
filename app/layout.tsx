@@ -20,7 +20,6 @@ export const metadata: Metadata = {
   title: "VR Group | Transformación Digital y Consultoría",
   description:
     "Consultora boutique experta en automatización de procesos, desarrollo de software y transformación digital",
-  generator: "v0.app",
   metadataBase: new URL("https://vrgroup.cl"),
   openGraph: {
     type: "website",

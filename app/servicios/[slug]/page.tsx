@@ -29,11 +29,9 @@ interface ServiceDetailPageProps {
 
 function WhyChooseSection({
   reasons,
-  highlights,
   className,
 }: {
   reasons: string[]
-  highlights?: string[]
   className?: string
 }) {
   if (!reasons?.length) return null
@@ -53,25 +51,13 @@ function WhyChooseSection({
               ))}
             </div>
           </div>
-          <div
-            className="h-full min-h-[360px] lg:min-h-[460px] bg-cover bg-center self-stretch"
-            style={{ backgroundImage: toBackgroundImage("/images/why-choose/corporate.jpg"), backgroundPosition: "70% center" }}
-            aria-label="Equipo corporativo"
-            role="img"
-          />
-        </div>
-        {highlights?.length ? (
-          <div className="mt-8 pt-6 border-t border-white/10">
-            <p className="text-[11px] uppercase tracking-[0.3em] text-white/60 mb-3">Beneficios principales</p>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 list-disc list-inside text-sm text-white/90">
-              {highlights.map((item) => (
-                <li key={item} className="leading-relaxed">
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ) : null}
+        <div
+          className="h-full min-h-[360px] lg:min-h-[460px] bg-cover bg-center self-stretch"
+          style={{ backgroundImage: toBackgroundImage("/images/why-choose/corporate.jpg"), backgroundPosition: "70% center" }}
+          aria-label="Equipo corporativo"
+          role="img"
+        />
+      </div>
       </div>
     </div>
   )
@@ -669,7 +655,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
           </div>
         </Section>
 
-        <WhyChooseSection reasons={content.reasons} highlights={content.benefits} className="mt-6" />
+        <WhyChooseSection reasons={content.reasons} className="mt-6" />
 
         {useCases.length > 0 && (
           <Section title="Casos y ejemplos" className="bg-white" variant="light">
@@ -1029,6 +1015,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
               <div className="flex items-center gap-6 animate-[marquee_18s_linear_infinite]" style={{ width: "max-content" }}>
                 {[...providerLogos, ...providerLogos].map((logo, idx) => (
                   <div key={`${logo}-${idx}`} className="h-10 flex items-center justify-center">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={toOptimizedAssetPath(logo)} alt={logo} className="h-8 w-auto object-contain" />
                   </div>
                 ))}

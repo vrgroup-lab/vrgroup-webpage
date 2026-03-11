@@ -34,17 +34,23 @@ export function TypewriterText({ text, speedMs = 45, startDelayMs = 180, classNa
   }, [])
 
   useEffect(() => {
+    let frameId: number | undefined
+
     if (!text) {
-      setDisplayed("")
+      frameId = window.requestAnimationFrame(() => setDisplayed(""))
       return
     }
     if (reduceMotion) {
-      setDisplayed(text)
-      return
+      frameId = window.requestAnimationFrame(() => setDisplayed(text))
+      return () => {
+        if (frameId) {
+          window.cancelAnimationFrame(frameId)
+        }
+      }
     }
 
     let index = 0
-    setDisplayed("")
+    frameId = window.requestAnimationFrame(() => setDisplayed(""))
 
     let intervalId: number | undefined
     const timeoutId = window.setTimeout(() => {
@@ -58,6 +64,9 @@ export function TypewriterText({ text, speedMs = 45, startDelayMs = 180, classNa
     }, startDelayMs)
 
     return () => {
+      if (frameId) {
+        window.cancelAnimationFrame(frameId)
+      }
       window.clearTimeout(timeoutId)
       if (intervalId) {
         window.clearInterval(intervalId)

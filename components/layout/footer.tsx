@@ -15,6 +15,8 @@ const shortServiceTitles: Record<string, string> = {
 }
 
 export function Footer() {
+  const currentYear = new Date().getFullYear()
+
   return (
     <footer className="bg-black text-white">
       <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-8">
@@ -61,13 +63,13 @@ export function Footer() {
             <h3 className="font-display font-semibold mb-3 text-sm">Recursos</h3>
             <ul className="space-y-2 text-gray-400 text-[13px]">
               <li>
-                <Link href="/blog" className="hover:text-coral transition-colors">
-                  Blog
+                <Link href="/nosotros" className="hover:text-coral transition-colors">
+                  Nosotros
                 </Link>
               </li>
               <li>
-                <Link href="/nosotros" className="hover:text-coral transition-colors">
-                  Nosotros
+                <Link href="/contacto" className="hover:text-coral transition-colors">
+                  Contacto
                 </Link>
               </li>
             </ul>
@@ -78,17 +80,17 @@ export function Footer() {
             <h3 className="font-display font-semibold mb-3 text-sm">Legal</h3>
             <ul className="space-y-2 text-gray-400 text-[13px]">
               <li>
-                <Link href="#" className="hover:text-coral transition-colors">
+                <Link href="/terminos-de-servicio" className="hover:text-coral transition-colors">
                   Términos de servicio
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-coral transition-colors">
+                <Link href="/politica-de-privacidad" className="hover:text-coral transition-colors">
                   Política de privacidad
                 </Link>
               </li>
               <li>
-                <Link href="#" className="hover:text-coral transition-colors">
+                <Link href="/politica-de-cookies" className="hover:text-coral transition-colors">
                   Política de cookies
                 </Link>
               </li>
@@ -152,12 +154,6 @@ export function Footer() {
           >
             Trabaja con nosotros
           </a>
-          <Link
-            href="/admin/login"
-            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-white/20 text-white font-semibold text-sm hover:bg-white/10 transition-colors"
-          >
-            Acceso admin
-          </Link>
         </div>
 
         {/* Partner */}
@@ -181,7 +177,7 @@ export function Footer() {
 
         {/* Bottom Section */}
         <div className="border-t border-white/10 pt-6 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-gray-500 text-xs">&copy; 2025 VR Group. Todos los derechos reservados.</p>
+          <p className="text-gray-500 text-xs">&copy; {currentYear} VR Group. Todos los derechos reservados.</p>
           <div className="flex gap-6 mt-4 md:mt-0">
             <a
               href="https://cl.linkedin.com/company/vr-group-chile"
