@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils"
+import { toOptimizedAssetPath } from "@/lib/assets"
 
 export type SubserviceItem = {
   title: string
@@ -73,7 +74,7 @@ export function SubservicesGrid({
               {item.image ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
-                  src={item.image}
+                  src={toOptimizedAssetPath(item.image)}
                   alt={item.title}
                   className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 [filter:saturate(0.85)_contrast(1.05)_brightness(0.92)_hue-rotate(-8deg)]"
                 />

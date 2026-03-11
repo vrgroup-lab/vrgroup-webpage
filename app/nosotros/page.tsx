@@ -6,6 +6,7 @@ import { CTABanner } from "@/components/ui/cta-banner"
 import Image from "next/image"
 import Link from "next/link"
 import { CheckCircle2, Sparkles, Workflow, Users, Rocket, ShieldCheck, Linkedin } from "lucide-react"
+import { toBackgroundImage, toOptimizedAssetPath } from "@/lib/assets"
 import { teamMembers } from "@/lib/team"
 import { getHeroImages } from "@/lib/hero-images"
 import { marketingSiteSettings } from "@/lib/site-config"
@@ -86,7 +87,7 @@ export default function AboutPage() {
       >
         <div
           className="absolute inset-0 bg-cover bg-center opacity-55 z-0"
-          style={{ backgroundImage: "url(/images/sections/cordillera.png)" }}
+          style={{ backgroundImage: toBackgroundImage("/images/sections/cordillera.png") }}
         ></div>
         <div className="absolute inset-0 bg-[#0B1B33]/45 z-0"></div>
         <div className="relative z-10 max-w-[1340px] mx-auto space-y-10 text-lg leading-relaxed">
@@ -217,7 +218,7 @@ export default function AboutPage() {
               >
                 <div className="relative w-24 h-24 rounded-full overflow-hidden bg-white/10">
                   {member.photo ? (
-                    <Image src={member.photo} alt={member.name} fill className="object-cover" />
+                    <Image src={toOptimizedAssetPath(member.photo)} alt={member.name} fill className="object-cover" />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-3xl font-display text-white/80">
                       {member.name.charAt(0)}

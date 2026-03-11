@@ -4,6 +4,7 @@ import Image from "next/image"
 import { SiteNavbar } from "@/components/layout/site-navbar"
 import { Footer } from "@/components/layout/footer"
 import { Section } from "@/components/ui/section"
+import { toOptimizedAssetPath } from "@/lib/assets"
 import { teamMembers } from "@/lib/team"
 import { Linkedin } from "lucide-react"
 
@@ -29,7 +30,7 @@ export default async function TeamMemberPage({ params }: { params: Promise<{ slu
           <div className="flex flex-col items-center gap-4">
             <div className="relative w-48 h-48 rounded-full overflow-hidden bg-white/10">
               {member.photo ? (
-                <Image src={member.photo} alt={member.name} fill className="object-cover" />
+                <Image src={toOptimizedAssetPath(member.photo)} alt={member.name} fill className="object-cover" />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-5xl font-display text-white/80">
                   {member.name.charAt(0)}

@@ -5,6 +5,7 @@ import { Section } from "@/components/ui/section"
 import { OfferingsSection } from "@/components/ui/offerings-section"
 import { SubservicesGrid } from "@/components/ui/subservices-grid"
 import { CTABanner } from "@/components/ui/cta-banner"
+import { toBackgroundImage, toOptimizedAssetPath } from "@/lib/assets"
 import { getLogosFromFolder } from "@/lib/logos"
 import { marketingSiteSettings } from "@/lib/site-config"
 import Link from "next/link"
@@ -53,7 +54,7 @@ function WhyChooseSection({
           </div>
           <div
             className="h-full min-h-[360px] lg:min-h-[460px] bg-cover bg-center self-stretch"
-            style={{ backgroundImage: "url(/images/why-choose/corporate.jpg)", backgroundPosition: "70% center" }}
+            style={{ backgroundImage: toBackgroundImage("/images/why-choose/corporate.jpg"), backgroundPosition: "70% center" }}
             aria-label="Equipo corporativo"
             role="img"
           />
@@ -588,7 +589,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
             <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-6 items-center rounded-2xl border border-blue-800/40 bg-[#0B2A5B] px-6 py-6 text-white shadow-[0_20px_50px_rgba(11,42,91,0.35)]">
               <div className="space-y-3">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/logos/partners/letter_appian.png" alt="Appian" className="h-7 sm:h-8 object-contain" />
+                <img src={toOptimizedAssetPath("/logos/partners/letter_appian.png")} alt="Appian" className="h-7 sm:h-8 object-contain" />
                 <h3 className="font-display text-lg sm:text-xl font-semibold">Plataforma líder en automatización de procesos</h3>
                 <p className="text-sm text-white/85 leading-relaxed">
                   Implementamos Appian como referencia para orquestar procesos end-to-end con gobierno, trazabilidad y escalabilidad.
@@ -629,7 +630,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
               <div className="rounded-3xl overflow-hidden border border-gray-200 shadow-[0_18px_55px_rgba(0,0,0,0.12)]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/images/appian/process-automation-animation.gif"
+                  src={toOptimizedAssetPath("/images/appian/process-automation-animation.gif")}
                   alt="Automatización en acción"
                   className="w-full h-full object-cover"
                 />
@@ -654,7 +655,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
               <div className="rounded-3xl overflow-hidden border border-gray-200 shadow-[0_18px_55px_rgba(0,0,0,0.12)]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/images/appian/data-fabric-animation.gif"
+                  src={toOptimizedAssetPath("/images/appian/data-fabric-animation.gif")}
                   alt="Appian Data Fabric en acción"
                   className="w-full h-full object-cover"
                 />
@@ -1023,7 +1024,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
               <div className="flex items-center gap-6 animate-[marquee_18s_linear_infinite]" style={{ width: "max-content" }}>
                 {[...providerLogos, ...providerLogos].map((logo, idx) => (
                   <div key={`${logo}-${idx}`} className="h-10 flex items-center justify-center">
-                    <img src={logo} alt={logo} className="h-8 w-auto object-contain" />
+                    <img src={toOptimizedAssetPath(logo)} alt={logo} className="h-8 w-auto object-contain" />
                   </div>
                 ))}
               </div>

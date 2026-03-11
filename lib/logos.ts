@@ -2,6 +2,7 @@
 // Do not import in client components.
 import fs from "fs"
 import path from "path"
+import { toOptimizedAssetPath } from "@/lib/assets"
 
 type LogoFolder = "brand" | "clients" | "partners" | "services" | "ai-providers"
 
@@ -14,7 +15,7 @@ export function getLogosFromFolder(folder: LogoFolder): string[] {
     return files
       .filter((file) => allowedExtensions.includes(path.extname(file).toLowerCase()))
       .sort()
-      .map((file) => `/logos/${folder}/${file}`)
+      .map((file) => toOptimizedAssetPath(`/logos/${folder}/${file}`))
   } catch (error) {
     console.warn(`No se pudieron leer los logos de ${folder}:`, error)
     return []

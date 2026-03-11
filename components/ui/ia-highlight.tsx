@@ -4,6 +4,7 @@ import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Section } from "@/components/ui/section"
+import { toOptimizedAssetPath } from "@/lib/assets"
 
 type Capability = {
   key: string
@@ -101,7 +102,7 @@ export function IAHighlight({ providerLogos = [] }: IAHighlightProps) {
             {activeCap ? (
               <Image
                 key={activeCap.key}
-                src={activeCap.image}
+                src={toOptimizedAssetPath(activeCap.image)}
                 alt={activeCap.title}
                 fill
                 sizes="(min-width: 1024px) 640px, 100vw"

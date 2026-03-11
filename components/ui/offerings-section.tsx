@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils"
+import { toOptimizedAssetPath } from "@/lib/assets"
 
 export type OfferingItem = {
   title: string
@@ -165,7 +166,7 @@ export function OfferingsSection({
                   <div className="mb-4 rounded-xl border border-gray-200 bg-white overflow-hidden">
                     {item.image ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={item.image} alt={item.title} className="w-full h-28 object-cover" />
+                      <img src={toOptimizedAssetPath(item.image)} alt={item.title} className="w-full h-28 object-cover" />
                     ) : (
                       <div className="h-28 flex items-center justify-center bg-gradient-to-br from-[#0B1B33] to-[#1d345f] text-white">
                         <span className="text-xs font-semibold tracking-[0.32em]">{initials}</span>

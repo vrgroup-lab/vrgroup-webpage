@@ -2,6 +2,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { Mail, Phone, MapPin, Linkedin, MessageCircle } from "lucide-react"
 import { servicesData } from "@/components/ui/services-section"
+import { toOptimizedAssetPath } from "@/lib/assets"
 
 const shortServiceTitles: Record<string, string> = {
   "experiencia-digital": "Experiencia Digital",
@@ -22,7 +23,7 @@ export function Footer() {
             <div className="flex items-center gap-3 font-display font-bold text-lg mb-4 -ml-1 sm:-ml-2">
               <div className="relative h-12 w-36">
                 <Image
-                  src="/logos/brand/logo-vr-group_rectangulo.png"
+                  src={toOptimizedAssetPath("/logos/brand/logo-vr-group_rectangulo.png")}
                   alt="VR Group"
                   fill
                   className="object-contain"
@@ -168,7 +169,7 @@ export function Footer() {
             className="relative h-8 w-[90px] hover:opacity-80 transition-opacity"
             aria-label="Appian"
           >
-            <Image src="/logos/partners/letter_appian.png" alt="Appian Partner" fill className="object-contain" />
+            <Image src={toOptimizedAssetPath("/logos/partners/letter_appian.png")} alt="Appian Partner" fill className="object-contain" />
           </a>
         </div>
 

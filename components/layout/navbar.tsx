@@ -5,6 +5,7 @@ import Image from "next/image"
 import { useState, useRef, useEffect } from "react"
 import { Menu, X, ChevronDown } from "lucide-react"
 import { servicesData } from "@/components/ui/services-section"
+import { toOptimizedAssetPath } from "@/lib/assets"
 
 type NavbarSettings = {
   showCareersInHeader?: boolean
@@ -62,7 +63,7 @@ export function Navbar({ settings }: NavbarProps) {
             <Link href="/" className="flex items-center font-display text-white">
               <div className="relative h-11 w-36 sm:h-12 sm:w-40">
                 <Image
-                  src="/logos/brand/logo-vr-group_rectangulo.png"
+                  src={toOptimizedAssetPath("/logos/brand/logo-vr-group_rectangulo.png")}
                   alt="VR Group"
                   fill
                   priority

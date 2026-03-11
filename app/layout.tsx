@@ -1,6 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Poppins, Inter } from "next/font/google"
+import { toOptimizedAssetPath } from "@/lib/assets"
 import "./globals.css"
 
 const poppins = Poppins({
@@ -35,8 +36,8 @@ export const metadata: Metadata = {
     ],
   },
   icons: {
-    icon: [{ url: "/logos/brand/logo_vrgroup_cuadrado.png" }],
-    apple: "/logos/brand/logo_vrgroup_cuadrado.png",
+    icon: [{ url: toOptimizedAssetPath("/logos/brand/logo_vrgroup_cuadrado.png") }],
+    apple: toOptimizedAssetPath("/logos/brand/logo_vrgroup_cuadrado.png"),
   },
 }
 

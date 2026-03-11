@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { Hero } from "@/components/ui/hero"
+import { toOptimizedAssetPath } from "@/lib/assets"
 
 type HeroRotatorProps = {
   images: string[]
@@ -21,7 +22,7 @@ export function HeroRotator({
   intervalMs = 10000,
 }: HeroRotatorProps) {
   const [idx, setIdx] = useState(0)
-  const safeImages = images && images.length > 0 ? images : ["/images/hero/nosotros/banner_nosotros.jpg"]
+  const safeImages = images && images.length > 0 ? images : [toOptimizedAssetPath("/images/hero/nosotros/banner_nosotros.jpg")]
   const hasMultiple = safeImages.length > 1
 
   useEffect(() => {

@@ -4,6 +4,7 @@ import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Section } from "@/components/ui/section"
+import { toOptimizedAssetPath } from "@/lib/assets"
 
 const capabilities = [
   {
@@ -46,7 +47,7 @@ export function AppianHighlight() {
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[auto_1fr] lg:gap-x-6 lg:gap-y-8">
             <div className="relative h-20 w-20 sm:h-24 sm:w-24 lg:h-full lg:w-auto lg:aspect-square lg:self-stretch overflow-hidden rounded-2xl bg-white/18 backdrop-blur border border-white/25 shadow-[0_20px_50px_rgba(0,0,0,0.35)]">
               <Image
-                src="/logos/partners/logo_appian.png"
+                src={toOptimizedAssetPath("/logos/partners/logo_appian.png")}
                 alt="Appian logo"
                 fill
                 sizes="128px"
@@ -58,7 +59,7 @@ export function AppianHighlight() {
                 <h2 className="font-display font-bold text-4xl sm:text-5xl text-white mb-2 leading-tight">
                   Hiper automatización con{"\u00A0"}
                   <span className="relative h-12 w-44 inline-block align-middle">
-                    <Image src="/logos/partners/letter_appian.png" alt="Appian" fill sizes="176px" className="object-contain" />
+                    <Image src={toOptimizedAssetPath("/logos/partners/letter_appian.png")} alt="Appian" fill sizes="176px" className="object-contain" />
                   </span>
                 </h2>
                 <p className="text-white/85 max-w-[520px] text-sm sm:text-base leading-relaxed">
@@ -68,7 +69,7 @@ export function AppianHighlight() {
               <div className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-lg bg-white/10 border border-white/15">
                 <span className="text-sm text-white/85">Pioneros</span>
                 <span className="relative h-4 w-12 inline-block align-middle">
-                  <Image src="/logos/partners/letter_appian.png" alt="Appian" fill sizes="48px" className="object-contain" />
+                  <Image src={toOptimizedAssetPath("/logos/partners/letter_appian.png")} alt="Appian" fill sizes="48px" className="object-contain" />
                 </span>
                 <span className="text-sm text-white/85">en Chile 🇨🇱</span>
               </div>

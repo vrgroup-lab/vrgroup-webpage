@@ -1,5 +1,6 @@
 import fs from "fs"
 import path from "path"
+import { toOptimizedAssetPath } from "@/lib/assets"
 
 export function getHeroImages(folder: string): string[] {
   const basePath = path.join(process.cwd(), "public", "images", "hero", folder)
@@ -9,7 +10,7 @@ export function getHeroImages(folder: string): string[] {
     return files
       .filter((file) => allowed.includes(path.extname(file).toLowerCase()))
       .sort()
-      .map((file) => `/images/hero/${folder}/${file}`)
+      .map((file) => toOptimizedAssetPath(`/images/hero/${folder}/${file}`))
   } catch (err) {
     console.warn(`No se pudieron leer imágenes de hero/${folder}:`, err)
     return []

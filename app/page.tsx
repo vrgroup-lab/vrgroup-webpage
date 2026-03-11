@@ -9,6 +9,7 @@ import { IAHighlight } from "@/components/ui/ia-highlight"
 import { ServicesSection } from "@/components/ui/services-section"
 import { CTABanner } from "@/components/ui/cta-banner"
 import { RotatingWord } from "@/components/ui/rotating-word"
+import { toOptimizedAssetPath } from "@/lib/assets"
 import { getLogosFromFolder } from "@/lib/logos"
 import Image from "next/image"
 import Link from "next/link"
@@ -191,7 +192,7 @@ export default function Home() {
             <div className="grid grid-cols-[120px_1fr] sm:grid-cols-[160px_1fr] lg:grid-cols-[34%_1fr] h-full">
               <div className="relative h-full min-h-[160px] sm:min-h-[180px] bg-gray-100">
                 <Image
-                  src="/images/root/manager.jpg"
+                  src={toOptimizedAssetPath("/images/root/manager.jpg")}
                   alt="Gerente de Operaciones"
                   fill
                   sizes="(min-width: 1024px) 280px, 90vw"
