@@ -15,7 +15,7 @@ export function getLogosFromFolder(folder: LogoFolder): string[] {
     return files
       .filter((file) => allowedExtensions.includes(path.extname(file).toLowerCase()))
       .sort()
-      .map((file) => toOptimizedAssetPath(`/logos/${folder}/${file}`))
+      .map((file) => toOptimizedAssetPath(`/logos/${folder}/${file}`, { width: 320 }))
   } catch (error) {
     console.warn(`No se pudieron leer los logos de ${folder}:`, error)
     return []

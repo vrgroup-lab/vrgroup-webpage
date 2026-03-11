@@ -3,8 +3,9 @@
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { OptimizedAnimation } from "@/components/ui/optimized-animation"
 import { Section } from "@/components/ui/section"
-import { toOptimizedAssetPath } from "@/lib/assets"
+import { isAnimatedAssetPath, toOptimizedAssetPath } from "@/lib/assets"
 
 type Capability = {
   key: string
@@ -100,14 +101,23 @@ export function IAHighlight({ providerLogos = [] }: IAHighlightProps) {
         <div className="relative grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-6 items-stretch">
           <div className="rounded-3xl border border-gray-200 bg-gray-50 overflow-hidden min-h-[420px] h-full relative">
             {activeCap ? (
-              <Image
-                key={activeCap.key}
-                src={toOptimizedAssetPath(activeCap.image)}
-                alt={activeCap.title}
-                fill
-                sizes="(min-width: 1024px) 640px, 100vw"
-                className="object-cover"
-              />
+              isAnimatedAssetPath(activeCap.image) ? (
+                <OptimizedAnimation
+                  src={activeCap.image}
+                  label={activeCap.title}
+                  preload="none"
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              ) : (
+                <Image
+                  key={activeCap.key}
+                  src={toOptimizedAssetPath(activeCap.image, { width: 1200 })}
+                  alt={activeCap.title}
+                  fill
+                  sizes="(min-width: 1024px) 640px, 100vw"
+                  className="object-cover"
+                />
+              )
             ) : (
               <div className="absolute inset-0 flex items-center justify-center text-gray-500 text-sm">
                 Selecciona una capability para ver el preview

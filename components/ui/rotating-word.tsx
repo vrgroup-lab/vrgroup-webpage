@@ -78,8 +78,8 @@ export function RotatingWord({
     if (!hasStartedRef.current) {
       timeoutId = window.setTimeout(() => {
         hasStartedRef.current = true
-        setCurrent("")
-      }, startDelayMs)
+        setIsDeleting(true)
+      }, startDelayMs + holdMs)
       return () => window.clearTimeout(timeoutId)
     }
 

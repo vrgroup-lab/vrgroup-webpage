@@ -3,6 +3,7 @@ import Image from "next/image"
 import { Mail, Phone, MapPin, Linkedin, MessageCircle } from "lucide-react"
 import { servicesData } from "@/components/ui/services-section"
 import { toOptimizedAssetPath } from "@/lib/assets"
+import { externalCareersUrl } from "@/lib/site-config"
 
 const shortServiceTitles: Record<string, string> = {
   "experiencia-digital": "Experiencia Digital",
@@ -23,7 +24,7 @@ export function Footer() {
             <div className="flex items-center gap-3 font-display font-bold text-lg mb-4 -ml-1 sm:-ml-2">
               <div className="relative h-12 w-36">
                 <Image
-                  src={toOptimizedAssetPath("/logos/brand/logo-vr-group_rectangulo.png")}
+                  src={toOptimizedAssetPath("/logos/brand/logo-vr-group_rectangulo.png", { width: 320 })}
                   alt="VR Group"
                   fill
                   className="object-contain"
@@ -145,12 +146,12 @@ export function Footer() {
 
         {/* Highlighted footer CTAs */}
         <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row gap-3">
-          <Link
-            href="/trabaja-con-nosotros"
+          <a
+            href={externalCareersUrl}
             className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 text-white font-semibold text-sm hover:bg-white/15 transition-colors shadow-[0_10px_35px_rgba(0,0,0,0.25)]"
           >
             Trabaja con nosotros
-          </Link>
+          </a>
           <Link
             href="/admin/login"
             className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-white/20 text-white font-semibold text-sm hover:bg-white/10 transition-colors"
@@ -169,7 +170,12 @@ export function Footer() {
             className="relative h-8 w-[90px] hover:opacity-80 transition-opacity"
             aria-label="Appian"
           >
-            <Image src={toOptimizedAssetPath("/logos/partners/letter_appian.png")} alt="Appian Partner" fill className="object-contain" />
+            <Image
+              src={toOptimizedAssetPath("/logos/partners/letter_appian.png", { width: 256 })}
+              alt="Appian Partner"
+              fill
+              className="object-contain"
+            />
           </a>
         </div>
 

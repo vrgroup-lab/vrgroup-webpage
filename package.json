@@ -4,10 +4,13 @@
   "private": true,
   "scripts": {
     "optimize-images": "node scripts/optimize-images.js",
+    "predev": "npm run optimize-images",
     "prebuild": "npm run optimize-images",
     "build": "next build",
     "dev": "next dev",
     "lint": "eslint .",
+    "perf": "npm run build && npm run perf:lighthouse",
+    "perf:lighthouse": "node scripts/run-lighthouse.js",
     "start": "next start"
   },
   "dependencies": {
@@ -67,6 +70,8 @@
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "chrome-launcher": "^1.2.1",
+    "lighthouse": "^12.8.2",
     "postcss": "^8.5",
     "sharp": "^0.34.5",
     "tailwindcss": "^4.1.9",

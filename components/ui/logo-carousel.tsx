@@ -42,7 +42,7 @@ export function LogoCarousel({
               height={height}
               className={`h-12 w-auto object-contain ${logoClassName}`}
               sizes="160px"
-              priority={idx < 3}
+              priority={idx === 0}
             />
           </div>
         ))}

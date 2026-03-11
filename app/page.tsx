@@ -1,11 +1,10 @@
+import type { CSSProperties } from "react"
 import { SiteNavbar } from "@/components/layout/site-navbar"
 import { Footer } from "@/components/layout/footer"
 import { Hero } from "@/components/ui/hero"
 import { Section } from "@/components/ui/section"
+import { HomeDeferredSections } from "@/components/ui/home-deferred-sections"
 import { LogoCarousel } from "@/components/ui/logo-carousel"
-import { MetricCounter } from "@/components/ui/metric-counter"
-import { AppianHighlight } from "@/components/ui/appian-highlight"
-import { IAHighlight } from "@/components/ui/ia-highlight"
 import { ServicesSection } from "@/components/ui/services-section"
 import { CTABanner } from "@/components/ui/cta-banner"
 import { RotatingWord } from "@/components/ui/rotating-word"
@@ -18,6 +17,10 @@ import { Check, Brain, Workflow, Sparkles } from "lucide-react"
 export default function Home() {
   const clientLogos = getLogosFromFolder("clients")
   const providerLogos = getLogosFromFolder("ai-providers")
+  const deferredSectionStyle: CSSProperties = {
+    contentVisibility: "auto",
+    containIntrinsicSize: "1000px",
+  }
 
   const stats = [
     { value: 8, suffix: "+", label: "Años de trayectoria" },
@@ -151,73 +154,77 @@ export default function Home() {
         </div>
       </Section>
 
-      {/* Appian Highlight */}
-      <AppianHighlight />
-
-      {/* IA Highlight */}
-      <IAHighlight providerLogos={providerLogos} />
+      <div style={deferredSectionStyle}>
+        <HomeDeferredSections providerLogos={providerLogos} />
+      </div>
 
       {/* Services Section */}
-      <ServicesSection
-        heading="Nuestras soluciones para tu negocio"
-        subheading="Portafolio completo de VR Group: automatización, IA aplicada, analítica, desarrollo y gobierno operativo."
-        variant="dark"
-        paddingClass="py-12 sm:py-14 lg:py-16"
-      />
+      <div style={deferredSectionStyle}>
+        <ServicesSection
+          heading="Nuestras soluciones para tu negocio"
+          subheading="Portafolio completo de VR Group: automatización, IA aplicada, analítica, desarrollo y gobierno operativo."
+          variant="dark"
+          paddingClass="py-12 sm:py-14 lg:py-16"
+        />
+      </div>
 
       {/* Testimonial / Case Highlight */}
-      <Section
-        title="Casos con impacto"
-        subtitle="Resultados medibles en automatización, IA y experiencia digital"
-        className="bg-white"
-        variant="light"
-        paddingClass="py-12 sm:py-14 lg:py-16"
-      >
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
-          <div className="rounded-2xl bg-gradient-to-r from-[#0B1B33] via-[#0a1730] to-[#05060b] p-8 text-white shadow-xl h-full">
-            <p className="text-sm uppercase tracking-[0.15em] mb-3 opacity-80">Caso destacado</p>
-            <h3 className="font-display text-2xl font-bold mb-3">Automatización de onboarding en banca</h3>
-            <p className="text-white/90 mb-4">
-              Redujimos el TAT en 45% y mejoramos el NPS en +12 puntos con un flujo Appian + RPA integrado a core.
-            </p>
-            <div className="flex flex-wrap gap-2 text-sm">
-              {["Appian", "RPA", "Integraciones core", "Reporting"].map((tag) => (
-                <span key={tag} className="px-3 py-1 bg-white/15 rounded-full">
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
-          <div className="rounded-2xl border border-gray-200 bg-white shadow-sm h-full overflow-hidden">
-            <div className="grid grid-cols-[120px_1fr] sm:grid-cols-[160px_1fr] lg:grid-cols-[34%_1fr] h-full">
-              <div className="relative h-full min-h-[160px] sm:min-h-[180px] bg-gray-100">
-                <Image
-                  src={toOptimizedAssetPath("/images/root/manager.jpg")}
-                  alt="Gerente de Operaciones"
-                  fill
-                  sizes="(min-width: 1024px) 280px, 90vw"
-                  className="object-cover object-center"
-                />
-              </div>
-              <div className="flex flex-col justify-center gap-3 p-5 sm:p-6 lg:p-8">
-                <h4 className="font-display text-xl font-bold text-blue-dark">Lo que dicen</h4>
-                <p className="text-gray-700">
-                  “VR Group nos ayudó a llevar a producción en semanas, con gobierno claro y mejoras continuas sin fricción.”
-                </p>
-                <p className="text-gray-500 text-sm">Gerente de Operaciones, Banca</p>
+      <div style={deferredSectionStyle}>
+        <Section
+          title="Casos con impacto"
+          subtitle="Resultados medibles en automatización, IA y experiencia digital"
+          className="bg-white"
+          variant="light"
+          paddingClass="py-12 sm:py-14 lg:py-16"
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+            <div className="rounded-2xl bg-gradient-to-r from-[#0B1B33] via-[#0a1730] to-[#05060b] p-8 text-white shadow-xl h-full">
+              <p className="text-sm uppercase tracking-[0.15em] mb-3 opacity-80">Caso destacado</p>
+              <h3 className="font-display text-2xl font-bold mb-3">Automatización de onboarding en banca</h3>
+              <p className="text-white/90 mb-4">
+                Redujimos el TAT en 45% y mejoramos el NPS en +12 puntos con un flujo Appian + RPA integrado a core.
+              </p>
+              <div className="flex flex-wrap gap-2 text-sm">
+                {["Appian", "RPA", "Integraciones core", "Reporting"].map((tag) => (
+                  <span key={tag} className="px-3 py-1 bg-white/15 rounded-full">
+                    {tag}
+                  </span>
+                ))}
               </div>
             </div>
+            <div className="rounded-2xl border border-gray-200 bg-white shadow-sm h-full overflow-hidden">
+              <div className="grid grid-cols-[120px_1fr] sm:grid-cols-[160px_1fr] lg:grid-cols-[34%_1fr] h-full">
+                <div className="relative h-full min-h-[160px] sm:min-h-[180px] bg-gray-100">
+                  <Image
+                    src={toOptimizedAssetPath("/images/root/manager.jpg")}
+                    alt="Gerente de Operaciones"
+                    fill
+                    sizes="(min-width: 1024px) 280px, 90vw"
+                    className="object-cover object-center"
+                  />
+                </div>
+                <div className="flex flex-col justify-center gap-3 p-5 sm:p-6 lg:p-8">
+                  <h4 className="font-display text-xl font-bold text-blue-dark">Lo que dicen</h4>
+                  <p className="text-gray-700">
+                    “VR Group nos ayudó a llevar a producción en semanas, con gobierno claro y mejoras continuas sin fricción.”
+                  </p>
+                  <p className="text-gray-500 text-sm">Gerente de Operaciones, Banca</p>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </Section>
+        </Section>
+      </div>
 
-      <CTABanner
-        eyebrow="Contacto"
-        title="Hablemos de tu próximo release"
-        subtitle="Agenda una reunión y revisamos cómo escalar tu operación con arquitectura, automatización e IA."
-        buttonLabel="Agenda una reunión"
-        buttonHref="/contacto"
-      />
+      <div style={deferredSectionStyle}>
+        <CTABanner
+          eyebrow="Contacto"
+          title="Hablemos de tu próximo release"
+          subtitle="Agenda una reunión y revisamos cómo escalar tu operación con arquitectura, automatización e IA."
+          buttonLabel="Agenda una reunión"
+          buttonHref="/contacto"
+        />
+      </div>
 
       <Footer />
     </div>

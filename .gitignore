@@ -11,6 +11,7 @@
 
 # production
 /build
+/reports/lighthouse/
 
 # debug
 npm-debug.log*

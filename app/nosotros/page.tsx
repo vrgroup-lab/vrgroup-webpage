@@ -9,7 +9,7 @@ import { CheckCircle2, Sparkles, Workflow, Users, Rocket, ShieldCheck, Linkedin 
 import { toBackgroundImage, toOptimizedAssetPath } from "@/lib/assets"
 import { teamMembers } from "@/lib/team"
 import { getHeroImages } from "@/lib/hero-images"
-import { marketingSiteSettings } from "@/lib/site-config"
+import { externalCareersUrl, marketingSiteSettings } from "@/lib/site-config"
 
 export default function AboutPage() {
   const siteSettings = marketingSiteSettings
@@ -67,12 +67,12 @@ export default function AboutPage() {
               ))}
             </div>
             <div className="pt-3 mt-1 border-t border-white/15 flex justify-center">
-              <Link
-                href="/trabaja-con-nosotros"
+              <a
+                href={externalCareersUrl}
                 className="inline-flex items-center gap-2 rounded-full bg-white text-[#0B1B33] px-5 py-2 text-sm font-semibold hover:bg-gray-100 transition-colors"
               >
                 Trabaja con nosotros
-              </Link>
+              </a>
             </div>
           </div>
         </div>

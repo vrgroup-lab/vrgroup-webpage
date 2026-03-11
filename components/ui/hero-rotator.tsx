@@ -22,14 +22,29 @@ export function HeroRotator({
   intervalMs = 10000,
 }: HeroRotatorProps) {
   const [idx, setIdx] = useState(0)
+  const [hasStartedRotation, setHasStartedRotation] = useState(false)
   const safeImages = images && images.length > 0 ? images : [toOptimizedAssetPath("/images/hero/nosotros/banner_nosotros.jpg")]
   const hasMultiple = safeImages.length > 1
 
   useEffect(() => {
     if (!hasMultiple) return
-    const id = setInterval(() => setIdx((prev) => (prev + 1) % safeImages.length), intervalMs)
-    return () => clearInterval(id)
-  }, [safeImages.length, intervalMs, hasMultiple])
+
+    const startId = window.setTimeout(() => {
+      setHasStartedRotation(true)
+    }, 4000)
+
+    return () => window.clearTimeout(startId)
+  }, [hasMultiple])
+
+  useEffect(() => {
+    if (!hasMultiple || !hasStartedRotation) return
+
+    const intervalId = window.setInterval(() => {
+      setIdx((prev) => (prev + 1) % safeImages.length)
+    }, intervalMs)
+
+    return () => window.clearInterval(intervalId)
+  }, [safeImages.length, intervalMs, hasMultiple, hasStartedRotation])
 
   const goPrev = () => setIdx((prev) => (prev - 1 + safeImages.length) % safeImages.length)
   const goNext = () => setIdx((prev) => (prev + 1) % safeImages.length)

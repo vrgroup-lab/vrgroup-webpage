@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils"
-import { toOptimizedAssetPath } from "@/lib/assets"
+import { toResponsiveImageProps } from "@/lib/assets"
 
 export type SubserviceItem = {
   title: string
@@ -25,6 +25,18 @@ export function SubservicesGrid({
   id,
 }: SubservicesGridProps) {
   if (!items?.length) return null
+
+  const getCardSizes = (idx: number) => {
+    if (items.length === 5 && idx === 4) {
+      return "(min-width: 640px) 100vw, 100vw"
+    }
+
+    if (items.length === 3 || items.length > 5) {
+      return "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+    }
+
+    return "(min-width: 640px) 50vw, 100vw"
+  }
 
   const gridClass = (() => {
     switch (items.length) {
@@ -72,12 +84,25 @@ export function SubservicesGrid({
               )}
             >
               {item.image ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={toOptimizedAssetPath(item.image)}
-                  alt={item.title}
-                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 [filter:saturate(0.85)_contrast(1.05)_brightness(0.92)_hue-rotate(-8deg)]"
-                />
+                (() => {
+                  const responsiveImage = toResponsiveImageProps(item.image, {
+                    widths: [480, 768, 1200],
+                    sizes: getCardSizes(idx),
+                  })
+
+                  return responsiveImage ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={responsiveImage.src}
+                      srcSet={responsiveImage.srcSet}
+                      sizes={responsiveImage.sizes}
+                      alt={item.title}
+                      loading="lazy"
+                      decoding="async"
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 [filter:saturate(0.85)_contrast(1.05)_brightness(0.92)_hue-rotate(-8deg)]"
+                    />
+                  ) : null
+                })()
               ) : (
                 <div className="absolute inset-0 bg-gradient-to-br from-[#0B1B33] via-[#12264d] to-[#1f3d8f]" />
               )}

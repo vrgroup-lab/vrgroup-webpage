@@ -3,6 +3,7 @@
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { OptimizedAnimation } from "@/components/ui/optimized-animation"
 import { Section } from "@/components/ui/section"
 import { toOptimizedAssetPath } from "@/lib/assets"
 
@@ -47,7 +48,7 @@ export function AppianHighlight() {
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-[auto_1fr] lg:gap-x-6 lg:gap-y-8">
             <div className="relative h-20 w-20 sm:h-24 sm:w-24 lg:h-full lg:w-auto lg:aspect-square lg:self-stretch overflow-hidden rounded-2xl bg-white/18 backdrop-blur border border-white/25 shadow-[0_20px_50px_rgba(0,0,0,0.35)]">
               <Image
-                src={toOptimizedAssetPath("/logos/partners/logo_appian.png")}
+                src={toOptimizedAssetPath("/logos/partners/logo_appian.png", { width: 256 })}
                 alt="Appian logo"
                 fill
                 sizes="128px"
@@ -59,7 +60,13 @@ export function AppianHighlight() {
                 <h2 className="font-display font-bold text-4xl sm:text-5xl text-white mb-2 leading-tight">
                   Hiper automatización con{"\u00A0"}
                   <span className="relative h-12 w-44 inline-block align-middle">
-                    <Image src={toOptimizedAssetPath("/logos/partners/letter_appian.png")} alt="Appian" fill sizes="176px" className="object-contain" />
+                    <Image
+                      src={toOptimizedAssetPath("/logos/partners/letter_appian.png", { width: 256 })}
+                      alt="Appian"
+                      fill
+                      sizes="176px"
+                      className="object-contain"
+                    />
                   </span>
                 </h2>
                 <p className="text-white/85 max-w-[520px] text-sm sm:text-base leading-relaxed">
@@ -69,7 +76,13 @@ export function AppianHighlight() {
               <div className="inline-flex items-center gap-1 px-3.5 py-1.5 rounded-lg bg-white/10 border border-white/15">
                 <span className="text-sm text-white/85">Pioneros</span>
                 <span className="relative h-4 w-12 inline-block align-middle">
-                  <Image src={toOptimizedAssetPath("/logos/partners/letter_appian.png")} alt="Appian" fill sizes="48px" className="object-contain" />
+                  <Image
+                    src={toOptimizedAssetPath("/logos/partners/letter_appian.png", { width: 128 })}
+                    alt="Appian"
+                    fill
+                    sizes="48px"
+                    className="object-contain"
+                  />
                 </span>
                 <span className="text-sm text-white/85">en Chile 🇨🇱</span>
               </div>
@@ -99,13 +112,11 @@ export function AppianHighlight() {
                 <div className="relative rounded-2xl border border-white/15 bg-[#0b1b33]/35 overflow-hidden min-h-[480px] h-full flex items-center justify-center shadow-[0_24px_60px_rgba(0,0,0,0.45)] lg:h-[var(--panel-height)] lg:mt-0 lg:mr-[calc(var(--bleed-right)*-1)] lg:w-[calc(100%+var(--bleed-right))] lg:rounded-r-none lg:border-r-0">
                   {activeCap ? (
                     <>
-                      <Image
-                        key={activeCap.key}
+                      <OptimizedAnimation
                         src={activeCap.image}
-                        alt={activeCap.title}
-                        fill
-                        sizes="(min-width: 1024px) 960px, 100vw"
-                        className="object-cover object-left lg:object-right transition-opacity duration-500"
+                        label={activeCap.title}
+                        preload="none"
+                        className="absolute inset-0 h-full w-full object-cover object-left lg:object-right transition-opacity duration-500"
                       />
                       <div className="absolute inset-0 bg-gradient-to-tr from-[#0b1b33]/40 to-transparent" />
                       <div className="pointer-events-none absolute inset-0">
