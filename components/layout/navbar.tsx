@@ -7,7 +7,6 @@ import { Menu, X, ChevronDown } from "lucide-react"
 import { servicesData } from "@/components/ui/services-section"
 
 type NavbarSettings = {
-  showPortfolioInHeader?: boolean
   showCareersInHeader?: boolean
 }
 
@@ -46,13 +45,11 @@ export function Navbar({ settings }: NavbarProps) {
     "staffing-y-celulas": "Staffing & Células",
   }
 
-  const showPortfolio = settings?.showPortfolioInHeader ?? true
   const showCareers = settings?.showCareersInHeader ?? false
 
   const navItems = [
     { label: "Servicios", href: "/servicios", hasSub: true },
     { label: "Quiénes somos", href: "/nosotros" },
-    ...(showPortfolio ? [{ label: "Portafolio", href: "/portafolio" }] : []),
     ...(showCareers ? [{ label: "Trabaja con nosotros", href: "/trabaja-con-nosotros" }] : []),
   ]
 

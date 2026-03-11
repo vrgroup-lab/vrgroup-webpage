@@ -1,11 +1,11 @@
 import { Navbar } from "@/components/layout/navbar"
-import { getSiteSettings, type SiteSettings } from "@/lib/site-settings"
+import { marketingSiteSettings, type MarketingSiteSettings } from "@/lib/site-config"
 
 type SiteNavbarProps = {
-  settings?: SiteSettings
+  settings?: MarketingSiteSettings
 }
 
-export async function SiteNavbar({ settings }: SiteNavbarProps) {
-  const resolvedSettings = settings ?? (await getSiteSettings())
+export function SiteNavbar({ settings }: SiteNavbarProps) {
+  const resolvedSettings = settings ?? marketingSiteSettings
   return <Navbar settings={resolvedSettings} />
 }

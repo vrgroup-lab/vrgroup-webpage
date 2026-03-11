@@ -148,17 +148,6 @@ export function OfferingsSection({
               .slice(0, 2)
               .toUpperCase()
 
-            if (cardVariant === "title-only") {
-              return (
-                <div
-                  key={`${item.title}-${idx}`}
-                  className="rounded-2xl border border-gray-200 bg-white px-6 py-7 shadow-sm border-t-4 border-t-coral/60"
-                >
-                  <h3 className="font-display text-lg sm:text-xl font-semibold text-blue-dark">{item.title}</h3>
-                </div>
-              )
-            }
-
             return (
               <div
                 key={`${item.title}-${idx}`}

@@ -23,6 +23,26 @@ import { es } from "date-fns/locale"
 export const dynamic = "force-static"
 export const revalidate = 0
 
+type Job = {
+  id: string
+  slug: string
+  title: string
+  summary?: string | null
+  description?: string | null
+  location?: string | null
+  modality?: string | null
+  seniority?: string | null
+  tags?: string[] | null
+  apply_linkedin_url?: string | null
+  apply_notion_url?: string | null
+  published_at?: string | null
+  created_at?: string | null
+  responsibilities?: string | null
+  benefits?: string | null
+  requirements?: string | null
+  employment_type?: string | null
+}
+
 export async function generateStaticParams() {
   return []
 }
@@ -38,7 +58,7 @@ const badgePalette = {
   slate: { light: "bg-slate-100 text-slate-700 border-slate-200", dark: "bg-slate-500/10 text-slate-100 border-slate-400/40" },
 }
 
-function badgeMeta(kind: "employment" | "modality" | "seniority", value?: string) {
+function badgeMeta(kind: "employment" | "modality" | "seniority", value?: string | null) {
   const val = value?.toLowerCase()
   if (!val) return null
   if (kind === "employment") {
@@ -59,7 +79,7 @@ function badgeMeta(kind: "employment" | "modality" | "seniority", value?: string
   return { Icon: BriefcaseBusiness, palette: "slate" as const, label: value }
 }
 
-async function getJob(slug: string) {
+async function getJob(slug: string): Promise<Job | null> {
   const { data, error } = await supabasePublic
     .from("jobs")
     .select(
@@ -80,9 +100,9 @@ export default async function JobDetailPage({ params }: { params: Promise<{ slug
   const job = await getJob(slug)
   if (!job) return notFound()
 
-  const respItems = (job.responsibilities || "").split("\n").map((i: string) => i.trim()).filter(Boolean)
-  const benefitItems = (job.benefits || "").split("\n").map((i: string) => i.trim()).filter(Boolean)
-  const requirementsItems = (job.requirements || "").split("\n").map((i: string) => i.trim()).filter(Boolean)
+  const respItems: string[] = (job.responsibilities || "").split("\n").map((i) => i.trim()).filter(Boolean)
+  const benefitItems: string[] = (job.benefits || "").split("\n").map((i) => i.trim()).filter(Boolean)
+  const requirementsItems: string[] = (job.requirements || "").split("\n").map((i) => i.trim()).filter(Boolean)
   const publishedLabel = job.published_at
     ? format(new Date(job.published_at), "d 'de' MMMM 'de' yyyy", { locale: es })
     : job.created_at

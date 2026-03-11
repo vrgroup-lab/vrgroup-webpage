@@ -6,8 +6,7 @@ import { OfferingsSection } from "@/components/ui/offerings-section"
 import { SubservicesGrid } from "@/components/ui/subservices-grid"
 import { CTABanner } from "@/components/ui/cta-banner"
 import { getLogosFromFolder } from "@/lib/logos"
-import { supabasePublic } from "@/lib/supabase/public"
-import { getSiteSettings } from "@/lib/site-settings"
+import { marketingSiteSettings } from "@/lib/site-config"
 import Link from "next/link"
 import {
   Check,
@@ -24,40 +23,6 @@ interface ServiceDetailPageProps {
   params: Promise<{
     slug: string
   }>
-}
-
-type PortfolioMedia = {
-  url: string
-  alt_text?: string | null
-  is_primary?: boolean
-  order_index?: number | null
-  type?: string
-}
-
-type PortfolioProject = {
-  id: string
-  slug: string
-  title: string
-  client_display?: string | null
-  summary?: string | null
-  portfolio_media?: PortfolioMedia[]
-}
-
-async function getPortfolioProjects(serviceLineSlug: string): Promise<PortfolioProject[]> {
-  if (!serviceLineSlug) return []
-  const { data, error } = await supabasePublic
-    .from("portfolio_projects")
-    .select("id, slug, title, client_display, summary, portfolio_media(*), service_lines!inner(slug)")
-    .eq("status", "public")
-    .eq("service_lines.slug", serviceLineSlug)
-    .order("display_order", { ascending: true })
-    .order("created_at", { ascending: false })
-
-  if (error) {
-    console.error("Error fetching portfolio projects", error.message)
-    return []
-  }
-  return data ?? []
 }
 
 function WhyChooseSection({
@@ -569,78 +534,6 @@ const slugAliases: Record<string, string> = {
   "staffing-celulas-agiles": "staffing-y-celulas",
 }
 
-const serviceLineByServiceSlug: Record<string, string> = {
-  "experiencia-digital": "experiencia-digital",
-  "software-factory": "software-factory",
-  "automatizacion-de-procesos": "automatizacion-de-procesos",
-  "gestion-y-riesgo": "gestion-y-riesgo",
-  "ia-y-agentes": "ia-y-agentes",
-  "staffing-y-celulas": "staffing-y-celulas",
-}
-
-function PortfolioProjectsSection({
-  projects,
-  serviceLineSlug,
-}: {
-  projects: PortfolioProject[]
-  serviceLineSlug: string
-}) {
-  if (!projects.length) return null
-
-  return (
-    <Section
-      title="Proyectos en portafolio"
-      subtitle="Casos reales en producción para esta línea de servicio."
-      className="bg-white"
-      variant="light"
-    >
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {projects.slice(0, 6).map((project) => {
-          const primaryMedia =
-            project.portfolio_media?.find((m) => m.is_primary) ??
-            project.portfolio_media?.sort((a, b) => (a.order_index || 0) - (b.order_index || 0))[0]
-          return (
-            <Link
-              key={project.id}
-              href={`/portafolio/${project.slug}`}
-              className="group rounded-2xl border border-gray-200 bg-white overflow-hidden shadow-sm hover:-translate-y-1 hover:shadow-lg transition-all"
-            >
-              <div className="aspect-[4/3] bg-gray-100 relative">
-                {primaryMedia?.url ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={primaryMedia.url} alt={primaryMedia.alt_text || project.title} className="w-full h-full object-cover" />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center text-4xl">📌</div>
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                <div className="absolute bottom-3 left-3 right-3">
-                  <h3 className="font-display text-lg font-semibold text-white drop-shadow">{project.title}</h3>
-                  {project.client_display && <p className="text-white/85 text-xs">{project.client_display}</p>}
-                </div>
-              </div>
-              <div className="p-4 border-t border-gray-200">
-                <p className="text-sm text-gray-600 line-clamp-2">{project.summary}</p>
-                <span className="mt-3 inline-flex items-center gap-2 text-coral font-semibold text-sm">
-                  Ver proyecto <ArrowRight size={16} />
-                </span>
-              </div>
-            </Link>
-          )
-        })}
-      </div>
-      <div className="text-center mt-8">
-        <Link
-          href={`/portafolio?servicio=${serviceLineSlug}`}
-          className="inline-flex items-center gap-2 text-coral font-semibold hover:text-blue-dark transition-colors"
-        >
-          Ver todos los proyectos
-          <ArrowRight size={16} />
-        </Link>
-      </div>
-    </Section>
-  )
-}
-
 export async function generateStaticParams() {
   return Object.keys(serviceContent).map((slug) => ({ slug }))
 }
@@ -658,12 +551,7 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
   const heroBackground = isAppian ? undefined : undefined
   const providerLogos = isIAService ? getLogosFromFolder("ai-providers") : []
   const iaProvidersFallback = ["OpenAI", "Anthropic", "Google Gemini", "Azure OpenAI", "AWS Bedrock", "DeepSeek", "Cohere", "Meta Llama"]
-  const siteSettings = await getSiteSettings()
-  const serviceLineSlug = serviceLineByServiceSlug[normalizedSlug] ?? ""
-  const portfolioProjects = siteSettings.showPortfolioInServices ? await getPortfolioProjects(serviceLineSlug) : []
-  const portfolioSection = siteSettings.showPortfolioInServices ? (
-    <PortfolioProjectsSection projects={portfolioProjects} serviceLineSlug={serviceLineSlug} />
-  ) : null
+  const siteSettings = marketingSiteSettings
 
   if (!content) {
     return (
@@ -813,8 +701,6 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
           </div>
         </Section>
 
-        {portfolioSection}
-
         <CTABanner
           eyebrow="Contacto"
           title="¿Listo para implementar esta solución?"
@@ -899,8 +785,6 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
           </div>
         </section>
 
-        {portfolioSection}
-
         <CTABanner
           eyebrow="Contacto"
           title="¿Listo para armar tu célula ágil?"
@@ -948,8 +832,6 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
           </div>
         </Section>
 
-        {portfolioSection}
-
         <CTABanner
           eyebrow="Contacto"
           title="¿Listo para construir tu software con nosotros?"
@@ -996,8 +878,6 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
             </div>
           </div>
         </Section>
-
-        {portfolioSection}
 
         <CTABanner
           eyebrow="Contacto"
@@ -1132,15 +1012,6 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
                 </div>
               ))}
             </div>
-            <div className="text-center mt-8">
-              <Link
-                href="/portafolio?servicio=transformacion-digital"
-                className="inline-flex items-center gap-2 text-coral font-semibold hover:text-blue-dark transition-colors"
-              >
-                Ver casos del portafolio
-                <ArrowRight size={16} />
-              </Link>
-            </div>
           </Section>
         </>
       )}
@@ -1205,8 +1076,6 @@ export default async function ServiceDetailPage({ params }: ServiceDetailPagePro
           </div>
         </div>
       </Section>
-
-      {portfolioSection}
 
       {/* CTA Section */}
       <CTABanner

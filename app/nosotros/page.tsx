@@ -8,10 +8,10 @@ import Link from "next/link"
 import { CheckCircle2, Sparkles, Workflow, Users, Rocket, ShieldCheck, Linkedin } from "lucide-react"
 import { teamMembers } from "@/lib/team"
 import { getHeroImages } from "@/lib/hero-images"
-import { getSiteSettings } from "@/lib/site-settings"
+import { marketingSiteSettings } from "@/lib/site-config"
 
-export default async function AboutPage() {
-  const siteSettings = await getSiteSettings()
+export default function AboutPage() {
+  const siteSettings = marketingSiteSettings
   const pillars = [
     {
       icon: Sparkles,
