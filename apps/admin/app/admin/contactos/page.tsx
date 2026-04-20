@@ -1,7 +1,20 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
+import { formatDistanceToNow, format } from "date-fns"
+import { es } from "date-fns/locale"
+import { Copy, Inbox, Mail, Search, Trash2 } from "lucide-react"
+import { toast } from "sonner"
 import { ConfirmDialog } from "@/components/admin/confirm-dialog"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { EmptyState } from "@/components/ui/empty-state"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Skeleton } from "@/components/ui/skeleton"
+import { cn } from "@/lib/utils"
 
 type ContactSubmission = {
   id: string
@@ -20,255 +33,300 @@ type ContactSubmission = {
   user_agent: string | null
 }
 
-const statusOptions = ["received", "pendiente", "en-progreso", "calificado", "cerrado", "error"]
+const STATUS_OPTIONS = ["received", "pendiente", "en-progreso", "calificado", "cerrado", "error"] as const
+
+function statusBadge(status: string) {
+  if (status === "received") return <Badge variant="coral">Nuevo</Badge>
+  if (status === "pendiente" || status === "en-progreso") return <Badge variant="warning">{status}</Badge>
+  if (status === "calificado") return <Badge variant="success">Calificado</Badge>
+  if (status === "cerrado") return <Badge variant="secondary">Cerrado</Badge>
+  if (status === "error") return <Badge variant="destructive">Error</Badge>
+  return <Badge variant="outline">{status}</Badge>
+}
 
 export default function AdminContactsPage() {
   const [contacts, setContacts] = useState<ContactSubmission[]>([])
-  const [loading, setLoading] = useState(false)
-  const [updatingId, setUpdatingId] = useState<string | null>(null)
-  const [error, setError] = useState<string | null>(null)
-  const [selected, setSelected] = useState<ContactSubmission | null>(null)
-  const [confirmState, setConfirmState] = useState<{ open: boolean; id: string | null; name: string | null }>({
+  const [loading, setLoading] = useState(true)
+  const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [updating, setUpdating] = useState(false)
+  const [search, setSearch] = useState("")
+  const [statusFilter, setStatusFilter] = useState<string>("all")
+  const [confirm, setConfirm] = useState<{ open: boolean; id: string | null; loading: boolean }>({
     open: false,
     id: null,
-    name: null,
+    loading: false,
   })
-
-  const orderedContacts = useMemo(() => contacts, [contacts])
 
   async function fetchContacts() {
     setLoading(true)
-    setError(null)
-
     try {
-      const response = await fetch("/api/admin/contact-submissions")
-      const payload = await response.json()
-      if (!response.ok) throw new Error(payload.error || "No se pudieron cargar los contactos.")
-      setContacts(payload.data || [])
-      setSelected((current) => current ?? payload.data?.[0] ?? null)
+      const res = await fetch("/api/admin/contact-submissions")
+      const payload = await res.json()
+      if (!res.ok) throw new Error(payload.error || "Error al cargar contactos")
+      const list: ContactSubmission[] = payload.data ?? []
+      setContacts(list)
+      setSelectedId((prev) => prev ?? list[0]?.id ?? null)
     } catch (err) {
-      setError(err instanceof Error ? err.message : "No se pudieron cargar los contactos.")
+      toast.error(err instanceof Error ? err.message : "Error al cargar contactos")
     } finally {
       setLoading(false)
     }
   }
 
   useEffect(() => {
-    fetchContacts()
+    void fetchContacts()
   }, [])
 
-  async function updateStatus(id: string, status: string) {
-    setUpdatingId(id)
-    setError(null)
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase()
+    return contacts.filter((c) => {
+      if (statusFilter !== "all" && c.status !== statusFilter) return false
+      if (!q) return true
+      return (
+        c.nombre.toLowerCase().includes(q) ||
+        c.email.toLowerCase().includes(q) ||
+        (c.empresa?.toLowerCase().includes(q) ?? false) ||
+        (c.asunto?.toLowerCase().includes(q) ?? false)
+      )
+    })
+  }, [contacts, search, statusFilter])
 
+  const selected = useMemo(
+    () => contacts.find((c) => c.id === selectedId) ?? null,
+    [contacts, selectedId],
+  )
+
+  async function updateStatus(id: string, status: string) {
+    setUpdating(true)
     try {
-      const response = await fetch(`/api/admin/contact-submissions/${id}`, {
+      const res = await fetch(`/api/admin/contact-submissions/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status }),
       })
-      const payload = await response.json()
-      if (!response.ok) throw new Error(payload.error || "No se pudo actualizar el estado.")
-      setContacts((current) => current.map((item) => (item.id === id ? { ...item, status } : item)))
-      setSelected((current) => (current?.id === id ? { ...current, status } : current))
+      const payload = await res.json()
+      if (!res.ok) throw new Error(payload.error || "Error al actualizar")
+      setContacts((c) => c.map((item) => (item.id === id ? { ...item, status } : item)))
+      toast.success("Estado actualizado")
     } catch (err) {
-      setError(err instanceof Error ? err.message : "No se pudo actualizar el estado.")
+      toast.error(err instanceof Error ? err.message : "Error al actualizar")
     } finally {
-      setUpdatingId(null)
+      setUpdating(false)
     }
   }
 
-  async function deleteSubmission(id: string) {
-    setError(null)
-
+  async function handleDelete() {
+    if (!confirm.id) return
+    setConfirm((c) => ({ ...c, loading: true }))
     try {
-      const response = await fetch(`/api/admin/contact-submissions/${id}`, { method: "DELETE" })
-      const payload = await response.json()
-      if (!response.ok) throw new Error(payload.error || "No se pudo eliminar el contacto.")
-      const next = contacts.filter((item) => item.id !== id)
+      const res = await fetch(`/api/admin/contact-submissions/${confirm.id}`, { method: "DELETE" })
+      const payload = await res.json()
+      if (!res.ok) throw new Error(payload.error || "Error al eliminar")
+      const next = contacts.filter((c) => c.id !== confirm.id)
       setContacts(next)
-      setSelected((current) => (current?.id === id ? next[0] ?? null : current))
+      setSelectedId((prev) => (prev === confirm.id ? next[0]?.id ?? null : prev))
+      toast.success("Contacto eliminado")
+      setConfirm({ open: false, id: null, loading: false })
     } catch (err) {
-      setError(err instanceof Error ? err.message : "No se pudo eliminar el contacto.")
+      toast.error(err instanceof Error ? err.message : "Error al eliminar")
+      setConfirm((c) => ({ ...c, loading: false }))
     }
   }
+
+  function copyEmail(email: string) {
+    void navigator.clipboard.writeText(email)
+    toast.success("Email copiado")
+  }
+
+  const newCount = contacts.filter((c) => c.status === "received").length
 
   return (
-    <section style={{ display: "grid", gap: 20 }}>
-      <div
-        style={{
-          background: "#fff",
-          border: "1px solid #d8e0ea",
-          borderRadius: 28,
-          padding: 24,
-          boxShadow: "0 18px 45px rgba(15, 23, 42, 0.05)",
-        }}
-      >
-        <p style={{ margin: 0, fontSize: 12, textTransform: "uppercase", letterSpacing: "0.16em", color: "#ff5a5f" }}>
-          Contactos
-        </p>
-        <h1 style={{ margin: "10px 0 0", fontSize: 40 }}>Leads y submissions</h1>
-        <p style={{ margin: "10px 0 0", color: "#4f5d75", lineHeight: 1.6 }}>
-          Bandeja operativa sobre <code>contact_submissions</code> para revisar mensajes del formulario del sitio.
+    <div className="flex flex-col gap-6">
+      <div>
+        <p className="text-xs uppercase tracking-[0.18em] text-[var(--coral)]">Contactos</p>
+        <h1 className="mt-1 font-display text-3xl font-semibold tracking-tight md:text-4xl">
+          Leads
+          {newCount > 0 && (
+            <Badge variant="coral" className="ml-3 align-middle">
+              {newCount} nuevo{newCount === 1 ? "" : "s"}
+            </Badge>
+          )}
+        </h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Bandeja del formulario del sitio. Actualizá estado y gestioná mensajes comerciales.
         </p>
       </div>
 
-      {error ? (
-        <div style={{ borderRadius: 20, border: "1px solid #fecaca", background: "#fef2f2", color: "#b91c1c", padding: 16 }}>{error}</div>
-      ) : null}
+      <div className="grid gap-6 lg:grid-cols-[360px_1fr]">
+        <div className="flex flex-col gap-3">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Buscar nombre, email, empresa..."
+              className="pl-9"
+            />
+          </div>
+          <Select value={statusFilter} onValueChange={setStatusFilter}>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos</SelectItem>
+              {STATUS_OPTIONS.map((s) => (
+                <SelectItem key={s} value={s}>
+                  {s}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-      <div
-        style={{
-          display: "grid",
-          gap: 20,
-          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-        }}
-      >
-        <section
-          style={{
-            background: "#fff",
-            border: "1px solid #d8e0ea",
-            borderRadius: 28,
-            padding: 20,
-            boxShadow: "0 18px 45px rgba(15, 23, 42, 0.05)",
-            alignSelf: "start",
-          }}
-        >
-          <h2 style={{ marginTop: 0, fontSize: 24 }}>Bandeja</h2>
-          <div style={{ display: "grid", gap: 12 }}>
+          <div className="flex max-h-[calc(100vh-20rem)] flex-col gap-2 overflow-y-auto pr-1">
             {loading ? (
-              <div style={{ color: "#4f5d75" }}>Cargando contactos...</div>
-            ) : orderedContacts.length === 0 ? (
-              <div style={{ border: "1px dashed #cbd5e1", borderRadius: 20, padding: 20, color: "#4f5d75" }}>No hay contactos registrados.</div>
+              Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-20 w-full" />)
+            ) : filtered.length === 0 ? (
+              <EmptyState
+                icon={<Inbox />}
+                title={contacts.length === 0 ? "Sin contactos" : "Sin resultados"}
+                description={
+                  contacts.length === 0
+                    ? "Los mensajes del formulario van a aparecer acá."
+                    : "Probá otra búsqueda o filtro."
+                }
+              />
             ) : (
-              orderedContacts.map((contact) => (
+              filtered.map((c) => (
                 <button
-                  key={contact.id}
+                  key={c.id}
                   type="button"
-                  onClick={() => setSelected(contact)}
-                  style={{
-                    textAlign: "left",
-                    width: "100%",
-                    borderRadius: 20,
-                    border: selected?.id === contact.id ? "1px solid #0b1b33" : "1px solid #d8e0ea",
-                    background: selected?.id === contact.id ? "#f8fafc" : "#fff",
-                    padding: 16,
-                    cursor: "pointer",
-                  }}
+                  onClick={() => setSelectedId(c.id)}
+                  className={cn(
+                    "group rounded-lg border bg-card p-3 text-left transition-all hover:border-[var(--coral)]/40",
+                    selectedId === c.id && "border-[var(--coral)] bg-[var(--coral)]/5 shadow-sm",
+                  )}
                 >
-                  <div style={{ display: "flex", justifyContent: "space-between", gap: 12 }}>
-                    <strong>{contact.nombre}</strong>
-                    <span style={{ color: "#5b6b82", fontSize: 13 }}>{contact.status || "received"}</span>
+                  <div className="flex items-start justify-between gap-2">
+                    <p className="truncate text-sm font-medium">{c.nombre}</p>
+                    {statusBadge(c.status)}
                   </div>
-                  <p style={{ margin: "8px 0 0", color: "#4f5d75" }}>{contact.email}</p>
-                  {contact.empresa ? <p style={{ margin: "6px 0 0", color: "#5b6b82", fontSize: 14 }}>{contact.empresa}</p> : null}
+                  <p className="mt-1 truncate text-xs text-muted-foreground">{c.email}</p>
+                  {c.empresa && <p className="truncate text-xs text-muted-foreground">{c.empresa}</p>}
+                  <p className="mt-2 text-[11px] text-muted-foreground">
+                    {formatDistanceToNow(new Date(c.created_at), { addSuffix: true, locale: es })}
+                  </p>
                 </button>
               ))
             )}
           </div>
-        </section>
+        </div>
 
-        <section
-          style={{
-            background: "#fff",
-            border: "1px solid #d8e0ea",
-            borderRadius: 28,
-            padding: 24,
-            boxShadow: "0 18px 45px rgba(15, 23, 42, 0.05)",
-          }}
-        >
-          {!selected ? (
-            <div style={{ color: "#4f5d75" }}>Selecciona un contacto para revisar su detalle.</div>
-          ) : (
-            <div style={{ display: "grid", gap: 18 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
-                <div>
-                  <h2 style={{ margin: 0, fontSize: 30 }}>{selected.nombre}</h2>
-                  <p style={{ margin: "8px 0 0", color: "#4f5d75" }}>{selected.email}</p>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setConfirmState({ open: true, id: selected.id, name: selected.nombre })}
-                  style={{
-                    borderRadius: 999,
-                    border: "1px solid #fecaca",
-                    background: "#fff1f2",
-                    color: "#be123c",
-                    padding: "10px 14px",
-                    fontSize: 14,
-                    fontWeight: 700,
-                    cursor: "pointer",
-                    alignSelf: "start",
-                  }}
-                >
-                  Eliminar contacto
-                </button>
-              </div>
-
-              <div style={{ display: "grid", gap: 14, gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
-                {[
-                  ["Empresa", selected.empresa],
-                  ["Telefono", selected.telefono],
-                  ["Industria", selected.industria],
-                  ["Asunto", selected.asunto],
-                  ["IP", selected.ip],
-                  ["Proveedor email", selected.email_provider_id],
-                ].map(([label, value]) => (
-                  <div key={label} style={{ border: "1px solid #d8e0ea", borderRadius: 18, padding: 14 }}>
-                    <div style={{ color: "#5b6b82", fontSize: 13, textTransform: "uppercase", letterSpacing: "0.1em" }}>{label}</div>
-                    <div style={{ marginTop: 8, fontWeight: 700 }}>{value || "Sin dato"}</div>
+        {selected ? (
+          <Card className="self-start">
+            <CardContent className="flex flex-col gap-6 p-6">
+              <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h2 className="truncate font-display text-2xl font-semibold">{selected.nombre}</h2>
+                    {statusBadge(selected.status)}
                   </div>
-                ))}
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {format(new Date(selected.created_at), "d 'de' MMMM yyyy · HH:mm", { locale: es })}
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <Button variant="outline" size="sm" asChild>
+                    <a href={`mailto:${selected.email}`}>
+                      <Mail /> Responder
+                    </a>
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={() => copyEmail(selected.email)}>
+                    <Copy /> Copiar email
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => setConfirm({ open: true, id: selected.id, loading: false })}
+                  >
+                    <Trash2 /> Eliminar
+                  </Button>
+                </div>
               </div>
 
-              <label style={{ display: "grid", gap: 8, maxWidth: 320 }}>
-                <span style={{ fontWeight: 700 }}>Estado</span>
-                <select
+              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                <MetaField label="Email" value={selected.email} />
+                <MetaField label="Empresa" value={selected.empresa} />
+                <MetaField label="Teléfono" value={selected.telefono} />
+                <MetaField label="Industria" value={selected.industria} />
+                <MetaField label="Asunto" value={selected.asunto} />
+                <MetaField label="IP" value={selected.ip} />
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <Label className="text-xs font-medium">Estado</Label>
+                <Select
                   value={selected.status}
-                  onChange={(event) => updateStatus(selected.id, event.target.value)}
-                  disabled={updatingId === selected.id}
-                  style={{
-                    borderRadius: 14,
-                    border: "1px solid #d8e0ea",
-                    padding: "12px 14px",
-                    fontSize: 14,
-                  }}
+                  onValueChange={(v) => updateStatus(selected.id, v)}
+                  disabled={updating}
                 >
-                  {statusOptions.map((status) => (
-                    <option key={status} value={status}>
-                      {status}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <div style={{ border: "1px solid #d8e0ea", borderRadius: 20, padding: 18 }}>
-                <div style={{ color: "#5b6b82", fontSize: 13, textTransform: "uppercase", letterSpacing: "0.1em" }}>Mensaje</div>
-                <p style={{ margin: "10px 0 0", color: "#334155", lineHeight: 1.7, whiteSpace: "pre-line" }}>{selected.mensaje}</p>
+                  <SelectTrigger className="max-w-xs">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {STATUS_OPTIONS.map((s) => (
+                      <SelectItem key={s} value={s}>
+                        {s}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
-              {selected.error ? (
-                <div style={{ borderRadius: 20, border: "1px solid #fecaca", background: "#fef2f2", color: "#b91c1c", padding: 16 }}>
+              <div>
+                <Label className="text-xs font-medium">Mensaje</Label>
+                <div className="mt-2 whitespace-pre-line rounded-lg border bg-muted/30 p-4 text-sm leading-relaxed">
+                  {selected.mensaje}
+                </div>
+              </div>
+
+              {selected.error && (
+                <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive">
+                  <span className="font-medium">Error: </span>
                   {selected.error}
                 </div>
-              ) : null}
-            </div>
-          )}
-        </section>
+              )}
+            </CardContent>
+          </Card>
+        ) : (
+          !loading && (
+            <EmptyState
+              icon={<Inbox />}
+              title="Seleccioná un contacto"
+              description="Elegí un item de la izquierda para ver el detalle."
+              className="self-start"
+            />
+          )
+        )}
       </div>
 
       <ConfirmDialog
-        open={confirmState.open}
+        open={confirm.open}
         title="Eliminar contacto"
-        description={`Se eliminara ${confirmState.name || "este contacto"} de forma permanente.`}
-        confirmLabel="Eliminar contacto"
-        onCancel={() => setConfirmState({ open: false, id: null, name: null })}
-        onConfirm={async () => {
-          if (!confirmState.id) return
-          await deleteSubmission(confirmState.id)
-          setConfirmState({ open: false, id: null, name: null })
-        }}
+        description="Esta acción eliminará el contacto permanentemente."
+        confirmLabel="Eliminar"
+        loading={confirm.loading}
+        onCancel={() => setConfirm({ open: false, id: null, loading: false })}
+        onConfirm={handleDelete}
       />
-    </section>
+    </div>
+  )
+}
+
+function MetaField({ label, value }: { label: string; value: string | null }) {
+  return (
+    <div className="rounded-lg border bg-muted/20 p-3">
+      <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">{label}</p>
+      <p className="mt-1 truncate text-sm font-medium">{value || <span className="text-muted-foreground">—</span>}</p>
+    </div>
   )
 }

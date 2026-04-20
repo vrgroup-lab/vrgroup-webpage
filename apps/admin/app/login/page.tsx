@@ -3,202 +3,170 @@
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
+import { Eye, EyeOff, LogIn, ShieldCheck } from "lucide-react"
+import { toast } from "sonner"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { cn } from "@/lib/utils"
+
+const loginSchema = z.object({
+  email: z.string().email("Email inválido"),
+  password: z.string().min(1, "Ingresá tu contraseña"),
+})
+
+type LoginValues = z.infer<typeof loginSchema>
 
 export default function LoginPage() {
   const router = useRouter()
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const [showPassword, setShowPassword] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [formError, setFormError] = useState<string | null>(null)
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { email: "", password: "" },
+  })
+
+  async function onSubmit(values: LoginValues) {
+    setSubmitting(true)
+    setFormError(null)
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(values),
+      })
+      const payload = await res.json()
+      if (!res.ok) throw new Error(payload.error || "No se pudo iniciar sesión")
+      toast.success("Bienvenido")
+      router.push("/admin")
+      router.refresh()
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "No se pudo iniciar sesión"
+      setFormError(msg)
+    } finally {
+      setSubmitting(false)
+    }
+  }
 
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "40px 16px",
-        background: "#f3f4f6",
-      }}
-    >
-      <div style={{ width: "100%", maxWidth: 860 }}>
-        <section
-          style={{
-            overflow: "hidden",
-            borderRadius: 24,
-            border: "1px solid #e5e7eb",
-            background: "#fff",
-            boxShadow: "0 24px 60px rgba(15, 23, 42, 0.14)",
-          }}
-        >
-          <div
-            style={{
-              background: "#0b1224",
-              color: "#fff",
-              padding: "32px 40px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: 24,
-              flexWrap: "wrap",
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-              <div style={{ position: "relative", width: 64, height: 64 }}>
-                <Image src="/logos/brand/logo_vrgroup_cuadrado.png" alt="VR Group" fill sizes="128px" style={{ objectFit: "contain" }} />
-              </div>
-              <div>
-                <p style={{ margin: 0, fontSize: 12, textTransform: "uppercase", letterSpacing: "0.22em", color: "rgba(255,255,255,0.72)" }}>
-                  Admin
-                </p>
-                <h1 style={{ margin: "8px 0 0", fontSize: 32, lineHeight: 1.1 }}>Panel de administración</h1>
-              </div>
-            </div>
-
-            <span
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                padding: "8px 14px",
-                borderRadius: 999,
-                background: "rgba(255,255,255,0.08)",
-                border: "1px solid rgba(255,255,255,0.18)",
-                fontSize: 12,
-                fontWeight: 700,
-                letterSpacing: "0.18em",
-                textTransform: "uppercase",
-              }}
-            >
-              Acceso privado
-            </span>
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[var(--blue-dark)] p-6">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-60"
+        style={{
+          background:
+            "radial-gradient(circle at 15% 20%, rgba(255,90,95,0.25) 0%, transparent 40%), radial-gradient(circle at 85% 80%, rgba(59,130,246,0.18) 0%, transparent 45%)",
+        }}
+      />
+      <div className="relative z-10 w-full max-w-md">
+        <div className="mb-6 flex items-center justify-center gap-3">
+          <div className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-white p-1.5 shadow-lg">
+            <Image
+              src="/logos/brand/logo_vrgroup_cuadrado.png"
+              alt="VR Group"
+              fill
+              sizes="48px"
+              className="object-contain p-1.5"
+            />
           </div>
+          <div className="text-left">
+            <p className="text-[11px] uppercase tracking-[0.22em] text-white/60">VR Group</p>
+            <p className="font-display text-base font-semibold text-white">Backoffice</p>
+          </div>
+        </div>
 
-          <div style={{ padding: "32px 40px", background: "#fff" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 24 }}>
-              <div style={{ position: "relative", width: 48, height: 48 }}>
-                <Image src="/logos/brand/logo_vrgroup_cuadrado.png" alt="VR Group" fill sizes="96px" style={{ objectFit: "contain" }} />
-              </div>
-              <div>
-                <p style={{ margin: 0, fontSize: 14, color: "#6b7280" }}>VR Group</p>
-                <h2 style={{ margin: "4px 0 0", fontSize: 28, lineHeight: 1.15 }}>Iniciar sesión</h2>
-              </div>
+        <Card className="border-white/10 bg-white shadow-2xl">
+          <CardContent className="p-8">
+            <div className="mb-6 flex flex-col gap-1">
+              <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-[var(--coral)]/10 px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.18em] text-[var(--coral-dark)]">
+                <ShieldCheck className="h-3 w-3" /> Acceso privado
+              </span>
+              <h1 className="mt-3 font-display text-2xl font-semibold tracking-tight">Iniciá sesión</h1>
+              <p className="text-sm text-muted-foreground">
+                Ingresá con tu cuenta corporativa para gestionar el sitio.
+              </p>
             </div>
 
-            {error ? (
-              <div
-                style={{
-                  marginBottom: 16,
-                  borderRadius: 16,
-                  border: "1px solid #fecaca",
-                  background: "#fef2f2",
-                  color: "#b91c1c",
-                  padding: "14px 16px",
-                  fontSize: 14,
-                }}
-              >
-                {error}
+            {formError && (
+              <div className="mb-4 rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive">
+                {formError}
               </div>
-            ) : null}
+            )}
 
-            <form
-              style={{ display: "grid", gap: 16 }}
-              onSubmit={async (event) => {
-                event.preventDefault()
-                setLoading(true)
-                setError(null)
-
-                try {
-                  const response = await fetch("/api/auth/login", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email, password }),
-                  })
-
-                  const payload = await response.json()
-                  if (!response.ok) {
-                    throw new Error(payload.error || "No se pudo iniciar sesion.")
-                  }
-
-                  router.push("/admin")
-                  router.refresh()
-                } catch (err) {
-                  setError(err instanceof Error ? err.message : "No se pudo iniciar sesion.")
-                } finally {
-                  setLoading(false)
-                }
-              }}
-            >
-              <label style={{ display: "grid", gap: 8 }}>
-                <span style={{ fontSize: 14, fontWeight: 700, color: "#374151" }}>Email</span>
-                <input
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4" noValidate>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="email" className={cn("text-xs font-medium", errors.email && "text-destructive")}>
+                  Email
+                </Label>
+                <Input
+                  id="email"
                   type="email"
-                  name="email"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  required
-                  placeholder="tu@empresa.com"
-                  style={{
-                    width: "100%",
-                    padding: "14px 16px",
-                    borderRadius: 14,
-                    border: "1px solid #e5e7eb",
-                    fontSize: 16,
-                    color: "#111827",
-                  }}
+                  autoComplete="email"
+                  placeholder="tu@vrgroup.cl"
+                  autoFocus
+                  {...register("email")}
                 />
-              </label>
+                {errors.email && <p className="text-[11px] text-destructive">{errors.email.message}</p>}
+              </div>
 
-              <label style={{ display: "grid", gap: 8 }}>
-                <span style={{ fontSize: 14, fontWeight: 700, color: "#374151" }}>Contraseña</span>
-                <input
-                  type="password"
-                  name="password"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  required
-                  placeholder="********"
-                  style={{
-                    width: "100%",
-                    padding: "14px 16px",
-                    borderRadius: 14,
-                    border: "1px solid #e5e7eb",
-                    fontSize: 16,
-                    color: "#111827",
-                  }}
-                />
-              </label>
+              <div className="flex flex-col gap-1.5">
+                <Label
+                  htmlFor="password"
+                  className={cn("text-xs font-medium", errors.password && "text-destructive")}
+                >
+                  Contraseña
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="current-password"
+                    placeholder="••••••••"
+                    className="pr-10"
+                    {...register("password")}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((p) => !p)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-muted-foreground hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+                {errors.password && <p className="text-[11px] text-destructive">{errors.password.message}</p>}
+              </div>
 
-              <button
-                type="submit"
-                disabled={loading}
-                style={{
-                  width: "100%",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 10,
-                  padding: "14px 18px",
-                  borderRadius: 14,
-                  border: "1px solid #2563eb",
-                  background: "#2563eb",
-                  color: "#fff",
-                  fontSize: 16,
-                  fontWeight: 700,
-                  cursor: "pointer",
-                  opacity: loading ? 0.7 : 1,
-                }}
-              >
-                {loading ? "Ingresando..." : "Ingresar"}
-              </button>
+              <Button type="submit" variant="coral" className="mt-2 w-full" disabled={submitting}>
+                {submitting ? (
+                  "Ingresando..."
+                ) : (
+                  <>
+                    <LogIn /> Ingresar
+                  </>
+                )}
+              </Button>
 
-              <p style={{ margin: 0, fontSize: 12, color: "#6b7280" }}>
-                ¿Olvidaste tu contraseña? Escríbele a un administrador para restablecer tu acceso.
+              <p className="text-center text-[11px] text-muted-foreground">
+                ¿Olvidaste tu contraseña? Pedile a un admin que la restablezca.
               </p>
             </form>
-          </div>
-        </section>
+          </CardContent>
+        </Card>
+
+        <p className="mt-6 text-center text-[11px] text-white/40">
+          © {new Date().getFullYear()} VR Group · Uso interno
+        </p>
       </div>
     </main>
   )

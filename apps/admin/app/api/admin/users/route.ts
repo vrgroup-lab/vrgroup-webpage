@@ -10,10 +10,26 @@ export async function GET() {
 
   try {
     const supabase = getSupabaseAdmin()
-    const { data, error } = await supabase.from("user_profiles").select("*").order("created_at", { ascending: false })
+    const { data: profiles, error } = await supabase
+      .from("user_profiles")
+      .select("*")
+      .order("created_at", { ascending: false })
 
     if (error) throw error
-    return NextResponse.json({ data })
+
+    const { data: usersList } = await supabase.auth.admin.listUsers({ page: 1, perPage: 1000 })
+    const authById = new Map<string, { email: string | null; last_sign_in_at: string | null }>()
+    for (const u of usersList?.users ?? []) {
+      authById.set(u.id, { email: u.email ?? null, last_sign_in_at: u.last_sign_in_at ?? null })
+    }
+
+    const enriched = (profiles ?? []).map((p) => ({
+      ...p,
+      email: authById.get(p.id)?.email ?? null,
+      last_sign_in_at: authById.get(p.id)?.last_sign_in_at ?? null,
+    }))
+
+    return NextResponse.json({ data: enriched })
   } catch (error) {
     return NextResponse.json({ error: error instanceof Error ? error.message : "Error al obtener usuarios." }, { status: 400 })
   }

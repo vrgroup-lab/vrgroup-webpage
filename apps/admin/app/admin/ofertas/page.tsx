@@ -1,414 +1,331 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
-import { ConfirmDialog } from "@/components/admin/confirm-dialog"
+import { formatDistanceToNow } from "date-fns"
+import { es } from "date-fns/locale"
+import { Briefcase, Copy, ExternalLink, MoreHorizontal, Pencil, Plus, Search, Trash2 } from "lucide-react"
+import { toast } from "sonner"
 import type { JobRow } from "@vrgroup/domain"
+import { ConfirmDialog } from "@/components/admin/confirm-dialog"
+import { JobForm, type JobFormValues } from "@/components/ofertas/job-form"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { EmptyState } from "@/components/ui/empty-state"
+import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { Skeleton } from "@/components/ui/skeleton"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
-type JobRecord = JobRow
+const PUBLIC_BASE = process.env.NEXT_PUBLIC_SITE_URL || "https://vrgroup.cl"
 
-const emptyForm = {
-  slug: "",
-  title: "",
-  summary: "",
-  description: "",
-  status: "draft",
-  location: "",
-  modality: "",
-  seniority: "",
-  employment_type: "",
-  tags: "",
-  salary_min: "",
-  salary_max: "",
-  currency: "USD",
-  apply_url: "",
-  apply_email: "",
-  apply_linkedin_url: "",
-  apply_notion_url: "",
-  responsibilities: "",
-  benefits: "",
-  requirements: "",
+function statusBadge(status: string) {
+  if (status === "published") return <Badge variant="success">Publicada</Badge>
+  if (status === "draft") return <Badge variant="warning">Borrador</Badge>
+  if (status === "archived") return <Badge variant="secondary">Archivada</Badge>
+  return <Badge variant="outline">{status}</Badge>
 }
 
 export default function AdminOffersPage() {
-  const [jobs, setJobs] = useState<JobRecord[]>([])
-  const [form, setForm] = useState(emptyForm)
-  const [editingId, setEditingId] = useState<string | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [saving, setSaving] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [showForm, setShowForm] = useState(false)
-  const [confirmState, setConfirmState] = useState<{ open: boolean; id: string | null; title: string | null }>({
-    open: false,
-    id: null,
-    title: null,
-  })
+  const [jobs, setJobs] = useState<JobRow[]>([])
+  const [loading, setLoading] = useState(true)
+  const [search, setSearch] = useState("")
+  const [statusFilter, setStatusFilter] = useState<"all" | "draft" | "published" | "archived">("all")
 
-  const sortedJobs = useMemo(() => jobs, [jobs])
+  const [sheetOpen, setSheetOpen] = useState(false)
+  const [editing, setEditing] = useState<JobRow | null>(null)
+  const [saving, setSaving] = useState(false)
+
+  const [confirm, setConfirm] = useState<{ open: boolean; job: JobRow | null; loading: boolean }>({
+    open: false,
+    job: null,
+    loading: false,
+  })
 
   async function fetchJobs() {
     setLoading(true)
-    setError(null)
-
     try {
-      const response = await fetch("/api/admin/jobs")
-      const payload = await response.json()
-      if (!response.ok) throw new Error(payload.error || "No se pudieron cargar las ofertas.")
+      const res = await fetch("/api/admin/jobs")
+      const payload = await res.json()
+      if (!res.ok) throw new Error(payload.error || "Error al cargar ofertas")
       setJobs(payload.data || [])
     } catch (err) {
-      setError(err instanceof Error ? err.message : "No se pudieron cargar las ofertas.")
+      toast.error(err instanceof Error ? err.message : "Error al cargar ofertas")
     } finally {
       setLoading(false)
     }
   }
 
   useEffect(() => {
-    fetchJobs()
+    void fetchJobs()
   }, [])
 
-  function resetForm() {
-    setForm(emptyForm)
-    setEditingId(null)
-  }
-
-  function startEdit(job: JobRecord) {
-    setEditingId(job.id)
-    setShowForm(true)
-    setForm({
-      slug: job.slug,
-      title: job.title,
-      summary: job.summary ?? "",
-      description: job.description ?? "",
-      status: job.status,
-      location: job.location ?? "",
-      modality: job.modality ?? "",
-      seniority: job.seniority ?? "",
-      employment_type: job.employment_type ?? "",
-      tags: job.tags?.join(", ") ?? "",
-      salary_min: job.salary_min?.toString() ?? "",
-      salary_max: job.salary_max?.toString() ?? "",
-      currency: job.currency ?? "USD",
-      apply_url: job.apply_url ?? "",
-      apply_email: job.apply_email ?? "",
-      apply_linkedin_url: job.apply_linkedin_url ?? "",
-      apply_notion_url: job.apply_notion_url ?? "",
-      responsibilities: job.responsibilities ?? "",
-      benefits: job.benefits ?? "",
-      requirements: job.requirements ?? "",
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase()
+    return jobs.filter((job) => {
+      if (statusFilter !== "all" && job.status !== statusFilter) return false
+      if (!q) return true
+      return (
+        job.title.toLowerCase().includes(q) ||
+        job.slug.toLowerCase().includes(q) ||
+        (job.location?.toLowerCase().includes(q) ?? false)
+      )
     })
+  }, [jobs, search, statusFilter])
+
+  function openNew() {
+    setEditing(null)
+    setSheetOpen(true)
   }
 
-  async function handleSubmit(event: React.FormEvent) {
-    event.preventDefault()
-    setSaving(true)
-    setError(null)
+  function openEdit(job: JobRow) {
+    setEditing(job)
+    setSheetOpen(true)
+  }
 
+  async function handleSubmit(values: JobFormValues) {
+    setSaving(true)
     const payload = {
-      ...form,
-      tags: form.tags
-        .split(",")
-        .map((value) => value.trim())
-        .filter(Boolean),
-      salary_min: form.salary_min ? Number(form.salary_min) : null,
-      salary_max: form.salary_max ? Number(form.salary_max) : null,
-      published_at: form.status === "published" ? new Date().toISOString() : null,
+      ...values,
+      tags: values.tags
+        ? values.tags.split(",").map((s) => s.trim()).filter(Boolean)
+        : [],
+      salary_min: values.salary_min ? Number(values.salary_min) : null,
+      salary_max: values.salary_max ? Number(values.salary_max) : null,
+      published_at: values.status === "published" ? new Date().toISOString() : null,
+      apply_url: values.apply_url || null,
+      apply_email: values.apply_email || null,
+      apply_linkedin_url: values.apply_linkedin_url || null,
+      apply_notion_url: values.apply_notion_url || null,
     }
 
     try {
-      const response = await fetch(editingId ? `/api/admin/jobs/${editingId}` : "/api/admin/jobs", {
-        method: editingId ? "PUT" : "POST",
+      const url = editing ? `/api/admin/jobs/${editing.id}` : "/api/admin/jobs"
+      const method = editing ? "PUT" : "POST"
+      const res = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       })
-      const result = await response.json()
-      if (!response.ok) throw new Error(result.error || "No se pudo guardar la oferta.")
-      resetForm()
-      setShowForm(false)
+      const result = await res.json()
+      if (!res.ok) throw new Error(result.error || "Error al guardar")
+      toast.success(editing ? "Oferta actualizada" : "Oferta creada")
+      setSheetOpen(false)
+      setEditing(null)
       await fetchJobs()
     } catch (err) {
-      setError(err instanceof Error ? err.message : "No se pudo guardar la oferta.")
+      toast.error(err instanceof Error ? err.message : "Error al guardar")
     } finally {
       setSaving(false)
     }
   }
 
-  async function deleteJob(id: string) {
-    setError(null)
-
+  async function handleDelete() {
+    if (!confirm.job) return
+    setConfirm((c) => ({ ...c, loading: true }))
     try {
-      const response = await fetch(`/api/admin/jobs/${id}`, { method: "DELETE" })
-      const payload = await response.json()
-      if (!response.ok) throw new Error(payload.error || "No se pudo eliminar la oferta.")
-      setJobs((current) => current.filter((job) => job.id !== id))
+      const res = await fetch(`/api/admin/jobs/${confirm.job.id}`, { method: "DELETE" })
+      const payload = await res.json()
+      if (!res.ok) throw new Error(payload.error || "Error al eliminar")
+      toast.success("Oferta eliminada")
+      setJobs((c) => c.filter((j) => j.id !== confirm.job!.id))
+      setConfirm({ open: false, job: null, loading: false })
     } catch (err) {
-      setError(err instanceof Error ? err.message : "No se pudo eliminar la oferta.")
+      toast.error(err instanceof Error ? err.message : "Error al eliminar")
+      setConfirm((c) => ({ ...c, loading: false }))
     }
   }
 
+  function copyLink(slug: string) {
+    const url = `${PUBLIC_BASE}/trabaja-con-nosotros?job=${slug}`
+    void navigator.clipboard.writeText(url)
+    toast.success("Link copiado", { description: url })
+  }
+
   return (
-    <section style={{ display: "grid", gap: 20 }}>
-      <div
-        style={{
-          background: "#fff",
-          border: "1px solid #d8e0ea",
-          borderRadius: 28,
-          padding: 24,
-          boxShadow: "0 18px 45px rgba(15, 23, 42, 0.05)",
-        }}
-      >
-        <div style={{ display: "flex", justifyContent: "space-between", gap: 16, alignItems: "end", flexWrap: "wrap" }}>
-          <div>
-            <p style={{ margin: 0, fontSize: 12, textTransform: "uppercase", letterSpacing: "0.16em", color: "#ff5a5f" }}>
-              Ofertas
-            </p>
-            <h1 style={{ margin: "10px 0 0", fontSize: 40 }}>Administracion de ofertas</h1>
-            <p style={{ margin: "10px 0 0", color: "#4f5d75", lineHeight: 1.6 }}>
-              Publica, edita o archiva vacantes usando la tabla <code>jobs</code>.
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={() => {
-              if (showForm) {
-                setShowForm(false)
-                resetForm()
-              } else {
-                setShowForm(true)
-                resetForm()
-              }
-            }}
-            style={{
-              borderRadius: 999,
-              border: "1px solid #ff5a5f",
-              background: "#ff5a5f",
-              color: "#fff",
-              padding: "12px 16px",
-              fontSize: 14,
-              fontWeight: 700,
-              cursor: "pointer",
-            }}
-          >
-            {showForm ? "Cerrar formulario" : "Nueva oferta"}
-          </button>
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p className="text-xs uppercase tracking-[0.18em] text-[var(--coral)]">Ofertas</p>
+          <h1 className="mt-1 font-display text-3xl font-semibold tracking-tight md:text-4xl">Vacantes</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Las ofertas publicadas se sirven en vivo a{" "}
+            <code className="rounded bg-muted px-1.5 py-0.5 text-xs">/trabaja-con-nosotros</code>.
+          </p>
         </div>
+        <Button variant="coral" onClick={openNew}>
+          <Plus /> Nueva oferta
+        </Button>
       </div>
 
-      {error ? (
-        <div style={{ borderRadius: 20, border: "1px solid #fecaca", background: "#fef2f2", color: "#b91c1c", padding: 16 }}>{error}</div>
-      ) : null}
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Buscar por título, slug o ubicación..."
+            className="pl-9"
+          />
+        </div>
+        <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as typeof statusFilter)}>
+          <SelectTrigger className="sm:w-48">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Todos los estados</SelectItem>
+            <SelectItem value="published">Publicadas</SelectItem>
+            <SelectItem value="draft">Borradores</SelectItem>
+            <SelectItem value="archived">Archivadas</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
 
-      {showForm ? (
-        <form
-          onSubmit={handleSubmit}
-          style={{
-            display: "grid",
-            gap: 18,
-            background: "#fff",
-            border: "1px solid #d8e0ea",
-            borderRadius: 28,
-            padding: 24,
-            boxShadow: "0 18px 45px rgba(15, 23, 42, 0.05)",
-          }}
-        >
-          <div style={{ display: "grid", gap: 16, gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
-            {[
-              { key: "title", label: "Titulo" },
-              { key: "slug", label: "Slug" },
-              { key: "location", label: "Ubicacion" },
-              { key: "modality", label: "Modalidad" },
-              { key: "seniority", label: "Senioridad" },
-              { key: "employment_type", label: "Tipo de empleo" },
-              { key: "status", label: "Estado" },
-              { key: "currency", label: "Moneda" },
-              { key: "salary_min", label: "Sueldo minimo" },
-              { key: "salary_max", label: "Sueldo maximo" },
-              { key: "apply_url", label: "Apply URL" },
-              { key: "apply_email", label: "Apply email" },
-              { key: "apply_linkedin_url", label: "LinkedIn URL" },
-              { key: "apply_notion_url", label: "Notion URL" },
-              { key: "tags", label: "Tags (coma separadas)" },
-            ].map((field) => (
-              <label key={field.key} style={{ display: "grid", gap: 8 }}>
-                <span style={{ fontWeight: 700 }}>{field.label}</span>
-                <input
-                  value={form[field.key as keyof typeof form]}
-                  onChange={(event) => setForm((current) => ({ ...current, [field.key]: event.target.value }))}
-                  style={{
-                    width: "100%",
-                    borderRadius: 14,
-                    border: "1px solid #d8e0ea",
-                    padding: "12px 14px",
-                    fontSize: 14,
-                  }}
-                />
-              </label>
+      <div className="rounded-xl border bg-card shadow-sm">
+        {loading ? (
+          <div className="flex flex-col gap-2 p-4">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Skeleton key={i} className="h-14 w-full" />
             ))}
           </div>
-
-          {[
-            { key: "summary", label: "Resumen", rows: 3 },
-            { key: "description", label: "Descripcion", rows: 6 },
-            { key: "responsibilities", label: "Responsabilidades", rows: 5 },
-            { key: "requirements", label: "Requisitos", rows: 5 },
-            { key: "benefits", label: "Beneficios", rows: 4 },
-          ].map((field) => (
-            <label key={field.key} style={{ display: "grid", gap: 8 }}>
-              <span style={{ fontWeight: 700 }}>{field.label}</span>
-              <textarea
-                rows={field.rows}
-                value={form[field.key as keyof typeof form]}
-                onChange={(event) => setForm((current) => ({ ...current, [field.key]: event.target.value }))}
-                style={{
-                  width: "100%",
-                  borderRadius: 14,
-                  border: "1px solid #d8e0ea",
-                  padding: "12px 14px",
-                  fontSize: 14,
-                  resize: "vertical",
-                }}
-              />
-            </label>
-          ))}
-
-          <div style={{ display: "flex", justifyContent: "flex-end", gap: 12, flexWrap: "wrap" }}>
-            <button
-              type="button"
-              onClick={() => {
-                resetForm()
-                setShowForm(false)
-              }}
-              style={{
-                borderRadius: 999,
-                border: "1px solid #d8e0ea",
-                background: "#fff",
-                color: "#0b1b33",
-                padding: "12px 16px",
-                fontSize: 14,
-                fontWeight: 700,
-                cursor: "pointer",
-              }}
-            >
-              Cancelar
-            </button>
-            <button
-              type="submit"
-              disabled={saving}
-              style={{
-                borderRadius: 999,
-                border: "1px solid #0b1b33",
-                background: "#0b1b33",
-                color: "#fff",
-                padding: "12px 16px",
-                fontSize: 14,
-                fontWeight: 700,
-                cursor: "pointer",
-                opacity: saving ? 0.7 : 1,
-              }}
-            >
-              {saving ? "Guardando..." : editingId ? "Guardar cambios" : "Crear oferta"}
-            </button>
-          </div>
-        </form>
-      ) : null}
-
-      <div style={{ display: "grid", gap: 14 }}>
-        {loading ? (
-          <div style={{ background: "#fff", border: "1px solid #d8e0ea", borderRadius: 24, padding: 24 }}>Cargando ofertas...</div>
-        ) : sortedJobs.length === 0 ? (
-          <div style={{ background: "#fff", border: "1px dashed #cbd5e1", borderRadius: 24, padding: 24, color: "#4f5d75" }}>
-            No hay ofertas cargadas.
-          </div>
+        ) : filtered.length === 0 ? (
+          <EmptyState
+            icon={<Briefcase />}
+            title={jobs.length === 0 ? "Sin ofertas todavía" : "Sin resultados"}
+            description={
+              jobs.length === 0
+                ? "Crea la primera vacante y se sincroniza al instante con el sitio público."
+                : "Probá ajustar la búsqueda o el filtro."
+            }
+            action={
+              jobs.length === 0 ? (
+                <Button variant="coral" onClick={openNew}>
+                  <Plus /> Crear primera oferta
+                </Button>
+              ) : undefined
+            }
+          />
         ) : (
-          sortedJobs.map((job) => (
-            <article
-              key={job.id}
-              style={{
-                background: "#fff",
-                border: "1px solid #d8e0ea",
-                borderRadius: 24,
-                padding: 22,
-                display: "grid",
-                gap: 10,
-                boxShadow: "0 12px 30px rgba(15, 23, 42, 0.05)",
-              }}
-            >
-              <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-                <div>
-                  <h2 style={{ margin: 0, fontSize: 24 }}>{job.title}</h2>
-                  <p style={{ margin: "6px 0 0", color: "#4f5d75" }}>{job.slug}</p>
-                </div>
-                <span
-                  style={{
-                    alignSelf: "start",
-                    borderRadius: 999,
-                    background: job.status === "published" ? "#ecfdf3" : job.status === "archived" ? "#f3f4f6" : "#fff7ed",
-                    color: job.status === "published" ? "#166534" : job.status === "archived" ? "#475467" : "#9a3412",
-                    padding: "8px 12px",
-                    fontWeight: 700,
-                    fontSize: 12,
-                    textTransform: "uppercase",
-                  }}
-                >
-                  {job.status}
-                </span>
-              </div>
-              {job.summary ? <p style={{ margin: 0, color: "#334155", lineHeight: 1.6 }}>{job.summary}</p> : null}
-              <div style={{ display: "flex", gap: 12, flexWrap: "wrap", color: "#5b6b82", fontSize: 14 }}>
-                {job.location ? <span>{job.location}</span> : null}
-                {job.modality ? <span>{job.modality}</span> : null}
-                {job.seniority ? <span>{job.seniority}</span> : null}
-                {job.employment_type ? <span>{job.employment_type}</span> : null}
-              </div>
-              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-                <button
-                  type="button"
-                  onClick={() => startEdit(job)}
-                  style={{
-                    borderRadius: 999,
-                    border: "1px solid #d8e0ea",
-                    background: "#fff",
-                    color: "#0b1b33",
-                    padding: "10px 14px",
-                    fontSize: 14,
-                    fontWeight: 700,
-                    cursor: "pointer",
-                  }}
-                >
-                  Editar
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setConfirmState({ open: true, id: job.id, title: job.title })}
-                  style={{
-                    borderRadius: 999,
-                    border: "1px solid #fecaca",
-                    background: "#fff1f2",
-                    color: "#be123c",
-                    padding: "10px 14px",
-                    fontSize: 14,
-                    fontWeight: 700,
-                    cursor: "pointer",
-                  }}
-                >
-                  Eliminar
-                </button>
-              </div>
-            </article>
-          ))
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Oferta</TableHead>
+                <TableHead className="hidden md:table-cell">Ubicación</TableHead>
+                <TableHead className="hidden lg:table-cell">Modalidad</TableHead>
+                <TableHead>Estado</TableHead>
+                <TableHead className="hidden md:table-cell">Creada</TableHead>
+                <TableHead className="w-10" />
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filtered.map((job) => (
+                <TableRow key={job.id}>
+                  <TableCell>
+                    <button
+                      type="button"
+                      onClick={() => openEdit(job)}
+                      className="text-left transition-colors hover:text-[var(--coral)]"
+                    >
+                      <div className="font-medium">{job.title}</div>
+                      <div className="text-xs text-muted-foreground">{job.slug}</div>
+                    </button>
+                  </TableCell>
+                  <TableCell className="hidden text-muted-foreground md:table-cell">
+                    {job.location || "—"}
+                  </TableCell>
+                  <TableCell className="hidden text-muted-foreground lg:table-cell">
+                    {job.modality || "—"}
+                  </TableCell>
+                  <TableCell>{statusBadge(job.status)}</TableCell>
+                  <TableCell className="hidden text-xs text-muted-foreground md:table-cell">
+                    {job.created_at
+                      ? formatDistanceToNow(new Date(job.created_at), { addSuffix: true, locale: es })
+                      : "—"}
+                  </TableCell>
+                  <TableCell>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon" aria-label="Acciones">
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem onSelect={() => openEdit(job)}>
+                          <Pencil /> Editar
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => copyLink(job.slug)}>
+                          <Copy /> Copiar link público
+                        </DropdownMenuItem>
+                        {job.status === "published" && (
+                          <DropdownMenuItem asChild>
+                            <a
+                              href={`${PUBLIC_BASE}/trabaja-con-nosotros?job=${job.slug}`}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              <ExternalLink /> Ver publicada
+                            </a>
+                          </DropdownMenuItem>
+                        )}
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          className="text-destructive focus:text-destructive"
+                          onSelect={() => setConfirm({ open: true, job, loading: false })}
+                        >
+                          <Trash2 /> Eliminar
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
+        {!loading && filtered.length > 0 && (
+          <div className="border-t px-4 py-2 text-xs text-muted-foreground">
+            {filtered.length} {filtered.length === 1 ? "oferta" : "ofertas"}
+            {filtered.length !== jobs.length && ` de ${jobs.length}`}
+          </div>
         )}
       </div>
 
+      <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+        <SheetContent className="w-full sm:max-w-2xl">
+          <SheetHeader>
+            <SheetTitle>{editing ? "Editar oferta" : "Nueva oferta"}</SheetTitle>
+            <SheetDescription>
+              {editing ? "Actualizá los campos de la vacante." : "Creá una nueva vacante. Se publica al cambiar a 'Publicada'."}
+            </SheetDescription>
+          </SheetHeader>
+          <div className="mt-6">
+            <JobForm
+              key={editing?.id ?? "new"}
+              job={editing}
+              submitting={saving}
+              onSubmit={handleSubmit}
+              onCancel={() => setSheetOpen(false)}
+            />
+          </div>
+        </SheetContent>
+      </Sheet>
+
       <ConfirmDialog
-        open={confirmState.open}
+        open={confirm.open}
         title="Eliminar oferta"
-        description={`Se eliminara ${confirmState.title || "esta oferta"} de forma permanente.`}
+        description={`Se eliminará "${confirm.job?.title || ""}" permanentemente. Esta acción no se puede deshacer.`}
         confirmLabel="Eliminar oferta"
-        onCancel={() => setConfirmState({ open: false, id: null, title: null })}
-        onConfirm={async () => {
-          if (!confirmState.id) return
-          await deleteJob(confirmState.id)
-          setConfirmState({ open: false, id: null, title: null })
-        }}
+        loading={confirm.loading}
+        onCancel={() => setConfirm({ open: false, job: null, loading: false })}
+        onConfirm={handleDelete}
       />
-    </section>
+    </div>
   )
 }
