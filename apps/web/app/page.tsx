@@ -2,6 +2,7 @@ import type { CSSProperties } from "react"
 import { SiteNavbar } from "@/components/layout/site-navbar"
 import { Footer } from "@/components/layout/footer"
 import { Hero } from "@/components/ui/hero"
+import { VantaCloudsBackground } from "@/components/ui/vanta-clouds-background"
 import { Section } from "@/components/ui/section"
 import { HomeDeferredSections } from "@/components/ui/home-deferred-sections"
 import { LogoCarousel } from "@/components/ui/logo-carousel"
@@ -12,7 +13,7 @@ import { toOptimizedAssetPath } from "@/lib/assets"
 import { getLogosFromFolder } from "@/lib/logos"
 import Image from "next/image"
 import Link from "next/link"
-import { Check, Brain, Workflow, Sparkles } from "lucide-react"
+import { Check, Brain, Workflow, Sparkles, ShieldCheck, Zap, LineChart } from "lucide-react"
 
 export default function Home() {
   const clientLogos = getLogosFromFolder("clients")
@@ -84,13 +85,27 @@ export default function Home() {
             </span>
           </>
         }
-        subtitle="De estrategia a producción: arquitectura sólida, seguridad y gobierno claro para entornos críticos."
-        subtitleClassName="text-base sm:text-xl leading-relaxed max-w-[22rem] sm:max-w-3xl"
         alignment="center"
         minHeight="calc(100vh + 50px)"
         className="pt-8 sm:pt-12 lg:pt-16 pb-4 sm:pb-6 lg:pb-8"
         variant="default"
+        backgroundEffect={<VantaCloudsBackground />}
       >
+        <div className="mt-7 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+          {[
+            { icon: ShieldCheck, label: "Seguridad y gobierno" },
+            { icon: Zap, label: "Time-to-value rápido" },
+            { icon: LineChart, label: "Resultados medibles" },
+          ].map(({ icon: Icon, label }) => (
+            <span
+              key={label}
+              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 py-1.5 text-xs sm:text-sm font-medium text-white/90 backdrop-blur-md shadow-[0_1px_0_rgba(255,255,255,0.06)_inset]"
+            >
+              <Icon size={14} className="text-[#FF8A8E]" strokeWidth={2.25} />
+              {label}
+            </span>
+          ))}
+        </div>
         <div className="flex flex-col items-center gap-6 mt-8">
           <span className="text-xs font-semibold uppercase tracking-[0.18em] text-white/70">
             Atención ejecutiva

@@ -9,6 +9,7 @@ interface HeroProps {
   children?: ReactNode
   backgroundImage?: string
   backgroundVideo?: string
+  backgroundEffect?: ReactNode
   overlayImage?: string
   overlayClassName?: string
   overlayPosition?: string
@@ -28,6 +29,7 @@ export function Hero({
   children,
   backgroundImage,
   backgroundVideo,
+  backgroundEffect,
   overlayImage,
   overlayClassName = "opacity-30 mix-blend-screen",
   overlayPosition = "center",
@@ -71,6 +73,10 @@ export function Hero({
       ) : (
         <>
           <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0b1b33] to-[#0c2f5c]" />
+          {backgroundEffect}
+          {backgroundEffect && (
+            <div className="pointer-events-none absolute inset-0 bg-[#01042d]/45" />
+          )}
           <div className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05),transparent_60%)] blur-3xl opacity-70" />
           <div className="pointer-events-none absolute right-[-60px] bottom-[-80px] h-96 w-96 rounded-full bg-[radial-gradient(circle_at_center,rgba(0,153,255,0.16),transparent_60%)] blur-3xl opacity-80" />
         </>

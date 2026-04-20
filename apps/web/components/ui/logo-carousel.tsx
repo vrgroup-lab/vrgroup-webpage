@@ -28,10 +28,17 @@ export function LogoCarousel({
   const repeated = [...logos, ...logos]
 
   return (
-    <div className={`relative overflow-hidden py-6 ${className}`}>
+    <div
+      className={`relative overflow-hidden py-6 ${className}`}
+      style={{ contain: "layout paint", isolation: "isolate" }}
+    >
       <div
         className="flex items-center gap-10 hover:[animation-play-state:paused]"
-        style={{ animation: `marquee ${speedMs}ms linear infinite` }}
+        style={{
+          animation: `marquee ${speedMs}ms linear infinite`,
+          willChange: "transform",
+          transform: "translateZ(0)",
+        }}
       >
         {repeated.map((logo, idx) => (
           <div key={`${logo}-${idx}`} className="flex-shrink-0">

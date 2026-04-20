@@ -14,7 +14,6 @@
 /build
 /reports/lighthouse/
 /apps/*/reports/lighthouse/
-/migration/legacy-snapshot/
 
 # debug
 npm-debug.log*

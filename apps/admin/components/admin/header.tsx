@@ -46,21 +46,6 @@ export function AdminHeader({ fullName, role }: { fullName: string | null; role:
           </div>
 
           <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
-            <Link
-              href="/trabaja-con-nosotros"
-              style={{
-                borderRadius: 999,
-                border: "1px solid #d8e0ea",
-                background: "#fff",
-                color: "#0b1b33",
-                padding: "10px 14px",
-                textDecoration: "none",
-                fontSize: 14,
-                fontWeight: 700,
-              }}
-            >
-              Vista publica
-            </Link>
             <LogoutButton />
           </div>
         </div>

@@ -18,6 +18,7 @@ const ROUTES = [
   { slug: "nosotros", route: "/nosotros" },
   { slug: "partners", route: "/partners" },
   { slug: "servicios", route: "/servicios" },
+  { slug: "trabaja-con-nosotros", route: "/trabaja-con-nosotros" },
   { slug: "equipo-marco-bertolini", route: "/equipo/marco-bertolini" },
   { slug: "servicios-experiencia-digital", route: "/servicios/experiencia-digital" },
 ]

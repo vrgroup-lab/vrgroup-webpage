@@ -3,7 +3,7 @@ import Image from "next/image"
 import { Mail, Phone, MapPin, Linkedin, MessageCircle } from "lucide-react"
 import { servicesData } from "@/components/ui/services-section"
 import { toOptimizedAssetPath } from "@/lib/assets"
-import { externalCareersUrl } from "@/lib/site-config"
+import { careersPath } from "@/lib/site-config"
 
 const shortServiceTitles: Record<string, string> = {
   "experiencia-digital": "Experiencia Digital",
@@ -148,12 +148,12 @@ export function Footer() {
 
         {/* Highlighted footer CTAs */}
         <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row gap-3">
-          <a
-            href={externalCareersUrl}
+          <Link
+            href={careersPath}
             className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 text-white font-semibold text-sm hover:bg-white/15 transition-colors shadow-[0_10px_35px_rgba(0,0,0,0.25)]"
           >
             Trabaja con nosotros
-          </a>
+          </Link>
         </div>
 
         {/* Partner */}

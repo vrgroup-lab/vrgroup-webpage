@@ -1,7 +1,6 @@
 "use client"
 
 import Image from "next/image"
-import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 
@@ -77,35 +76,14 @@ export default function LoginPage() {
           </div>
 
           <div style={{ padding: "32px 40px", background: "#fff" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, marginBottom: 24, flexWrap: "wrap" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                <div style={{ position: "relative", width: 48, height: 48 }}>
-                  <Image src="/logos/brand/logo_vrgroup_cuadrado.png" alt="VR Group" fill sizes="96px" style={{ objectFit: "contain" }} />
-                </div>
-                <div>
-                  <p style={{ margin: 0, fontSize: 14, color: "#6b7280" }}>VR Group</p>
-                  <h2 style={{ margin: "4px 0 0", fontSize: 28, lineHeight: 1.15 }}>Iniciar sesión</h2>
-                </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 24 }}>
+              <div style={{ position: "relative", width: 48, height: 48 }}>
+                <Image src="/logos/brand/logo_vrgroup_cuadrado.png" alt="VR Group" fill sizes="96px" style={{ objectFit: "contain" }} />
               </div>
-
-              <Link
-                href="/trabaja-con-nosotros"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 8,
-                  padding: "12px 14px",
-                  borderRadius: 14,
-                  border: "1px solid #d1d5db",
-                  background: "#fff",
-                  color: "#111827",
-                  textDecoration: "none",
-                  fontWeight: 700,
-                  fontSize: 14,
-                }}
-              >
-                Ver vacantes públicas
-              </Link>
+              <div>
+                <p style={{ margin: 0, fontSize: 14, color: "#6b7280" }}>VR Group</p>
+                <h2 style={{ margin: "4px 0 0", fontSize: 28, lineHeight: 1.15 }}>Iniciar sesión</h2>
+              </div>
             </div>
 
             {error ? (

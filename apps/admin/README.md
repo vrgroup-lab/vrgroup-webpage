@@ -4,9 +4,8 @@ App dinámica de VR Group.
 
 Responsabilidades actuales:
 
-- `/trabaja-con-nosotros` público sobre `jobs`
 - `/login` como puerta de entrada del panel
-- `/admin/ofertas` protegido
+- `/admin/ofertas` protegido (CRUD de `jobs`, consumido públicamente por `apps/web/trabaja-con-nosotros`)
 - `/admin/contactos` protegido
 - `/admin/usuarios` protegido
 

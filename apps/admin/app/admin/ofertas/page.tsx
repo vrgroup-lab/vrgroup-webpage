@@ -2,32 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react"
 import { ConfirmDialog } from "@/components/admin/confirm-dialog"
+import type { JobRow } from "@vrgroup/domain"
 
-type JobRecord = {
-  id: string
-  slug: string
-  title: string
-  summary: string | null
-  description: string | null
-  status: string
-  location: string | null
-  modality: string | null
-  seniority: string | null
-  employment_type: string | null
-  tags: string[] | null
-  salary_min: number | null
-  salary_max: number | null
-  currency: string | null
-  apply_url: string | null
-  apply_email: string | null
-  apply_linkedin_url: string | null
-  apply_notion_url: string | null
-  responsibilities: string | null
-  benefits: string | null
-  requirements: string | null
-  published_at: string | null
-  created_at: string
-}
+type JobRecord = JobRow
 
 const emptyForm = {
   slug: "",

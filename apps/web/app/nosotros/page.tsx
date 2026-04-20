@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { SiteNavbar } from "@/components/layout/site-navbar"
 import { Footer } from "@/components/layout/footer"
 import { HeroRotator } from "@/components/ui/hero-rotator"
@@ -6,7 +7,7 @@ import { CTABanner } from "@/components/ui/cta-banner"
 import { CheckCircle2, Sparkles, Workflow, Users, Rocket, ShieldCheck } from "lucide-react"
 import { toBackgroundImage } from "@/lib/assets"
 import { getHeroImages } from "@/lib/hero-images"
-import { externalCareersUrl, marketingSiteSettings } from "@/lib/site-config"
+import { careersPath, marketingSiteSettings } from "@/lib/site-config"
 
 export default function AboutPage() {
   const siteSettings = marketingSiteSettings
@@ -64,12 +65,12 @@ export default function AboutPage() {
               ))}
             </div>
             <div className="pt-3 mt-1 border-t border-white/15 flex justify-center">
-              <a
-                href={externalCareersUrl}
+              <Link
+                href={careersPath}
                 className="inline-flex items-center gap-2 rounded-full bg-white text-[#0B1B33] px-5 py-2 text-sm font-semibold hover:bg-gray-100 transition-colors"
               >
                 Trabaja con nosotros
-              </a>
+              </Link>
             </div>
           </div>
         </div>

@@ -1,9 +1,4 @@
-import { createClient } from "@supabase/supabase-js"
-import type { Job } from "@/lib/careers/types"
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
+import type { Job, JobRow } from "./job"
 
 const dateFormatter = new Intl.DateTimeFormat("es-CL", {
   day: "numeric",
@@ -11,29 +6,22 @@ const dateFormatter = new Intl.DateTimeFormat("es-CL", {
   year: "numeric",
 })
 
-function getPublicClient() {
-  if (!supabaseUrl || !supabaseAnonKey) return null
-  return createClient(supabaseUrl, supabaseAnonKey)
-}
+export const JOB_COLUMNS =
+  "id, slug, title, summary, description, status, location, modality, seniority, employment_type, tags, responsibilities, benefits, requirements, apply_url, apply_email, apply_linkedin_url, apply_notion_url, salary_min, salary_max, currency, created_at, published_at"
 
-function getAdminClient() {
-  if (!supabaseUrl || !supabaseServiceRoleKey) return null
-  return createClient(supabaseUrl, supabaseServiceRoleKey)
-}
-
-function normalizeMultiline(value: string | null | undefined) {
+export function normalizeMultiline(value: string | null | undefined): string[] {
   return (value ?? "")
     .split("\n")
     .map((item) => item.trim())
     .filter(Boolean)
 }
 
-function asStringArray(value: unknown) {
+export function asStringArray(value: unknown): string[] {
   if (!Array.isArray(value)) return []
   return value.filter((item): item is string => typeof item === "string")
 }
 
-function mapJob(row: Record<string, unknown>): Job {
+export function mapJob(row: Record<string, unknown>): Job {
   return {
     id: String(row.id),
     slug: String(row.slug),
@@ -61,14 +49,26 @@ function mapJob(row: Record<string, unknown>): Job {
   }
 }
 
-export function formatDateLabel(value: string | null) {
+export function mapJobRow(row: JobRow): Job {
+  return mapJob(row as unknown as Record<string, unknown>)
+}
+
+export function formatDateLabel(value: string | null | undefined): string {
   if (!value) return ""
   const date = new Date(value)
   if (Number.isNaN(date.getTime())) return ""
   return dateFormatter.format(date)
 }
 
-export function getBadgeLabel(kind: "employment" | "modality" | "seniority", value?: string | null) {
+export type BadgeKind = "employment" | "modality" | "seniority"
+
+export type JobBadge = {
+  label: string
+  tone: string
+  color: string
+}
+
+export function getBadgeLabel(kind: BadgeKind, value?: string | null): JobBadge | null {
   if (!value) return null
   const val = value.toLowerCase()
 
@@ -93,64 +93,4 @@ export function getBadgeLabel(kind: "employment" | "modality" | "seniority", val
   }
 
   return { label: value, tone: "#eef2f6", color: "#475467" }
-}
-
-export async function listPublishedJobs() {
-  const client = getPublicClient()
-  if (!client) return []
-
-  const { data, error } = await client
-    .from("jobs")
-    .select(
-      "id, slug, title, summary, description, status, location, modality, seniority, employment_type, tags, responsibilities, benefits, requirements, apply_url, apply_email, apply_linkedin_url, apply_notion_url, salary_min, salary_max, currency, created_at, published_at"
-    )
-    .eq("status", "published")
-    .order("published_at", { ascending: false, nullsFirst: false })
-    .order("created_at", { ascending: false })
-
-  if (error || !data) {
-    console.error("Error fetching published jobs", error)
-    return []
-  }
-
-  return data.map(mapJob)
-}
-
-export async function getPublishedJobBySlug(slug: string) {
-  const client = getPublicClient()
-  if (!client) return null
-
-  const { data, error } = await client
-    .from("jobs")
-    .select(
-      "id, slug, title, summary, description, status, location, modality, seniority, employment_type, tags, responsibilities, benefits, requirements, apply_url, apply_email, apply_linkedin_url, apply_notion_url, salary_min, salary_max, currency, created_at, published_at"
-    )
-    .eq("slug", slug)
-    .eq("status", "published")
-    .single()
-
-  if (error || !data) {
-    return null
-  }
-
-  return mapJob(data)
-}
-
-export async function listAllJobs() {
-  const client = getAdminClient()
-  if (!client) return []
-
-  const { data, error } = await client
-    .from("jobs")
-    .select(
-      "id, slug, title, summary, description, status, location, modality, seniority, employment_type, tags, responsibilities, benefits, requirements, apply_url, apply_email, apply_linkedin_url, apply_notion_url, salary_min, salary_max, currency, created_at, published_at"
-    )
-    .order("created_at", { ascending: false })
-
-  if (error || !data) {
-    console.error("Error fetching admin jobs", error)
-    return []
-  }
-
-  return data.map(mapJob)
 }

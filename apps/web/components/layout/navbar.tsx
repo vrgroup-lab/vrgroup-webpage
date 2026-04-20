@@ -6,7 +6,7 @@ import { useState, useRef, useEffect } from "react"
 import { Menu, X, ChevronDown } from "lucide-react"
 import { servicesData } from "@/components/ui/services-section"
 import { toOptimizedAssetPath } from "@/lib/assets"
-import { externalCareersUrl } from "@/lib/site-config"
+import { careersPath } from "@/lib/site-config"
 
 type NavbarSettings = {
   showCareersInHeader?: boolean
@@ -52,7 +52,7 @@ export function Navbar({ settings }: NavbarProps) {
   const navItems = [
     { label: "Servicios", href: "/servicios", hasSub: true },
     { label: "Quiénes somos", href: "/nosotros" },
-    ...(showCareers ? [{ label: "Trabaja con nosotros", href: externalCareersUrl, external: true }] : []),
+    ...(showCareers ? [{ label: "Trabaja con nosotros", href: careersPath }] : []),
   ]
 
   return (
@@ -125,10 +125,6 @@ export function Navbar({ settings }: NavbarProps) {
           </div>
         </div>
       </div>
-                ) : item.external ? (
-                  <a key={item.href} href={item.href} className="text-white hover:text-white transition-colors">
-                    {item.label}
-                  </a>
                 ) : (
                   <Link key={item.href} href={item.href} className="text-white hover:text-white transition-colors">
                     {item.label}
@@ -214,29 +210,17 @@ export function Navbar({ settings }: NavbarProps) {
                 <div className="grid grid-cols-1 gap-4">
                   {navItems
                     .filter((item) => !item.hasSub)
-                    .map((item) =>
-                      item.external ? (
-                        <a
-                          key={item.href}
-                          href={item.href}
-                          className="flex items-center justify-start gap-2 py-3 text-white/85 hover:text-white transition"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          <span className="font-medium">{item.label}</span>
-                          <span className="text-white/50">→</span>
-                        </a>
-                      ) : (
-                        <Link
-                          key={item.href}
-                          href={item.href}
-                          className="flex items-center justify-start gap-2 py-3 text-white/85 hover:text-white transition"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          <span className="font-medium">{item.label}</span>
-                          <span className="text-white/50">→</span>
-                        </Link>
-                      )
-                    )}
+                    .map((item) => (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className="flex items-center justify-start gap-2 py-3 text-white/85 hover:text-white transition"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <span className="font-medium">{item.label}</span>
+                        <span className="text-white/50">→</span>
+                      </Link>
+                    ))}
                 </div>
 
                 <div className="pt-2 border-t border-white/10">
