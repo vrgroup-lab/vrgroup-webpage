@@ -14,6 +14,7 @@
 /build
 /reports/lighthouse/
 /apps/*/reports/lighthouse/
+/apps/*/vrgroup-web.zip
 
 # debug
 npm-debug.log*

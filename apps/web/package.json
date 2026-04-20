@@ -7,6 +7,8 @@
     "predev": "npm run optimize-images",
     "prebuild": "npm run optimize-images",
     "build": "next build",
+    "package:zip": "node scripts/package-zip.js",
+    "package": "npm run build && npm run package:zip",
     "dev": "next dev",
     "lint": "eslint .",
     "typecheck": "next typegen && tsc --noEmit",
