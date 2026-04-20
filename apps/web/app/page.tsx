@@ -5,15 +5,15 @@ import { Hero } from "@/components/ui/hero"
 import { VantaCloudsBackground } from "@/components/ui/vanta-clouds-background"
 import { Section } from "@/components/ui/section"
 import { HomeDeferredSections } from "@/components/ui/home-deferred-sections"
-import { LogoCarousel } from "@/components/ui/logo-carousel"
 import { ServicesSection } from "@/components/ui/services-section"
 import { CTABanner } from "@/components/ui/cta-banner"
 import { RotatingWord } from "@/components/ui/rotating-word"
+import { ClientsMarquee } from "@/components/ui/clients-marquee"
 import { toOptimizedAssetPath } from "@/lib/assets"
 import { getLogosFromFolder } from "@/lib/logos"
 import Image from "next/image"
 import Link from "next/link"
-import { Check, Brain, Workflow, Sparkles, ShieldCheck, Zap, LineChart } from "lucide-react"
+import { Check, Brain, Workflow, Sparkles } from "lucide-react"
 
 export default function Home() {
   const clientLogos = getLogosFromFolder("clients")
@@ -26,28 +26,28 @@ export default function Home() {
   const differentiators = [
     {
       title: "Appian & low-code de clase mundial",
-      description: "Arquitecturas escalables, gobierno claro y entregas rápidas en Appian/iBPMS.",
+      description: "Plataformas líderes con arquitecturas escalables y entregas rápidas.",
       icon: Workflow,
     },
     {
       title: "IA aplicada a procesos",
-      description: "Copilots, bots corporativos y RAG integrados a sistemas core y flujos de negocio.",
+      description: "Copilots y asistentes integrados a tus sistemas core para acelerar la operación.",
       icon: Brain,
     },
     {
-      title: "Equipos boutique senior",
-      description: "Squads multidisciplinares con UX, dev, QA y delivery para acelerar time-to-value.",
+      title: "Equipos senior end-to-end",
+      description: "UX, desarrollo, QA y delivery en un solo equipo que acompaña todo el ciclo.",
       icon: Sparkles,
     },
     {
-      title: "Entrega con resultados medibles",
-      description: "KPIs claros: TAT, productividad, adopción y confiabilidad en producción.",
+      title: "Resultados medibles",
+      description: "KPIs claros: time-to-market, productividad, adopción y confiabilidad.",
       icon: Check,
     },
   ]
 
   const ctaBase =
-    "w-full sm:w-[280px] h-[56px] rounded-xl font-display font-semibold transition-all inline-flex items-center justify-center gap-2 whitespace-nowrap"
+    "w-full sm:w-[240px] lg:w-[260px] h-12 sm:h-[52px] lg:h-14 text-sm sm:text-base rounded-xl font-display font-semibold transition-all inline-flex items-center justify-center gap-2 whitespace-nowrap"
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -89,79 +89,83 @@ export default function Home() {
         minHeight="calc(100vh + 50px)"
         className="pt-8 sm:pt-12 lg:pt-16 pb-4 sm:pb-6 lg:pb-8"
         variant="default"
-        backgroundEffect={<VantaCloudsBackground />}
-      >
-        <div className="mt-7 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
-          {[
-            { icon: ShieldCheck, label: "Seguridad y gobierno" },
-            { icon: Zap, label: "Time-to-value rápido" },
-            { icon: LineChart, label: "Resultados medibles" },
-          ].map(({ icon: Icon, label }) => (
-            <span
-              key={label}
-              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3.5 py-1.5 text-xs sm:text-sm font-medium text-white/90 backdrop-blur-md shadow-[0_1px_0_rgba(255,255,255,0.06)_inset]"
-            >
-              <Icon size={14} className="text-[#FF8A8E]" strokeWidth={2.25} />
-              {label}
-            </span>
-          ))}
-        </div>
-        <div className="flex flex-col items-center gap-6 mt-8">
-          <span className="text-xs font-semibold uppercase tracking-[0.18em] text-white/70">
-            Atención ejecutiva
-          </span>
-          <div className="flex flex-col sm:flex-row items-center gap-5 w-full sm:w-auto">
-            <Link
-              href="/contacto"
-              className={`${ctaBase} border-2 border-transparent text-white bg-[#FF5A5F] hover:bg-[#FF6A6F] shadow-none hover:shadow-none hover:scale-[1.05] active:scale-[0.99]`}
-            >
-              Agenda una reunión
-              <span>→</span>
-            </Link>
-            <Link
-              href="/servicios"
-              className={`${ctaBase} bg-white text-[#0B1B33] hover:bg-gray-100 hover:scale-[1.05] active:scale-[0.99]`}
-            >
-              Explora nuestros servicios
-            </Link>
-          </div>
-        </div>
-        <div className="mt-12 w-full">
-          <LogoCarousel
-            logos={clientLogos}
-            className="py-0"
-            logoClassName="brightness-0 invert opacity-80"
-            showFades={false}
+        dimOverlay={false}
+        backgroundEffect={
+          <VantaCloudsBackground
+            backgroundColor={0x1a2f45}
+            skyColor={0x5aa8cc}
+            cloudColor={0xd46a55}
+            cloudShadowColor={0x1a2040}
+            sunColor={0xc04530}
+            sunGlareColor={0xd87055}
+            sunlightColor={0xc05540}
+            speed={1}
+            cameraHeight={0.9}
           />
+        }
+      >
+        <p className="mt-7 font-display text-white/90 text-lg sm:text-xl lg:text-2xl max-w-2xl mx-auto leading-snug drop-shadow">
+          Estrategia, ingeniería y operación en un solo equipo.
+        </p>
+        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto mx-auto">
+          <Link
+            href="/contacto"
+            className={`${ctaBase} border-2 border-transparent text-white bg-[#FF5A5F] hover:bg-[#FF6A6F] shadow-none hover:shadow-none hover:scale-[1.05] active:scale-[0.99]`}
+          >
+            Agenda una reunión
+            <span>→</span>
+          </Link>
+          <Link
+            href="/servicios"
+            className={`${ctaBase} bg-white text-[#0B1B33] hover:bg-gray-100 hover:scale-[1.05] active:scale-[0.99]`}
+          >
+            Explora nuestros servicios
+          </Link>
         </div>
       </Hero>
 
-      {/* Differentiators Section */}
-      <Section
-        title="Por qué VR Group"
-        subtitle="Low-code, IA aplicada y delivery boutique para resultados medibles"
-        className="bg-white"
-        variant="light"
-        paddingClass="py-12 sm:py-14 lg:py-16"
-      >
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 lg:gap-4 xl:gap-5">
-          {differentiators.map((item, idx) => {
-            const Icon = item.icon
-            return (
-              <div
-                key={idx}
-                className="rounded-2xl border border-gray-200 p-6 lg:p-7 bg-white hover:shadow-lg transition-all group"
-              >
-                <div className="w-11 h-11 rounded-xl bg-[#FF5A5F]/10 flex items-center justify-center text-coral mb-4 group-hover:scale-105 transition-transform">
-                  <Icon size={22} />
-                </div>
-                <h3 className="font-display font-semibold text-lg text-blue-dark mb-2">{item.title}</h3>
-                <p className="text-gray-600 text-sm leading-relaxed">{item.description}</p>
-              </div>
-            )
-          })}
+      {/* Clients + Differentiators unified dark block */}
+      <section className="bg-gradient-to-b from-[#050711] to-[#070a1a]">
+        {/* Clients */}
+        <div className="pt-12 sm:pt-16 lg:pt-20">
+          <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8 mb-8 sm:mb-10">
+            <h2 className="font-display text-white text-3xl sm:text-4xl lg:text-5xl">
+              <span className="font-normal">Nuestros</span>{" "}
+              <span className="font-bold">clientes</span>
+            </h2>
+          </div>
+          <ClientsMarquee logos={clientLogos} />
         </div>
-      </Section>
+
+        {/* Differentiators */}
+        <div className="pt-16 sm:pt-20 lg:pt-24 pb-12 sm:pb-16 lg:pb-20">
+          <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mb-8 sm:mb-10">
+              <h2 className="font-display text-white text-3xl sm:text-4xl lg:text-5xl">
+                <span className="font-normal">Por qué</span>{" "}
+                <span className="font-bold">VR Group</span>
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 lg:gap-4 xl:gap-5">
+              {differentiators.map((item, idx) => {
+                const Icon = item.icon
+                return (
+                  <div
+                    key={idx}
+                    className="rounded-2xl border border-white/10 p-6 lg:p-7 bg-white/[0.04] hover:bg-white/[0.07] hover:border-white/20 transition-all group"
+                  >
+                    <div className="w-11 h-11 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center text-white mb-4 group-hover:scale-105 group-hover:bg-white/15 transition-all">
+                      <Icon size={22} />
+                    </div>
+                    <h3 className="font-display font-semibold text-lg text-white mb-2">{item.title}</h3>
+                    <p className="text-white/70 text-sm leading-relaxed">{item.description}</p>
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
 
       <div style={deferredSectionStyle}>
         <HomeDeferredSections providerLogos={providerLogos} />
@@ -173,7 +177,7 @@ export default function Home() {
           heading="Nuestras soluciones para tu negocio"
           subheading="Portafolio completo de VR Group: automatización, IA aplicada, analítica, desarrollo y gobierno operativo."
           variant="dark"
-          paddingClass="py-12 sm:py-14 lg:py-16"
+          paddingClass="min-h-screen py-16 sm:py-20 lg:py-24 flex flex-col justify-center"
         />
       </div>
 

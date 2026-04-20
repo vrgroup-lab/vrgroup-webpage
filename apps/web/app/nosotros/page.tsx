@@ -1,15 +1,73 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { SiteNavbar } from "@/components/layout/site-navbar"
 import { Footer } from "@/components/layout/footer"
 import { HeroRotator } from "@/components/ui/hero-rotator"
 import { Section } from "@/components/ui/section"
 import { CTABanner } from "@/components/ui/cta-banner"
-import { CheckCircle2, Sparkles, Workflow, Users, Rocket, ShieldCheck } from "lucide-react"
-import { toBackgroundImage } from "@/lib/assets"
+import { AnimatedCounter } from "@/components/ui/animated-counter"
+import { ClientsMarquee } from "@/components/ui/clients-marquee"
+import { CheckCircle2, Sparkles, Workflow, Users, Rocket } from "lucide-react"
+import { toOptimizedAssetPath } from "@/lib/assets"
 import { getHeroImages } from "@/lib/hero-images"
+import { getLogosFromFolder } from "@/lib/logos"
 import { careersPath, marketingSiteSettings } from "@/lib/site-config"
 
+export const metadata: Metadata = {
+  title: "Sobre VR Group | Consultora boutique en transformación digital e IA",
+  description:
+    "Desde 2017, VR Group acompaña a empresas en Chile y Latinoamérica en transformación digital, automatización de procesos e inteligencia artificial aplicada. Más de 150 proyectos y un equipo multidisciplinario de 75 colaboradores.",
+  alternates: {
+    canonical: "/nosotros",
+  },
+  openGraph: {
+    type: "website",
+    locale: "es_CL",
+    url: "https://vrgroup.cl/nosotros",
+    siteName: "VR Group",
+    title: "Sobre VR Group | Consultora boutique en transformación digital e IA",
+    description:
+      "Consultora boutique con foco en automatización, low-code e IA aplicada. +150 proyectos ejecutados desde 2017 en Chile y Latinoamérica.",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sobre VR Group | Consultora boutique en transformación digital e IA",
+    description:
+      "Consultora boutique con foco en automatización, low-code e IA aplicada. +150 proyectos ejecutados desde 2017.",
+  },
+}
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "VR Group",
+  legalName: "VR Group Chile",
+  url: "https://vrgroup.cl",
+  logo: "https://vrgroup.cl" + toOptimizedAssetPath("/logos/brand/logo_vrgroup_cuadrado.png"),
+  foundingDate: "2017",
+  numberOfEmployees: {
+    "@type": "QuantitativeValue",
+    value: 75,
+  },
+  description:
+    "Consultora boutique en transformación digital, automatización de procesos e inteligencia artificial aplicada.",
+  address: {
+    "@type": "PostalAddress",
+    addressCountry: "CL",
+  },
+  areaServed: ["CL", "Latinoamérica"],
+  sameAs: ["https://cl.linkedin.com/company/vr-group-chile"],
+}
+
 export default function AboutPage() {
+  const clientLogos = getLogosFromFolder("clients")
   const siteSettings = marketingSiteSettings
   const pillars = [
     {
@@ -38,6 +96,10 @@ export default function AboutPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+      />
       <SiteNavbar settings={siteSettings} />
 
       <HeroRotator
@@ -46,23 +108,34 @@ export default function AboutPage() {
             Somos <span className="text-[#FF5A5F]">VR Group</span>, una consultora boutique en transformación digital, automatización e IA
           </>
         }
-        subtitle="Desde 2017 acompañamos a organizaciones públicas y privadas a diseñar, construir y escalar capacidades tecnológicas con impacto real en sus operaciones."
+        subtitle="Acompañamos a organizaciones a diseñar, construir y escalar capacidades tecnológicas con impacto real."
         images={heroBackgrounds}
         minHeight="calc(100vh + 50px)"
       >
         <div className="mt-6 flex flex-col lg:flex-row items-center gap-6 justify-center">
           <div className="bg-white/10 border border-white/15 backdrop-blur-lg rounded-3xl px-6 py-5 text-white shadow-2xl flex flex-col gap-3 w-full max-w-xl">
             <div className="grid grid-cols-3 gap-4 text-center">
-              {[
-                { value: "2017", label: "Fundada" },
-                { value: "150+", label: "Proyectos" },
-                { value: "75", label: "Colaboradores" },
-              ].map((item) => (
-                <div key={item.label} className="space-y-1">
-                  <div className="text-2xl sm:text-3xl font-display font-bold">{item.value}</div>
-                  <p className="text-sm text-white/80">{item.label}</p>
-                </div>
-              ))}
+              <div className="space-y-1">
+                <div className="text-2xl sm:text-3xl font-display font-bold">2017</div>
+                <p className="text-sm text-white/80">Fundada</p>
+              </div>
+              <div className="space-y-1">
+                <AnimatedCounter
+                  end={150}
+                  suffix="+"
+                  durationMs={1600}
+                  className="text-2xl sm:text-3xl font-display font-bold"
+                />
+                <p className="text-sm text-white/80">Proyectos</p>
+              </div>
+              <div className="space-y-1">
+                <AnimatedCounter
+                  end={75}
+                  durationMs={1400}
+                  className="text-2xl sm:text-3xl font-display font-bold"
+                />
+                <p className="text-sm text-white/80">Colaboradores</p>
+              </div>
             </div>
             <div className="pt-3 mt-1 border-t border-white/15 flex justify-center">
               <Link
@@ -77,40 +150,42 @@ export default function AboutPage() {
       </HeroRotator>
 
       {/* Historia */}
-      <Section
-        title="Nuestra Historia"
-        className="relative bg-[#0B1B33] text-white overflow-hidden"
-        variant="dark"
-        paddingClass="py-14 lg:py-16"
-      >
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-55 z-0"
-          style={{ backgroundImage: toBackgroundImage("/images/sections/cordillera.png") }}
-        ></div>
-        <div className="absolute inset-0 bg-[#0B1B33]/45 z-0"></div>
-        <div className="relative z-10 max-w-[1340px] mx-auto space-y-10 text-lg leading-relaxed">
-          <div className="max-w-4xl mx-auto space-y-4 text-white text-base sm:text-lg font-medium drop-shadow-[0_0_18px_rgba(255,255,255,0.35)]">
+      <section className="relative bg-[#0B1B33] text-white overflow-hidden min-h-screen flex items-center py-20 sm:py-24">
+        {/* Giant year — solid watermark, no blur */}
+        <div className="absolute -bottom-6 sm:-bottom-10 lg:-bottom-16 -right-4 sm:-right-6 lg:-right-8 pointer-events-none select-none leading-none">
+          <span className="font-display font-bold text-[220px] sm:text-[360px] lg:text-[520px] text-white/[0.035] tracking-tighter">
+            2017
+          </span>
+        </div>
+
+        <div className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <p className="text-xs uppercase tracking-[0.25em] text-coral font-semibold mb-8 text-center">
+            Nuestra historia
+          </p>
+          <div className="space-y-6 text-lg sm:text-xl leading-relaxed text-white/90">
             <p>
-              Fundada en 2017, VR Group nació con la convicción de que la transformación digital debe ser práctica,
-              medible y centrada en las personas. A lo largo de estos años, hemos ejecutado más de 150 proyectos,
-              impulsado la modernización tecnológica de múltiples industrias y construido un equipo multidisciplinario
-              de 75 colaboradores en consultoría, desarrollo, automatización e inteligencia artificial.
+              Fundada en 2017, VR Group nació con la convicción de que la transformación digital
+              debe ser práctica, medible y centrada en las personas. A lo largo de estos años,
+              hemos ejecutado más de 150 proyectos, impulsado la modernización tecnológica de
+              múltiples industrias y construido un equipo multidisciplinario de 75 colaboradores en
+              consultoría, desarrollo, automatización e inteligencia artificial.
             </p>
             <p>
-              Hoy acompañamos a compañías en Chile y Latinoamérica a evolucionar sus procesos, adoptar tecnologías de
-              última generación y construir experiencias digitales que generan valor de negocio.
+              Hoy acompañamos a compañías en Chile y Latinoamérica a evolucionar sus procesos,
+              adoptar tecnologías de última generación y construir experiencias digitales que
+              generan valor de negocio.
             </p>
           </div>
         </div>
-      </Section>
+      </section>
 
-      {/* Principios */}
+      {/* Principios + Stats (bloque negro continuo) */}
       <Section
         title="Los principios que nos guían"
         subtitle="Valores que definen cómo trabajamos, decidimos y colaboramos con nuestros clientes."
-        className="bg-[#050711]"
+        className="bg-black"
         variant="dark"
-        paddingClass="py-14 lg:py-16"
+        paddingClass="pt-16 sm:pt-20 lg:pt-24 pb-0"
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {pillars.map((value, idx) => {
@@ -118,36 +193,43 @@ export default function AboutPage() {
             return (
               <div
                 key={idx}
-                className="rounded-3xl bg-gradient-to-b from-[#0f192f] via-[#0b1327] to-[#050711] border border-white/8 px-5 py-7 text-white shadow-[0_20px_60px_rgba(0,0,0,0.35)]"
+                className="rounded-2xl bg-white/[0.04] border border-white/10 px-5 py-7 text-white hover:bg-white/[0.07] hover:border-white/20 transition-all"
               >
-                <div className="w-12 h-12 rounded-full bg-white/10 text-white flex items-center justify-center mb-4">
+                <div className="w-12 h-12 rounded-xl bg-coral/15 text-coral flex items-center justify-center mb-4">
                   <Icon size={24} />
                 </div>
                 <h3 className="font-display font-bold text-lg mb-2">{value.title}</h3>
-                <p className="text-white/80 text-sm">{value.description}</p>
+                <p className="text-white/75 text-sm">{value.description}</p>
               </div>
             )
           })}
         </div>
       </Section>
 
-      {/* Stats */}
-      <Section className="bg-[#0B1B33] text-white" variant="dark">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            { value: "8", suffix: " años", desc: "Impulsando modernización tecnológica desde 2017." },
-            { value: "150+", suffix: " proyectos", desc: "Transformación digital, automatización y consultoría." },
-            { value: "75", suffix: " colaboradores", desc: "Equipo multidisciplinario senior y boutique." },
-          ].map((stat) => (
-            <div key={stat.value} className="rounded-2xl bg-white/5 border border-white/10 p-6">
-              <div className="font-display text-4xl sm:text-5xl font-bold text-coral mb-2">
-                {stat.value} <span className="text-white text-2xl align-middle">{stat.suffix}</span>
+      {/* Stats — texto limpio, sin cuadros */}
+      <section className="bg-black text-white pt-12 sm:pt-14 lg:pt-16 pb-16 sm:pb-20 lg:pb-24">
+        <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8">
+            {[
+              { end: 8, numSuffix: "", labelSuffix: "años", duration: 1200 },
+              { end: 150, numSuffix: "+", labelSuffix: "proyectos", duration: 1600 },
+              { end: 75, numSuffix: "", labelSuffix: "colaboradores", duration: 1400 },
+            ].map((stat) => (
+              <div key={stat.labelSuffix} className="flex items-baseline gap-3 leading-none">
+                <AnimatedCounter
+                  end={stat.end}
+                  suffix={stat.numSuffix}
+                  durationMs={stat.duration}
+                  className="font-display font-bold text-5xl sm:text-6xl lg:text-7xl text-coral"
+                />
+                <span className="text-white/90 text-xl sm:text-2xl font-display font-semibold">
+                  {stat.labelSuffix}
+                </span>
               </div>
-              <p className="text-gray-200">{stat.desc}</p>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </Section>
+      </section>
 
       {/* Metodología */}
       <Section title="Nuestra forma de trabajar" className="bg-white">
@@ -178,34 +260,34 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="space-y-3">
-            <p className="font-semibold text-blue-dark text-lg">Por qué funciona</p>
-            <div className="flex flex-wrap gap-3">
-              {[
-                "Promueve entregas rápidas",
-                "Reduce riesgo y retrabajo",
-                "Alinea negocio y tecnología",
-                "Mide impacto desde el día uno",
-              ].map((reason) => (
-                <span
-                  key={reason}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-dark/5 text-blue-dark border border-blue-dark/10 text-sm font-semibold"
-                >
-                  <ShieldCheck size={16} className="text-coral" />
-                  {reason}
-                </span>
-              ))}
-            </div>
-          </div>
         </div>
       </Section>
+
+      {/* Confían en nosotros */}
+      <section className="relative bg-white py-16 sm:py-20 lg:py-24 overflow-hidden">
+        <div className="relative max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-10 sm:mb-12 text-center">
+            <p className="text-xs uppercase tracking-[0.25em] text-coral font-semibold mb-3">
+              Clientes
+            </p>
+            <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl text-blue-dark">
+              Confían en nosotros
+            </h2>
+            <p className="text-gray-600 text-base sm:text-lg mt-4 max-w-2xl mx-auto">
+              Organizaciones líderes en banca, retail, industria y sector público que nos eligieron
+              como partner estratégico.
+            </p>
+          </div>
+        </div>
+        <ClientsMarquee logos={clientLogos} variant="minimal" rows={1} speedMs={120000} fadeEdges />
+      </section>
 
       {/* CTA */}
       <CTABanner
         eyebrow="Contacto"
-        title="¿Listo para impulsar tu organización?"
-        subtitle="Conversemos y diseñemos juntos la próxima etapa de tu estrategia digital."
-        buttonLabel="Hablemos"
+        title="Llevemos tu próxima iniciativa a producción"
+        subtitle="Conversemos sobre tu operación, tus prioridades y cómo podemos acompañarte con arquitectura, automatización e IA aplicada."
+        buttonLabel="Agenda una reunión"
         buttonHref="/contacto"
       />
 

@@ -30,15 +30,15 @@ export function LogoGrid({ logos, columns = 5, title, subtitle, variant = "light
         {logos.map((logo) => (
           <div
             key={logo}
-            className={`flex items-center justify-center p-3 rounded-xl border transition-colors ${cardBg} ${hoverBorder}`}
+            className={`flex items-center justify-center p-4 sm:p-5 h-24 sm:h-28 rounded-xl border transition-colors ${cardBg} ${hoverBorder}`}
           >
             <Image
               src={logo}
               alt={logoAltFromPath(logo)}
-              width={160}
-              height={60}
-              className="h-12 w-auto object-contain"
-              sizes="160px"
+              width={200}
+              height={80}
+              className="w-auto h-auto max-h-full max-w-full object-contain"
+              sizes="200px"
             />
           </div>
         ))}

@@ -1,67 +1,84 @@
 "use client"
 
 import { useState } from "react"
-import Image from "next/image"
 import Link from "next/link"
-import { OptimizedAnimation } from "@/components/ui/optimized-animation"
 import { Section } from "@/components/ui/section"
-import { isAnimatedAssetPath, toOptimizedAssetPath } from "@/lib/assets"
+import { AI_MOCKUPS, type MockupKey } from "@/components/ui/ai-mockups"
 
 type Capability = {
-  key: string
+  key: MockupKey
+  tabTitle: string
   title: string
   desc: string
-  image: string
   points: string[]
 }
 
 const capabilities: Capability[] = [
   {
-    key: "agentes",
-    title: "Agentes de IA y copilots",
-    desc: "Bots y copilots conectados a datos y sistemas core, con guardrails.",
-    image: "/images/ai/agentic.gif",
-    points: ["Chatbots y voicebots", "Integración con sistemas core", "Guardrails, métricas y adopción"],
+    key: "agents",
+    tabTitle: "Agentes",
+    title: "Agentes y copilots",
+    desc: "Agentes autónomos y copilots conectados a tus sistemas core, con guardrails y automatización de flujos.",
+    points: [
+      "Chatbots, voicebots y agentes autónomos",
+      "Integración con CRM, ERP y sistemas internos",
+      "Guardrails, métricas y trazabilidad",
+    ],
   },
   {
     key: "rag",
+    tabTitle: "RAG y búsqueda",
     title: "RAG y búsqueda empresarial",
-    desc: "Recuperación aumentada con contexto seguro para equipos y clientes.",
-    image: "/images/ai/rag.gif",
-    points: ["Índices seguros y multi-fuente", "Controles de acceso", "Experiencia de búsqueda moderna"],
+    desc: "Recuperación aumentada con contexto seguro para equipos y clientes sobre tus fuentes de conocimiento.",
+    points: [
+      "Índices multi-fuente (Drive, Confluence, Notion, CRM)",
+      "Control de acceso granular por usuario y equipo",
+      "Experiencia de búsqueda moderna con citas",
+    ],
   },
   {
-    key: "fine-tuning",
-    title: "Fine-tuning y prompt engineering",
-    desc: "Modelos ajustados a tu dominio y prompts gobernados.",
-    image: "/placeholder.jpg",
-    points: ["Prompts versionados", "Evaluaciones automáticas", "Modelos afinados a tu industria"],
+    key: "ml",
+    tabTitle: "Machine Learning",
+    title: "Machine Learning y modelos predictivos",
+    desc: "Modelos clásicos para forecast, scoring, clasificación y visión por computadora — más allá de los LLMs.",
+    points: [
+      "Forecast de demanda y churn, scoring de leads",
+      "Clasificación, detección y computer vision",
+      "Pipelines de entrenamiento, despliegue y monitoreo",
+    ],
   },
   {
-    key: "ia-privada",
-    title: "IA privada y seguridad",
-    desc: "Despliegues en entornos privados con control y trazabilidad.",
-    image: "/placeholder.jpg",
-    points: ["Entornos privados y on-prem", "Trazabilidad y auditoría", "Cumplimiento y privacidad"],
+    key: "quality",
+    tabTitle: "Calidad y gobierno",
+    title: "Calidad, gobierno y seguridad de IA",
+    desc: "Evaluaciones automáticas, observabilidad y despliegues privados con trazabilidad y cumplimiento.",
+    points: [
+      "Evals automáticos (accuracy, hallucinations, latency)",
+      "Guardrails, PII y políticas de contenido",
+      "Despliegues privados, auditoría y compliance",
+    ],
   },
   {
-    key: "adopcion",
-    title: "Adopción y training",
-    desc: "Capacitación, change management y KPIs de uso/adopción.",
-    image: "/placeholder.jpg",
-    points: ["Playbooks de adopción", "KPIs de uso y ROI", "Capacitación de equipos"],
+    key: "adoption",
+    tabTitle: "Adopción",
+    title: "Adopción y habilitación",
+    desc: "Playbooks de adopción, KPIs de uso y ROI, capacitación de equipos y change management.",
+    points: [
+      "Playbooks de adopción por área y rol",
+      "KPIs de uso, ahorro de horas y ROI",
+      "Training, change management y enablement",
+    ],
   },
 ]
-
-const providers = ["OpenAI", "Anthropic", "Google Gemini", "Azure OpenAI", "AWS Bedrock", "DeepSeek", "Cohere", "Meta Llama"]
 
 interface IAHighlightProps {
   providerLogos?: string[]
 }
 
-export function IAHighlight({ providerLogos = [] }: IAHighlightProps) {
-  const [active, setActive] = useState<string | null>(capabilities[0]?.key ?? null)
-  const activeCap = capabilities.find((cap) => cap.key === active)
+export function IAHighlight(_props: IAHighlightProps = {}) {
+  const [active, setActive] = useState<MockupKey>(capabilities[0].key)
+  const activeCap = capabilities.find((cap) => cap.key === active) ?? capabilities[0]
+  const Mockup = AI_MOCKUPS[activeCap.key]
 
   return (
     <Section className="bg-white" variant="light" paddingClass="py-12 sm:py-14 lg:py-16">
@@ -74,69 +91,52 @@ export function IAHighlight({ providerLogos = [] }: IAHighlightProps) {
           <p className="text-gray-600 text-lg md:text-xl max-w-4xl leading-relaxed">
             Capacidades modulares para diseñar, desplegar y operar IA.
             <br className="hidden md:block" />
-            Agentes, RAG, fine-tuning, IA privada, seguridad y adopción con gobierno y métricas.
+            Agentes, RAG, machine learning, calidad y adopción con gobierno y métricas.
           </p>
         </div>
 
         <div className="w-full rounded-lg border border-gray-200 bg-white shadow-sm">
-          <div className="flex items-center gap-2 p-2 overflow-x-auto">
+          <div className="grid grid-cols-2 gap-2 p-2 sm:grid-cols-3 lg:grid-cols-5">
             {capabilities.map((cap) => (
               <button
                 key={cap.key}
                 onClick={() => setActive(cap.key)}
                 onMouseEnter={() => setActive(cap.key)}
                 onFocus={() => setActive(cap.key)}
-                className={`whitespace-nowrap px-4 sm:px-5 py-2 rounded-lg text-sm sm:text-base font-semibold transition-all border ${
+                className={`truncate rounded-lg border px-3 py-2 text-xs font-semibold transition-all sm:text-sm ${
                   active === cap.key
-                    ? "border-transparent bg-[linear-gradient(120deg,#0f1729,#1f3d8f,#12a0c6)] text-white shadow-[0_8px_20px_rgba(18,160,198,0.3)]"
-                    : "border-gray-200 text-[#0f1729] bg-white hover:bg-gray-50"
+                    ? "border-transparent bg-[linear-gradient(120deg,#0f1729,#1f3d8f,#12a0c6)] text-white shadow-sm"
+                    : "border-gray-200 bg-white text-[#0f1729] hover:bg-gray-50"
                 }`}
+                title={cap.title}
               >
-                {cap.title}
+                {cap.tabTitle}
               </button>
             ))}
           </div>
         </div>
 
         <div className="relative grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-6 items-stretch">
-          <div className="rounded-3xl border border-gray-200 bg-gray-50 overflow-hidden min-h-[420px] h-full relative">
-            {activeCap ? (
-              isAnimatedAssetPath(activeCap.image) ? (
-                <OptimizedAnimation
-                  src={activeCap.image}
-                  label={activeCap.title}
-                  preload="none"
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-              ) : (
-                <Image
-                  key={activeCap.key}
-                  src={toOptimizedAssetPath(activeCap.image, { width: 1200 })}
-                  alt={activeCap.title}
-                  fill
-                  sizes="(min-width: 1024px) 640px, 100vw"
-                  className="object-cover"
-                />
-              )
-            ) : (
-              <div className="absolute inset-0 flex items-center justify-center text-gray-500 text-sm">
-                Selecciona una capability para ver el preview
-              </div>
-            )}
+          <div className="h-[480px]">
+            <Mockup />
           </div>
 
-          <div className="rounded-3xl border border-gray-200 bg-white p-6 space-y-3 shadow-sm min-h-[420px] h-full flex flex-col justify-between">
-            <h3 className="font-display text-2xl font-bold text-blue-dark">{activeCap?.title ?? "Selecciona una opción"}</h3>
-            <p className="text-gray-600">{activeCap?.desc ?? "Elige una capability para ver más detalles."}</p>
-            <ul className="space-y-2">
-              {(activeCap?.points ?? ["Placeholder 1", "Placeholder 2", "Placeholder 3"]).map((pt) => (
+          <div className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm h-[480px] flex flex-col">
+            <div className="flex h-14 items-start">
+              <h3 className="font-display text-2xl font-bold text-blue-dark line-clamp-2">{activeCap.title}</h3>
+            </div>
+            <div className="mt-2 h-20">
+              <p className="text-gray-600 line-clamp-3">{activeCap.desc}</p>
+            </div>
+            <ul className="mt-4 flex h-40 flex-col gap-2">
+              {activeCap.points.map((pt) => (
                 <li key={pt} className="flex items-start gap-2 text-gray-700">
-                  <span className="mt-1 h-2 w-2 rounded-full bg-blue-500 inline-block"></span>
+                  <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-blue-500 inline-block"></span>
                   <span>{pt}</span>
                 </li>
               ))}
             </ul>
-            <div className="flex flex-col sm:flex-row gap-3 pt-2">
+            <div className="mt-auto flex flex-col sm:flex-row gap-3">
               <Link
                 href="/servicios/ia-y-agentes"
                 className="px-5 py-3 rounded-lg bg-blue-900 text-white font-semibold text-center hover:bg-blue-800 transition-colors"

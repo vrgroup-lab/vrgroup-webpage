@@ -33,14 +33,14 @@
   --ring: oklch(0.708 0 0);
   --radius: 0.625rem;
 
-  --sidebar: oklch(0.17 0.015 260);
+  --sidebar: oklch(0 0 0);
   --sidebar-foreground: oklch(0.97 0 0);
-  --sidebar-primary: var(--coral);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.23 0.02 260);
+  --sidebar-primary: oklch(1 0 0);
+  --sidebar-primary-foreground: oklch(0 0 0);
+  --sidebar-accent: oklch(0.18 0 0);
   --sidebar-accent-foreground: oklch(0.97 0 0);
-  --sidebar-border: oklch(0.26 0.02 260);
-  --sidebar-ring: var(--coral);
+  --sidebar-border: oklch(0.22 0 0);
+  --sidebar-ring: oklch(0.6 0 0);
 }
 
 @theme inline {

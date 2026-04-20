@@ -8,6 +8,7 @@ type VantaInstance = {
   animationLoop?: () => void
   req?: number
   prevNow?: number | null
+  uniforms?: { iMouse?: { value?: { x: number; y: number } } }
 }
 
 type VantaOptions = {
@@ -23,41 +24,81 @@ type VantaOptions = {
   backgroundColor: number
   skyColor: number
   cloudColor: number
-  lightColor: number
+  cloudShadowColor: number
+  sunColor: number
+  sunGlareColor: number
+  sunlightColor: number
   speed: number
-  texturePath: string
 }
 
-type Clouds2Factory = (opts: VantaOptions) => VantaInstance
-
-const NOISE_SIZE = 128
-
-function makeNoiseDataUrl(): string {
-  const canvas = document.createElement("canvas")
-  canvas.width = NOISE_SIZE
-  canvas.height = NOISE_SIZE
-  const ctx = canvas.getContext("2d")
-  if (!ctx) return ""
-  const img = ctx.createImageData(NOISE_SIZE, NOISE_SIZE)
-  for (let i = 0; i < img.data.length; i += 4) {
-    const v = (Math.random() * 256) | 0
-    img.data[i] = v
-    img.data[i + 1] = v
-    img.data[i + 2] = v
-    img.data[i + 3] = 255
-  }
-  ctx.putImageData(img, 0, 0)
-  return canvas.toDataURL("image/png")
-}
+type CloudsFactory = (opts: VantaOptions) => VantaInstance
 
 type IdleWindow = Window & {
   requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number
   cancelIdleCallback?: (id: number) => void
 }
 
-export function VantaCloudsBackground({ className = "" }: { className?: string }) {
+interface VantaCloudsBackgroundProps {
+  className?: string
+  backgroundColor?: number
+  skyColor?: number
+  cloudColor?: number
+  cloudShadowColor?: number
+  sunColor?: number
+  sunGlareColor?: number
+  sunlightColor?: number
+  speed?: number
+  /**
+   * Camera height (0–1). Higher = camera looks more down = horizon lower in frame.
+   * Default 0.95 — near-max, so horizon sits low in frame.
+   */
+  cameraHeight?: number
+}
+
+export function VantaCloudsBackground({
+  className = "",
+  backgroundColor = 0x8a6a58,
+  skyColor = 0x5ab0cc,
+  cloudColor = 0xf0a868,
+  cloudShadowColor = 0x183550,
+  sunColor = 0xe08c3a,
+  sunGlareColor = 0xf0b060,
+  sunlightColor = 0xe08c3a,
+  speed = 1,
+  cameraHeight = 0.95,
+}: VantaCloudsBackgroundProps) {
   const ref = useRef<HTMLDivElement>(null)
+  const instanceRef = useRef<VantaInstance | null>(null)
   const [shouldInit, setShouldInit] = useState(false)
+
+  useEffect(() => {
+    const node = ref.current
+    const parent = node?.parentElement
+    if (!node || !parent) return
+    const TARGET_ASPECT = 16 / 9
+    const update = () => {
+      const pw = parent.offsetWidth
+      const ph = parent.offsetHeight
+      if (!pw || !ph) return
+      const parentAspect = pw / ph
+      let w: number
+      let h: number
+      if (parentAspect >= TARGET_ASPECT) {
+        w = pw
+        h = Math.round(pw / TARGET_ASPECT)
+      } else {
+        w = Math.round(ph * TARGET_ASPECT)
+        h = ph
+      }
+      node.style.width = `${w}px`
+      node.style.height = `${h}px`
+      instanceRef.current?.resize?.()
+    }
+    update()
+    const ro = new ResizeObserver(update)
+    ro.observe(parent)
+    return () => ro.disconnect()
+  }, [])
 
   useEffect(() => {
     if (typeof window === "undefined") return
@@ -69,9 +110,9 @@ export function VantaCloudsBackground({ className = "" }: { className?: string }
     let timeoutId: number | null = null
 
     if (typeof w.requestIdleCallback === "function") {
-      idleId = w.requestIdleCallback(() => setShouldInit(true), { timeout: 2500 })
+      idleId = w.requestIdleCallback(() => setShouldInit(true), { timeout: 800 })
     } else {
-      timeoutId = window.setTimeout(() => setShouldInit(true), 1500)
+      timeoutId = window.setTimeout(() => setShouldInit(true), 400)
     }
 
     return () => {
@@ -87,11 +128,10 @@ export function VantaCloudsBackground({ className = "" }: { className?: string }
 
     const node = ref.current
     let instance: VantaInstance | null = null
-    let factory: Clouds2Factory | null = null
+    let factory: CloudsFactory | null = null
     let THREELib: unknown = null
     let starting = false
     let disposed = false
-    const noiseUrl = makeNoiseDataUrl()
 
     const start = async () => {
       if (instance || starting || disposed) return
@@ -99,10 +139,10 @@ export function VantaCloudsBackground({ className = "" }: { className?: string }
       try {
         if (!factory) {
           THREELib = await import("three")
-          const mod = (await import("vanta/dist/vanta.clouds2.min")) as {
-            default?: Clouds2Factory
-          } & Clouds2Factory
-          factory = mod.default ?? (mod as unknown as Clouds2Factory)
+          const mod = (await import("vanta/dist/vanta.clouds.min")) as {
+            default?: CloudsFactory
+          } & CloudsFactory
+          factory = mod.default ?? (mod as unknown as CloudsFactory)
         }
         if (disposed || !node.isConnected) return
         instance = factory({
@@ -113,21 +153,55 @@ export function VantaCloudsBackground({ className = "" }: { className?: string }
           gyroControls: false,
           minHeight: 200,
           minWidth: 200,
-          scale: 0.4,
-          scaleMobile: 0.35,
-          backgroundColor: 0x000000,
-          skyColor: 0x5ca6ca,
-          cloudColor: 0x334d80,
-          lightColor: 0xffffff,
-          speed: 0.85,
-          texturePath: noiseUrl,
+          scale: 3,
+          scaleMobile: 12,
+          backgroundColor,
+          skyColor,
+          cloudColor,
+          cloudShadowColor,
+          sunColor,
+          sunGlareColor,
+          sunlightColor,
+          speed,
         })
+        instanceRef.current = instance
+        instance?.resize?.()
         const canvas = node.querySelector<HTMLCanvasElement>("canvas.vanta-canvas")
         if (canvas) {
           canvas.style.transform = "translateZ(0)"
           canvas.style.willChange = "transform"
           canvas.style.contain = "strict"
           canvas.style.backfaceVisibility = "hidden"
+        }
+        // Pin camera height by overriding iMouse uniform. The shader reads:
+        //   m.y = (1.0 - iMouse.y/iResolution.y) * 0.33 + 0.28
+        // iMouse.y = 0 → m.y = 0.61 (camera higher, horizon lower in frame).
+        // iMouse.y = height → m.y = 0.28 (camera lower, horizon higher).
+        // Map cameraHeight [0,1] → iMouse.y [height, 0].
+        const clampedCam = Math.max(0, Math.min(1, cameraHeight))
+        const pinCamera = () => {
+          const v = instance?.uniforms?.iMouse?.value
+          if (!v) return
+          const h = node.offsetHeight || 1
+          v.y = (1 - clampedCam) * h
+        }
+        pinCamera()
+        if (instance && typeof instance.animationLoop === "function") {
+          const original = instance.animationLoop.bind(instance)
+          const TARGET_MS = 1000 / 30
+          let lastRender = 0
+          instance.animationLoop = function throttled() {
+            const now = performance.now()
+            if (now - lastRender < TARGET_MS) {
+              if (instance) {
+                instance.req = window.requestAnimationFrame(throttled)
+              }
+              return
+            }
+            lastRender = now
+            pinCamera()
+            original()
+          }
         }
       } catch {
         // leave gradient fallback visible
@@ -144,6 +218,7 @@ export function VantaCloudsBackground({ className = "" }: { className?: string }
         // ignore
       }
       instance = null
+      instanceRef.current = null
     }
 
     const io = new IntersectionObserver(
@@ -187,15 +262,28 @@ export function VantaCloudsBackground({ className = "" }: { className?: string }
       io.disconnect()
       stop()
     }
-  }, [shouldInit])
+  }, [
+    shouldInit,
+    backgroundColor,
+    skyColor,
+    cloudColor,
+    cloudShadowColor,
+    sunColor,
+    sunGlareColor,
+    sunlightColor,
+    speed,
+    cameraHeight,
+  ])
 
   return (
     <div
       ref={ref}
       aria-hidden
-      className={`absolute inset-0 pointer-events-none ${className}`}
+      className={`absolute pointer-events-none ${className}`}
       style={{
-        transform: "translateZ(0)",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%) translateZ(0)",
         willChange: "transform",
         contain: "layout paint style",
         isolation: "isolate",

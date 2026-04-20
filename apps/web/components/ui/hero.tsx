@@ -20,6 +20,7 @@ interface HeroProps {
   className?: string
   variant?: "default" | "services"
   subtitleClassName?: string
+  dimOverlay?: boolean
 }
 
 export function Hero({
@@ -40,6 +41,7 @@ export function Hero({
   className = "",
   variant = "default",
   subtitleClassName = "",
+  dimOverlay = true,
 }: HeroProps) {
   const minH = minHeight ?? "520px"
   return (
@@ -72,9 +74,11 @@ export function Hero({
         <div className="absolute inset-0 bg-[#01042d]/55"></div>
       ) : (
         <>
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0b1b33] to-[#0c2f5c]" />
+          {!backgroundEffect && (
+            <div className="absolute inset-0 bg-gradient-to-b from-black via-[#0b1b33] to-[#0c2f5c]" />
+          )}
           {backgroundEffect}
-          {backgroundEffect && (
+          {backgroundEffect && dimOverlay && (
             <div className="pointer-events-none absolute inset-0 bg-[#01042d]/45" />
           )}
           <div className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05),transparent_60%)] blur-3xl opacity-70" />

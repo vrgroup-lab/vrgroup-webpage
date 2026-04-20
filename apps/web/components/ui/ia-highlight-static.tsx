@@ -1,23 +1,23 @@
-"use client"
-
 import Link from "next/link"
-import { OptimizedAnimation } from "@/components/ui/optimized-animation"
 import { Section } from "@/components/ui/section"
+import { AgentsChatMockup } from "@/components/ui/ai-mockups"
 
 const activeCap = {
-  key: "agentes",
-  title: "Agentes de IA y copilots",
-  desc: "Bots y copilots conectados a datos y sistemas core, con guardrails.",
-  image: "/images/ai/agentic.gif",
-  points: ["Chatbots y voicebots", "Integración con sistemas core", "Guardrails, métricas y adopción"],
+  title: "Agentes y copilots",
+  desc: "Agentes autónomos y copilots conectados a tus sistemas core, con guardrails y automatización de flujos.",
+  points: [
+    "Chatbots, voicebots y agentes autónomos",
+    "Integración con CRM, ERP y sistemas internos",
+    "Guardrails, métricas y trazabilidad",
+  ],
 }
 
 const capabilities = [
-  "Agentes de IA y copilots",
-  "RAG y búsqueda empresarial",
-  "Fine-tuning y prompt engineering",
-  "IA privada y seguridad",
-  "Adopción y training",
+  { tab: "Agentes", full: "Agentes y copilots" },
+  { tab: "RAG y búsqueda", full: "RAG y búsqueda empresarial" },
+  { tab: "Machine Learning", full: "Machine Learning y modelos predictivos" },
+  { tab: "Calidad y gobierno", full: "Calidad, gobierno y seguridad de IA" },
+  { tab: "Adopción", full: "Adopción y habilitación" },
 ]
 
 export function IAHighlightStatic() {
@@ -32,49 +32,49 @@ export function IAHighlightStatic() {
           <p className="text-gray-600 text-lg md:text-xl max-w-4xl leading-relaxed">
             Capacidades modulares para diseñar, desplegar y operar IA.
             <br className="hidden md:block" />
-            Agentes, RAG, fine-tuning, IA privada, seguridad y adopción con gobierno y métricas.
+            Agentes, RAG, machine learning, calidad y adopción con gobierno y métricas.
           </p>
         </div>
 
         <div className="w-full rounded-lg border border-gray-200 bg-white shadow-sm">
-          <div className="flex items-center gap-2 p-2 overflow-x-auto">
+          <div className="grid grid-cols-2 gap-2 p-2 sm:grid-cols-3 lg:grid-cols-5">
             {capabilities.map((capability, index) => (
               <div
-                key={capability}
-                className={`whitespace-nowrap px-4 sm:px-5 py-2 rounded-lg text-sm sm:text-base font-semibold transition-all border ${
+                key={capability.tab}
+                className={`truncate rounded-lg border px-3 py-2 text-xs font-semibold transition-all sm:text-sm ${
                   index === 0
-                    ? "border-transparent bg-[linear-gradient(120deg,#0f1729,#1f3d8f,#12a0c6)] text-white shadow-[0_8px_20px_rgba(18,160,198,0.3)]"
-                    : "border-gray-200 text-[#0f1729] bg-white"
+                    ? "border-transparent bg-[linear-gradient(120deg,#0f1729,#1f3d8f,#12a0c6)] text-white shadow-sm"
+                    : "border-gray-200 bg-white text-[#0f1729]"
                 }`}
+                title={capability.full}
               >
-                {capability}
+                {capability.tab}
               </div>
             ))}
           </div>
         </div>
 
         <div className="relative grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-6 items-stretch">
-          <div className="rounded-3xl border border-gray-200 bg-gray-50 overflow-hidden min-h-[420px] h-full relative">
-            <OptimizedAnimation
-              src={activeCap.image}
-              label={activeCap.title}
-              preload="none"
-              className="absolute inset-0 h-full w-full object-cover"
-            />
+          <div className="h-[480px]">
+            <AgentsChatMockup />
           </div>
 
-          <div className="rounded-3xl border border-gray-200 bg-white p-6 space-y-3 shadow-sm min-h-[420px] h-full flex flex-col justify-between">
-            <h3 className="font-display text-2xl font-bold text-blue-dark">{activeCap.title}</h3>
-            <p className="text-gray-600">{activeCap.desc}</p>
-            <ul className="space-y-2">
+          <div className="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm h-[480px] flex flex-col">
+            <div className="flex h-14 items-start">
+              <h3 className="font-display text-2xl font-bold text-blue-dark line-clamp-2">{activeCap.title}</h3>
+            </div>
+            <div className="mt-2 h-20">
+              <p className="text-gray-600 line-clamp-3">{activeCap.desc}</p>
+            </div>
+            <ul className="mt-4 flex h-40 flex-col gap-2">
               {activeCap.points.map((point) => (
                 <li key={point} className="flex items-start gap-2 text-gray-700">
-                  <span className="mt-1 h-2 w-2 rounded-full bg-blue-500 inline-block"></span>
+                  <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-blue-500 inline-block"></span>
                   <span>{point}</span>
                 </li>
               ))}
             </ul>
-            <div className="flex flex-col sm:flex-row gap-3 pt-2">
+            <div className="mt-auto flex flex-col sm:flex-row gap-3">
               <Link
                 href="/servicios/ia-y-agentes"
                 className="px-5 py-3 rounded-lg bg-blue-900 text-white font-semibold text-center hover:bg-blue-800 transition-colors"

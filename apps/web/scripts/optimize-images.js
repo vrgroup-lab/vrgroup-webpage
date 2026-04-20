@@ -96,6 +96,19 @@ async function runFfmpeg(args) {
   })
 }
 
+function shouldTrimWhitespace(relativePath) {
+  const normalized = relativePath.split(path.sep).join("/")
+  return normalized.startsWith("logos/clients/")
+}
+
+function createPipeline(sourcePath, relativePath) {
+  const pipeline = sharp(sourcePath, { limitInputPixels: false })
+  if (shouldTrimWhitespace(relativePath)) {
+    return pipeline.trim({ threshold: 15 })
+  }
+  return pipeline
+}
+
 async function optimizeRasterImage(sourcePath) {
   const relativePath = path.relative(publicRoot, sourcePath)
   const sourceStats = await fs.stat(sourcePath)
@@ -112,7 +125,7 @@ async function optimizeRasterImage(sourcePath) {
   for (const width of variantWidths) {
     const destinationPath = buildOptimizedImagePath(relativePath, width)
     await fs.mkdir(path.dirname(destinationPath), { recursive: true })
-    await sharp(sourcePath, { limitInputPixels: false })
+    await createPipeline(sourcePath, relativePath)
       .resize({ width, withoutEnlargement: true })
       .webp({ quality: 80 })
       .toFile(destinationPath)
@@ -120,7 +133,7 @@ async function optimizeRasterImage(sourcePath) {
 
   const baseDestinationPath = buildOptimizedImagePath(relativePath)
   await fs.mkdir(path.dirname(baseDestinationPath), { recursive: true })
-  await sharp(sourcePath, { limitInputPixels: false })
+  await createPipeline(sourcePath, relativePath)
     .resize({ width: baseWidth, withoutEnlargement: true })
     .webp({ quality: 80 })
     .toFile(baseDestinationPath)

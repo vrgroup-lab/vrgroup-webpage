@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
 import { formatDistanceToNow } from "date-fns"
 import { es } from "date-fns/locale"
-import { Eye, EyeOff, MoreHorizontal, Plus, Search, Trash2, Users } from "lucide-react"
+import { Eye, EyeOff, MoreHorizontal, Pencil, Plus, Search, Trash2, Users } from "lucide-react"
 import { toast } from "sonner"
 import { ConfirmDialog } from "@/components/admin/confirm-dialog"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
@@ -16,6 +16,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { EmptyState } from "@/components/ui/empty-state"
@@ -52,7 +53,13 @@ const createUserSchema = z.object({
   role: z.enum(ROLES),
 })
 
+const editUserSchema = z.object({
+  full_name: z.string().min(1, "El nombre es obligatorio"),
+  role: z.enum(ROLES),
+})
+
 type CreateUserValues = z.infer<typeof createUserSchema>
+type EditUserValues = z.infer<typeof editUserSchema>
 
 function initials(name: string | null, email: string | null) {
   const source = name?.trim() || email?.split("@")[0] || "?"
@@ -69,12 +76,14 @@ function roleBadge(role: string) {
   return <Badge variant="outline">{role}</Badge>
 }
 
+type SheetMode = { mode: "create" } | { mode: "edit"; user: UserProfile } | null
+
 export default function AdminUsersPage() {
   const [users, setUsers] = useState<UserProfile[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState("")
   const [roleFilter, setRoleFilter] = useState<string>("all")
-  const [sheetOpen, setSheetOpen] = useState(false)
+  const [sheet, setSheet] = useState<SheetMode>(null)
   const [showPassword, setShowPassword] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState<{ open: boolean; user: UserProfile | null; loading: boolean }>({
@@ -82,16 +91,15 @@ export default function AdminUsersPage() {
     user: null,
     loading: false,
   })
-  const [confirmRole, setConfirmRole] = useState<{ open: boolean; user: UserProfile | null; role: string | null; loading: boolean }>({
-    open: false,
-    user: null,
-    role: null,
-    loading: false,
-  })
 
-  const form = useForm<CreateUserValues>({
+  const createForm = useForm<CreateUserValues>({
     resolver: zodResolver(createUserSchema),
     defaultValues: { full_name: "", email: "", password: "", role: "editor" },
+  })
+
+  const editForm = useForm<EditUserValues>({
+    resolver: zodResolver(editUserSchema),
+    defaultValues: { full_name: "", role: "editor" },
   })
 
   async function fetchUsers() {
@@ -124,7 +132,28 @@ export default function AdminUsersPage() {
     })
   }, [users, search, roleFilter])
 
-  async function createUser(values: CreateUserValues) {
+  function openCreate() {
+    createForm.reset({ full_name: "", email: "", password: "", role: "editor" })
+    setShowPassword(false)
+    setSheet({ mode: "create" })
+  }
+
+  function openEdit(user: UserProfile) {
+    editForm.reset({
+      full_name: user.full_name ?? "",
+      role: (ROLES as readonly string[]).includes(user.role) ? (user.role as (typeof ROLES)[number]) : "editor",
+    })
+    setSheet({ mode: "edit", user })
+  }
+
+  function closeSheet() {
+    setSheet(null)
+    setShowPassword(false)
+    createForm.reset()
+    editForm.reset()
+  }
+
+  async function submitCreate(values: CreateUserValues) {
     setSubmitting(true)
     try {
       const res = await fetch("/api/admin/users", {
@@ -135,9 +164,7 @@ export default function AdminUsersPage() {
       const payload = await res.json()
       if (!res.ok) throw new Error(payload.error || "No se pudo crear el usuario")
       toast.success("Usuario creado")
-      form.reset()
-      setSheetOpen(false)
-      setShowPassword(false)
+      closeSheet()
       await fetchUsers()
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "No se pudo crear el usuario")
@@ -146,25 +173,27 @@ export default function AdminUsersPage() {
     }
   }
 
-  async function applyRoleChange() {
-    if (!confirmRole.user || !confirmRole.role) return
-    setConfirmRole((c) => ({ ...c, loading: true }))
+  async function submitEdit(values: EditUserValues) {
+    if (!sheet || sheet.mode !== "edit") return
+    const userId = sheet.user.id
+    setSubmitting(true)
     try {
-      const res = await fetch(`/api/admin/users/${confirmRole.user.id}`, {
+      const res = await fetch(`/api/admin/users/${userId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ role: confirmRole.role, full_name: confirmRole.user.full_name }),
+        body: JSON.stringify({ full_name: values.full_name, role: values.role }),
       })
       const payload = await res.json()
-      if (!res.ok) throw new Error(payload.error || "No se pudo actualizar el rol")
-      const newRole = confirmRole.role
-      const userId = confirmRole.user.id
-      setUsers((list) => list.map((u) => (u.id === userId ? { ...u, role: newRole } : u)))
-      toast.success("Rol actualizado")
-      setConfirmRole({ open: false, user: null, role: null, loading: false })
+      if (!res.ok) throw new Error(payload.error || "No se pudo actualizar el usuario")
+      setUsers((list) =>
+        list.map((u) => (u.id === userId ? { ...u, full_name: values.full_name, role: values.role } : u)),
+      )
+      toast.success("Usuario actualizado")
+      closeSheet()
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "No se pudo actualizar el rol")
-      setConfirmRole((c) => ({ ...c, loading: false }))
+      toast.error(err instanceof Error ? err.message : "No se pudo actualizar el usuario")
+    } finally {
+      setSubmitting(false)
     }
   }
 
@@ -195,6 +224,9 @@ export default function AdminUsersPage() {
     [users],
   )
 
+  const isEdit = sheet?.mode === "edit"
+  const editingUser = sheet?.mode === "edit" ? sheet.user : null
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
@@ -205,14 +237,7 @@ export default function AdminUsersPage() {
             Gestioná quién puede acceder al backoffice y con qué nivel de permiso.
           </p>
         </div>
-        <Button
-          variant="coral"
-          onClick={() => {
-            form.reset({ full_name: "", email: "", password: "", role: "editor" })
-            setShowPassword(false)
-            setSheetOpen(true)
-          }}
-        >
+        <Button variant="coral" onClick={openCreate}>
           <Plus /> Nuevo usuario
         </Button>
       </div>
@@ -281,7 +306,7 @@ export default function AdminUsersPage() {
             </TableHeader>
             <TableBody>
               {filtered.map((user) => (
-                <TableRow key={user.id}>
+                <TableRow key={user.id} className="cursor-pointer" onClick={() => openEdit(user)}>
                   <TableCell>
                     <div className="flex items-center gap-3">
                       <Avatar>
@@ -293,26 +318,7 @@ export default function AdminUsersPage() {
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell>
-                    <Select
-                      value={user.role}
-                      onValueChange={(v) => {
-                        if (v === user.role) return
-                        setConfirmRole({ open: true, user, role: v, loading: false })
-                      }}
-                    >
-                      <SelectTrigger className="h-8 w-32 text-xs">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {ROLES.map((r) => (
-                          <SelectItem key={r} value={r} className="text-xs">
-                            {r}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </TableCell>
+                  <TableCell>{roleBadge(user.role)}</TableCell>
                   <TableCell className="text-xs text-muted-foreground">
                     {user.last_sign_in_at
                       ? formatDistanceToNow(new Date(user.last_sign_in_at), { addSuffix: true, locale: es })
@@ -321,7 +327,7 @@ export default function AdminUsersPage() {
                   <TableCell className="text-xs text-muted-foreground">
                     {formatDistanceToNow(new Date(user.created_at), { addSuffix: true, locale: es })}
                   </TableCell>
-                  <TableCell>
+                  <TableCell onClick={(e) => e.stopPropagation()}>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="icon" className="h-8 w-8">
@@ -329,6 +335,10 @@ export default function AdminUsersPage() {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => openEdit(user)}>
+                          <Pencil /> Editar
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
                         <DropdownMenuItem
                           className="text-destructive focus:bg-destructive/10 focus:text-destructive"
                           onClick={() => setConfirmDelete({ open: true, user, loading: false })}
@@ -346,89 +356,123 @@ export default function AdminUsersPage() {
       </div>
 
       <Sheet
-        open={sheetOpen}
+        open={sheet !== null}
         onOpenChange={(o) => {
-          setSheetOpen(o)
-          if (!o) {
-            form.reset()
-            setShowPassword(false)
-          }
+          if (!o) closeSheet()
         }}
       >
         <SheetContent className="flex flex-col gap-0 p-0 sm:max-w-lg">
           <SheetHeader className="border-b px-6 py-4">
-            <SheetTitle>Nuevo usuario</SheetTitle>
-            <SheetDescription>Creá un acceso al panel con rol asignado.</SheetDescription>
+            <SheetTitle>{isEdit ? "Editar usuario" : "Nuevo usuario"}</SheetTitle>
+            <SheetDescription>
+              {isEdit
+                ? "Actualizá el nombre y el rol del usuario. El email no se puede modificar desde acá."
+                : "Creá un acceso al panel con rol asignado."}
+            </SheetDescription>
           </SheetHeader>
-          <form onSubmit={form.handleSubmit(createUser)} className="flex flex-1 flex-col gap-4 overflow-y-auto p-6">
-            <Field label="Nombre completo" error={form.formState.errors.full_name?.message} required>
-              <Input {...form.register("full_name")} placeholder="Maxi Tombolini" />
-            </Field>
-            <Field label="Email" error={form.formState.errors.email?.message} required>
-              <Input type="email" {...form.register("email")} placeholder="persona@vrgroup.cl" />
-            </Field>
-            <Field label="Contraseña" error={form.formState.errors.password?.message} hint="Mínimo 8 caracteres" required>
-              <div className="relative">
-                <Input
-                  type={showPassword ? "text" : "password"}
-                  {...form.register("password")}
-                  className="pr-10"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword((p) => !p)}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-muted-foreground hover:text-foreground"
-                  aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
-                >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
-              </div>
-            </Field>
-            <Field label="Rol" error={form.formState.errors.role?.message} required>
-              <Select
-                value={form.watch("role")}
-                onValueChange={(v) => form.setValue("role", v as (typeof ROLES)[number], { shouldValidate: true })}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {ROLES.map((r) => (
-                    <SelectItem key={r} value={r}>
-                      {r}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </Field>
 
-            <div className="mt-auto flex justify-end gap-2 border-t bg-background pt-4">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setSheetOpen(false)}
-                disabled={submitting}
-              >
-                Cancelar
-              </Button>
-              <Button type="submit" variant="coral" disabled={submitting}>
-                {submitting ? "Creando..." : "Crear usuario"}
-              </Button>
-            </div>
-          </form>
+          {isEdit && editingUser ? (
+            <form onSubmit={editForm.handleSubmit(submitEdit)} className="flex flex-1 flex-col gap-4 overflow-y-auto p-6">
+              <div className="flex items-center gap-3 rounded-lg border bg-muted/30 p-3">
+                <Avatar className="h-10 w-10">
+                  <AvatarFallback>{initials(editingUser.full_name, editingUser.email)}</AvatarFallback>
+                </Avatar>
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-medium">{editingUser.email || "—"}</p>
+                  <p className="text-[11px] text-muted-foreground">
+                    Último acceso:{" "}
+                    {editingUser.last_sign_in_at
+                      ? formatDistanceToNow(new Date(editingUser.last_sign_in_at), { addSuffix: true, locale: es })
+                      : "nunca"}
+                  </p>
+                </div>
+              </div>
+
+              <Field label="Nombre completo" error={editForm.formState.errors.full_name?.message} required>
+                <Input {...editForm.register("full_name")} placeholder="Maxi Tombolini" />
+              </Field>
+              <Field label="Rol" error={editForm.formState.errors.role?.message} required>
+                <Select
+                  value={editForm.watch("role")}
+                  onValueChange={(v) => editForm.setValue("role", v as (typeof ROLES)[number], { shouldValidate: true })}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {ROLES.map((r) => (
+                      <SelectItem key={r} value={r}>
+                        {r}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </Field>
+
+              <div className="mt-auto flex justify-end gap-2 border-t bg-background pt-4">
+                <Button type="button" variant="outline" onClick={closeSheet} disabled={submitting}>
+                  Cancelar
+                </Button>
+                <Button type="submit" variant="coral" disabled={submitting}>
+                  {submitting ? "Guardando..." : "Guardar cambios"}
+                </Button>
+              </div>
+            </form>
+          ) : (
+            <form onSubmit={createForm.handleSubmit(submitCreate)} className="flex flex-1 flex-col gap-4 overflow-y-auto p-6">
+              <Field label="Nombre completo" error={createForm.formState.errors.full_name?.message} required>
+                <Input {...createForm.register("full_name")} placeholder="Maxi Tombolini" />
+              </Field>
+              <Field label="Email" error={createForm.formState.errors.email?.message} required>
+                <Input type="email" {...createForm.register("email")} placeholder="persona@vrgroup.cl" />
+              </Field>
+              <Field label="Contraseña" error={createForm.formState.errors.password?.message} hint="Mínimo 8 caracteres" required>
+                <div className="relative">
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    {...createForm.register("password")}
+                    className="pr-10"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((p) => !p)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-muted-foreground hover:text-foreground"
+                    aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+              </Field>
+              <Field label="Rol" error={createForm.formState.errors.role?.message} required>
+                <Select
+                  value={createForm.watch("role")}
+                  onValueChange={(v) => createForm.setValue("role", v as (typeof ROLES)[number], { shouldValidate: true })}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {ROLES.map((r) => (
+                      <SelectItem key={r} value={r}>
+                        {r}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </Field>
+
+              <div className="mt-auto flex justify-end gap-2 border-t bg-background pt-4">
+                <Button type="button" variant="outline" onClick={closeSheet} disabled={submitting}>
+                  Cancelar
+                </Button>
+                <Button type="submit" variant="coral" disabled={submitting}>
+                  {submitting ? "Creando..." : "Crear usuario"}
+                </Button>
+              </div>
+            </form>
+          )}
         </SheetContent>
       </Sheet>
-
-      <ConfirmDialog
-        open={confirmRole.open}
-        title="Cambiar rol"
-        description={`Asignar rol "${confirmRole.role}" a ${confirmRole.user?.full_name || confirmRole.user?.email || "este usuario"}.`}
-        confirmLabel="Cambiar rol"
-        variant="default"
-        loading={confirmRole.loading}
-        onCancel={() => setConfirmRole({ open: false, user: null, role: null, loading: false })}
-        onConfirm={applyRoleChange}
-      />
 
       <ConfirmDialog
         open={confirmDelete.open}

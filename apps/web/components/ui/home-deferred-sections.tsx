@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic"
 import { AppianHighlightStatic } from "@/components/ui/appian-highlight-static"
 import { IAHighlightStatic } from "@/components/ui/ia-highlight-static"
+import { ComplianceHighlight } from "@/components/ui/compliance-highlight"
 
 const AppianHighlight = dynamic(() => import("@/components/ui/appian-highlight").then((module) => module.AppianHighlight), {
   ssr: false,
@@ -22,6 +23,7 @@ export function HomeDeferredSections({ providerLogos }: HomeDeferredSectionsProp
   return (
     <>
       <AppianHighlight />
+      <ComplianceHighlight />
       <IAHighlight providerLogos={providerLogos} />
     </>
   )

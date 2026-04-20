@@ -86,14 +86,23 @@ export function ServicesSection({
   paddingClass?: string
 }) {
   const padding = paddingClass ?? "py-16 sm:py-20 lg:py-24"
+  const [firstWord, ...restWords] = heading.split(" ")
+  const remainingHeading = restWords.join(" ")
 
   return (
     <section className={`${padding} ${variantWrapper[variant]}`}>
       <div className="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-12 text-center">
-          <p className="text-coral font-semibold text-sm uppercase tracking-[0.12em] mb-2">Servicios</p>
-          <h2 className="font-display font-bold text-3xl sm:text-4xl lg:text-5xl mb-4">{heading}</h2>
-          <p className={`text-lg mx-auto ${variantSubtitle[variant]}`}>{subheading}</p>
+        <div className="mb-10 sm:mb-12">
+          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl mb-4">
+            <span className="font-normal">{firstWord}</span>
+            {remainingHeading && (
+              <>
+                {" "}
+                <span className="font-bold">{remainingHeading}</span>
+              </>
+            )}
+          </h2>
+          <p className={`text-lg max-w-2xl ${variantSubtitle[variant]}`}>{subheading}</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

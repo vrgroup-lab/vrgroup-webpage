@@ -20,11 +20,11 @@ const variantClasses: Record<ServiceCardVariant, Record<string, string>> = {
     icon: "bg-coral/10 text-coral",
   },
   dark: {
-    card: "bg-[#0b1020] border border-white/5 hover:border-coral/60 shadow-[0_20px_60px_rgba(0,0,0,0.35)] hover:shadow-[0_24px_70px_rgba(255,90,95,0.15)]",
+    card: "bg-white/[0.04] border border-white/10 hover:bg-white/[0.07] hover:border-white/25 shadow-[0_20px_60px_rgba(0,0,0,0.35)]",
     title: "text-white",
     description: "text-gray-300",
-    button: "text-[#FF7A7F]",
-    icon: "bg-white/5 text-white",
+    button: "text-white group-hover:text-[#FF7A7F]",
+    icon: "bg-white/10 border border-white/20 text-white",
   },
 }
 

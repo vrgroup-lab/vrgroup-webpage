@@ -144,6 +144,15 @@
   }
 }
 
+@keyframes marquee-reverse {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
 /* VR Group Specific Styles */
 .bg-coral {
   @apply bg-[#FF5A5F];
